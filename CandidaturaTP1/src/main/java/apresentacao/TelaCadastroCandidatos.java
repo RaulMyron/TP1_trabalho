@@ -71,16 +71,6 @@ public class TelaCadastroCandidatos extends javax.swing.JFrame {
 
         jLabel5.setText("Pretencao Salarial:");
 
-        jTextField1.setText("jTextField1");
-
-        jTextField2.setText("jTextField2");
-
-        jTextField3.setText("jTextField3");
-
-        jTextField4.setText("jTextField4");
-
-        jTextField5.setText("jTextField5");
-
         jLabel6.setText("Disponibilidade:");
 
         jCheckBox1.setText("Matutino");
