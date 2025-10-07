@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
-package com.mycompany.prjrh.recrutamento;
+package telas.recutamento;
 
 /**
  *
@@ -54,7 +54,7 @@ public class ConsultarContratações extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-	jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("Acompanhamento de Solicitações de Contratação"));
+        jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("Acompanhamento de Solicitações de Contratação"));
 
         jLabel1.setText("Filtrar por:");
 

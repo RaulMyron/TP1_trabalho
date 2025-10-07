@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
-package com.mycompany.prjrh.recrutamento;
+package telas.recutamento;
 
 /**
  *
@@ -67,7 +67,7 @@ public class MarcarEntrevistas extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("Agender e Registrar Entrevistas"));
+        jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("Agendar e Registrar Entrevistas"));
 
         jLabel1.setText("Selecione a vaga");
 
@@ -80,6 +80,8 @@ public class MarcarEntrevistas extends javax.swing.JFrame {
         jLabel3.setText("Candidatos Em Análise:");
 
         jButton1.setText("Selecionar Candidato");
+
+        jLayeredPane1.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
 
         jTextField1.setText("jTextField1");
 

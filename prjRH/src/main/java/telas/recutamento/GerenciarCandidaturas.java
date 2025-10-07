@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
-package com.mycompany.prjrh.recrutamento;
+package telas.recutamento;
 
 /**
  *
@@ -111,7 +111,7 @@ public class GerenciarCandidaturas extends javax.swing.JFrame {
                 .addContainerGap())
         );
 
-        jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder("Lista de Candidatos Disponíveis"));
+        jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder(" Lista de Candidatos Disponíveis"));
 
         jLabel2.setText("Candidatos Cadastrados no Sistema");
 
