@@ -2,21 +2,29 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
-package apresentacao;
+package telas.candidatura.View;
+
+
+import telas.candidatura.Controller.CandidatoController; // Adicione este import
+import javax.swing.JOptionPane; // E este, para as mensagens
+import telas.candidatura.Excecao.RHException; // E este, para capturar o erro
 
 /**
  *
  * @author lipit
  */
-public class TelaCadastroCandidatos extends javax.swing.JFrame {
+public class TelaCadastroCandidato extends javax.swing.JFrame {
     
-    private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(TelaCadastroCandidatos.class.getName());
+    private final CandidatoController Controller;
+    
+    private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(TelaCadastroCandidato.class.getName());
 
     /**
      * Creates new form TelaCadastroCandidatos
      */
-    public TelaCadastroCandidatos() {
+    public TelaCadastroCandidato() {
         initComponents();
+        this.Controller = new CandidatoController();
     }
 
     /**
@@ -33,19 +41,19 @@ public class TelaCadastroCandidatos extends javax.swing.JFrame {
         jTextArea1 = new javax.swing.JTextArea();
         jSlider1 = new javax.swing.JSlider();
         jLabel8 = new javax.swing.JLabel();
-        jLabel1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
-        jLabel4 = new javax.swing.JLabel();
-        jLabel5 = new javax.swing.JLabel();
+        nome = new javax.swing.JLabel();
+        cpf = new javax.swing.JLabel();
+        email = new javax.swing.JLabel();
+        formacao = new javax.swing.JLabel();
+        pretensaosalarial = new javax.swing.JLabel();
         jTextField1 = new javax.swing.JTextField();
         jTextField2 = new javax.swing.JTextField();
         jTextField3 = new javax.swing.JTextField();
         jTextField4 = new javax.swing.JTextField();
         jTextField5 = new javax.swing.JTextField();
         jLabel6 = new javax.swing.JLabel();
-        jCheckBox1 = new javax.swing.JCheckBox();
-        jCheckBox3 = new javax.swing.JCheckBox();
+        matutino = new javax.swing.JCheckBox();
+        vespertino = new javax.swing.JCheckBox();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
         jLabel7 = new javax.swing.JLabel();
@@ -61,27 +69,39 @@ public class TelaCadastroCandidatos extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jLabel1.setText("Nome Completo:");
+        nome.setText("Nome Completo:");
 
-        jLabel2.setText("CPF:");
+        cpf.setText("CPF:");
 
-        jLabel3.setText("E-mail:");
+        email.setText("E-mail:");
 
-        jLabel4.setText("Formacao:");
+        formacao.setText("Formacao:");
 
-        jLabel5.setText("Pretencao Salarial:");
+        pretensaosalarial.setText("Pretencao Salarial:");
 
-        jLabel6.setText("Disponibilidade:");
-
-        jCheckBox1.setText("Matutino");
-        jCheckBox1.setActionCommand("JCheckBox1");
-        jCheckBox1.addActionListener(new java.awt.event.ActionListener() {
+        jTextField1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jCheckBox1ActionPerformed(evt);
+                jTextField1ActionPerformed(evt);
             }
         });
 
-        jCheckBox3.setText("Vespertino");
+        jTextField2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTextField2ActionPerformed(evt);
+            }
+        });
+
+        jLabel6.setText("Disponibilidade:");
+
+        matutino.setText("Matutino");
+        matutino.setActionCommand("JCheckBox1");
+        matutino.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                matutinoActionPerformed(evt);
+            }
+        });
+
+        vespertino.setText("Vespertino");
 
         jButton1.setText("Salvar");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -114,16 +134,16 @@ public class TelaCadastroCandidatos extends javax.swing.JFrame {
                         .addContainerGap()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel2)
+                            .addComponent(cpf)
                             .addGroup(layout.createSequentialGroup()
                                 .addGap(112, 112, 112)
-                                .addComponent(jCheckBox1)
+                                .addComponent(matutino)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jCheckBox3))
+                                .addComponent(vespertino))
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jLabel3))
+                                    .addComponent(nome, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(email))
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                     .addGroup(layout.createSequentialGroup()
                                         .addGap(18, 18, 18)
@@ -133,12 +153,12 @@ public class TelaCadastroCandidatos extends javax.swing.JFrame {
                                         .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE))))
                             .addComponent(jTextField2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addComponent(jLabel5)
+                                .addComponent(pretensaosalarial)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                     .addComponent(jTextField5)
                                     .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                            .addComponent(jLabel4))))
+                            .addComponent(formacao))))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -156,29 +176,29 @@ public class TelaCadastroCandidatos extends javax.swing.JFrame {
                 .addComponent(jLabel9)
                 .addGap(28, 28, 28)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel1)
+                    .addComponent(nome)
                     .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel2)
+                    .addComponent(cpf)
                     .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel3)
+                    .addComponent(email)
                     .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel4))
+                    .addComponent(formacao))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel5))
+                    .addComponent(pretensaosalarial))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel6)
-                    .addComponent(jCheckBox1)
-                    .addComponent(jCheckBox3))
+                    .addComponent(matutino)
+                    .addComponent(vespertino))
                 .addGap(30, 30, 30)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton1)
@@ -189,13 +209,63 @@ public class TelaCadastroCandidatos extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jCheckBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBox1ActionPerformed
+    private void matutinoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_matutinoActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jCheckBox1ActionPerformed
+    }//GEN-LAST:event_matutinoActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
+        try {
+        // 1. Coleta os dados usando os NOMES CORRETOS das variáveis
+        String nome = jTextField1.getText();           // <-- TROQUE AQUI
+        String cpf = jTextField2.getText();             // <-- TROQUE AQUI
+        String email = jTextField3.getText();           // <-- TROQUE AQUI
+        String formacao = jTextField4.getText();        // <-- TROQUE AQUI
+        String experiencia = ""; // Deixamos vazio pois não há campo na tela
+
+        // Lógica para pegar dos checkboxes
+        String disponibilidade = "";
+        if (matutino.isSelected()) { // <-- TROQUE AQUI (Matutino)
+            disponibilidade += "Matutino ";
+        }
+        if (vespertino.isSelected()) { // <-- TROQUE AQUI (Vespertino)
+            disponibilidade += "Vespertino";
+        }
+
+        // 2. Converte a pretensão salarial
+        double pretensaoSalarial = 0;
+        if (!jTextField5.getText().isEmpty()) { // <-- TROQUE AQUI
+            pretensaoSalarial = Double.parseDouble(jTextField5.getText()); // <-- TROQUE AQUI
+        }
+
+        // 3. Validação básica
+        if (nome.isEmpty() || cpf.isEmpty()) {
+            throw new RHException("Nome e CPF são campos obrigatórios.");
+        }
+
+        // 4. Chama o Controller para adicionar o candidato
+        Controller.adicionarCandidato(nome, cpf, email, formacao, experiencia, pretensaoSalarial, disponibilidade);
+
+        // 5. Feedback de sucesso
+        JOptionPane.showMessageDialog(this, "Candidato cadastrado com sucesso!", "Sucesso", JOptionPane.INFORMATION_MESSAGE);
+
+        this.dispose();
+
+    } catch (NumberFormatException e) {
+        JOptionPane.showMessageDialog(this, "Erro: Pretensão salarial deve ser um número válido.", "Erro de Formato", JOptionPane.ERROR_MESSAGE);
+    } catch (RHException e) {
+        JOptionPane.showMessageDialog(this, e.getMessage(), "Erro de Negócio", JOptionPane.ERROR_MESSAGE);
+    }
+
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTextField1ActionPerformed
+
+    private void jTextField2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField2ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTextField2ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -219,20 +289,16 @@ public class TelaCadastroCandidatos extends javax.swing.JFrame {
         //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(() -> new TelaCadastroCandidatos().setVisible(true));
+        java.awt.EventQueue.invokeLater(() -> new TelaCadastroCandidato().setVisible(true));
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel cpf;
+    private javax.swing.JLabel email;
+    private javax.swing.JLabel formacao;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
-    private javax.swing.JCheckBox jCheckBox1;
-    private javax.swing.JCheckBox jCheckBox3;
     private javax.swing.JComboBox<String> jComboBox1;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
@@ -245,5 +311,9 @@ public class TelaCadastroCandidatos extends javax.swing.JFrame {
     private javax.swing.JTextField jTextField3;
     private javax.swing.JTextField jTextField4;
     private javax.swing.JTextField jTextField5;
+    private javax.swing.JCheckBox matutino;
+    private javax.swing.JLabel nome;
+    private javax.swing.JLabel pretensaosalarial;
+    private javax.swing.JCheckBox vespertino;
     // End of variables declaration//GEN-END:variables
 }

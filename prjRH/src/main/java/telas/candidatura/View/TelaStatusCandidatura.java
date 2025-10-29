@@ -2,13 +2,22 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
-package apresentacao;
+package telas.candidatura.View;
+
+import telas.candidatura.Controller.CandidatoController;
+import telas.candidatura.Model.Candidatura;
+import java.util.List;
+import javax.swing.table.DefaultTableModel;
+import telas.candidatura.Model.Candidato;
+import java.text.SimpleDateFormat;
 
 /**
  *
  * @author lipit
  */
 public class TelaStatusCandidatura extends javax.swing.JFrame {
+    
+    private final CandidatoController Controller;
     
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(TelaStatusCandidatura.class.getName());
 
@@ -17,7 +26,33 @@ public class TelaStatusCandidatura extends javax.swing.JFrame {
      */
     public TelaStatusCandidatura() {
         initComponents();
+        this.Controller = new CandidatoController(); // 
+        popularTabela(); // <-- E ESTA CHAMADA DE MÉTODO
     }
+    
+    private void popularTabela() {
+    // 1. Pega a lista de CANDIDATURAS do controller.
+    List<Candidatura> listaCandidaturas = Controller.getListaCandidaturas();
+
+    // 2. Pega o modelo da tabela.
+    // Troque "jTable1" pelo nome da variável da sua tabela.
+    DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+    model.setRowCount(0); // Limpa a tabela
+
+    // Define um formato para a data ficar mais legível
+    SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+
+    // 4. Percorre a lista e adiciona os dados de cada candidatura.
+    for (Candidatura c : listaCandidaturas) {
+        Object[] rowData = {
+            c.getCandidato().getNome(),      // Coluna "Nome do Candidato"
+            c.getVaga().getCargo(),          // Coluna "Vaga Aplicada"
+            sdf.format(c.getDataCandidatura()), // Coluna "Data da Candidatura"
+            c.getStatus()                    // Coluna "Status Atual"
+        };
+        model.addRow(rowData);
+    }
+}
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -52,8 +87,6 @@ public class TelaStatusCandidatura extends javax.swing.JFrame {
         jLabel1.setToolTipText("");
 
         jLabel2.setText("Consulte e gerencie o progresso dos candidatos");
-
-        jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Filtros de Pesquisa", null, null, null));
 
         jLabel3.setText("Filtrar por Vaga:");
 
@@ -106,12 +139,13 @@ public class TelaStatusCandidatura extends javax.swing.JFrame {
                     .addComponent(jLabel3)
                     .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel4)
-                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(jButton2)
-                        .addComponent(jButton1)))
+                        .addComponent(jButton1))
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel4)
+                        .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(14, 14, 14)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel5)
