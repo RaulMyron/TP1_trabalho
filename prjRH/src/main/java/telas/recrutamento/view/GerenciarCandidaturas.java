@@ -19,11 +19,12 @@ public class GerenciarCandidaturas extends javax.swing.JFrame {
     private Recrutador recrutadorLogado;
     private Vaga vagaSelecionada;
     
-    public GerenciarCandidaturas() {
+    public GerenciarCandidaturas(Recrutador recrutador) {
         initComponents();
         this.recrutadorLogado = recrutador;
         this.vagaController = new VagaController();
         setLocationRelativeTo(null);
+        setTitle("Gerenciar Candidaturas");
         configurarEventos();
         carregarVagasRecrutador();
     }
@@ -428,11 +429,7 @@ public class GerenciarCandidaturas extends javax.swing.JFrame {
      * @param args the command line arguments
      */
     public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
+
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
                 if ("Nimbus".equals(info.getName())) {
@@ -443,10 +440,13 @@ public class GerenciarCandidaturas extends javax.swing.JFrame {
         } catch (ReflectiveOperationException | javax.swing.UnsupportedLookAndFeelException ex) {
             logger.log(java.util.logging.Level.SEVERE, null, ex);
         }
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(() -> new GerenciarCandidaturas().setVisible(true));
+        
+        java.awt.EventQueue.invokeLater(() -> {
+            // Recrutador de teste - só para preview do NetBeans
+            Recrutador recrutadorTeste = new Recrutador("12345678900", "Teste", "teste@email.com");
+            new GerenciarCandidaturas(recrutadorTeste).setVisible(true);
+        });
+    
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
