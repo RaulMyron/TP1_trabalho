@@ -3,27 +3,246 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 package telas.recrutamento.view;
+import telas.recrutamento.controller.ContratacaoController;
+import telas.recrutamento.controller.VagaController;
+import telas.recrutamento.model.Contratacao;
+import telas.recrutamento.model.Recrutador;
+import telas.recrutamento.model.Vaga;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+import java.text.SimpleDateFormat;
+import java.util.List;
 
-/**
- *
- * @author raulm
- */
 public class ConsultarContratações extends javax.swing.JFrame {
     
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(ConsultarContratações.class.getName());
-
-    /**
-     * Creates new form ConsultarContratações
-     */
+    private ContratacaoController contratacaoController;
+    private VagaController vagaController;
+    private Recrutador recrutadorLogado;
+    private Contratacao contratacaoSelecionada;
+    
     public ConsultarContratações() {
         initComponents();
+        this.recrutadorLogado = recrutador;
+        this.contratacaoController = new ContratacaoController();
+        this.vagaController = new VagaController();
+        setLocationRelativeTo(null);
+        setTitle("Consultar Contratações");
+        configurarEventos();
+        inicializarFiltros();
+        carregarContratacoes();
+    }
+    private void configurarEventos() {
+        jButton1.addActionListener(e -> aplicarFiltros());
+        jButton4.addActionListener(e -> limparFiltros());
+        jButton2.addActionListener(e -> efetivarContratacao());
+        jButton3.addActionListener(e -> cancelarSolicitacao());
+        jButton5.addActionListener(e -> voltarMenu());
+        
+        jTable1.getSelectionModel().addListSelectionListener(e -> {
+            if (!e.getValueIsAdjusting()) {
+                carregarDetalhesContratacao();
+            }
+        });
+    }
+    
+    private void inicializarFiltros() {
+        // ComboBox Status
+        jComboBox3.removeAllItems();
+        jComboBox3.addItem("Todas");
+        jComboBox3.addItem("Pendente");
+        jComboBox3.addItem("Autorizada");
+        jComboBox3.addItem("Negada");
+        jComboBox3.addItem("Efetivada");
+        
+        // ComboBox Vagas
+        jComboBox4.removeAllItems();
+        jComboBox4.addItem("Todas");
+        List<Vaga> vagas = vagaController.listarPorRecrutador(recrutadorLogado.getCpf());
+        for (Vaga v : vagas) {
+            jComboBox4.addItem(v.getIdVaga() + " - " + v.getCargo());
+        }
+        
+        // Combo Regime (parte de baixo)
+        jComboBox2.removeAllItems();
+        jComboBox2.addItem("CLT");
+        jComboBox2.addItem("PJ");
+        jComboBox2.addItem("Estágio");
+        
+        // Combo Vaga (parte de baixo)
+        jComboBox1.removeAllItems();
+        jComboBox1.addItem("Selecione");
+        for (Vaga v : vagas) {
+            jComboBox1.addItem(v.getIdVaga() + " - " + v.getCargo());
+        }
+        
+        // Formato de período
+        jTextField3.setText("dd/MM/yyyy - dd/MM/yyyy");
+    }
+    
+    private void carregarContratacoes() {
+        DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+        model.setRowCount(0);
+        
+        List<Contratacao> contratacoes = contratacaoController.listarPorRecrutador(recrutadorLogado.getCpf());
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+        
+        for (Contratacao c : contratacoes) {
+            String dataSolicitacao = c.getDataSolicitacao() != null ? sdf.format(c.getDataSolicitacao()) : "-";
+            String dataResposta = c.getDataAutorizacao() != null ? sdf.format(c.getDataAutorizacao()) : "-";
+            String gestor = c.getGestorAutorizador() != null ? c.getGestorAutorizador() : "-";
+            
+            model.addRow(new Object[]{
+                c.getId(),
+                "Candidato " + c.getCandidaturaId(),
+                c.getCandidaturaId(),
+                "Vaga X",
+                c.getRegimeContratacao(),
+                dataSolicitacao,
+                c.getStatusSolicitacao(),
+                gestor,
+                dataResposta
+            });
+        }
+        
+        JOptionPane.showMessageDialog(this, 
+            contratacoes.size() + " contratações encontradas!");
+    }
+    
+    private void aplicarFiltros() {
+        DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+        model.setRowCount(0);
+        
+        String statusFiltro = (String) jComboBox3.getSelectedItem();
+        String vagaFiltro = (String) jComboBox4.getSelectedItem();
+        
+        List<Contratacao> contratacoes = contratacaoController.listarPorRecrutador(recrutadorLogado.getCpf());
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+        
+        int count = 0;
+        for (Contratacao c : contratacoes) {
+            // Aplicar filtro de status
+            if (!statusFiltro.equals("Todas") && !c.getStatusSolicitacao().equals(statusFiltro)) {
+                continue;
+            }
+            
+            count++;
+            String dataSolicitacao = c.getDataSolicitacao() != null ? sdf.format(c.getDataSolicitacao()) : "-";
+            String dataResposta = c.getDataAutorizacao() != null ? sdf.format(c.getDataAutorizacao()) : "-";
+            String gestor = c.getGestorAutorizador() != null ? c.getGestorAutorizador() : "-";
+            
+            model.addRow(new Object[]{
+                c.getId(),
+                "Candidato " + c.getCandidaturaId(),
+                c.getCandidaturaId(),
+                "Vaga X",
+                c.getRegimeContratacao(),
+                dataSolicitacao,
+                c.getStatusSolicitacao(),
+                gestor,
+                dataResposta
+            });
+        }
+        
+        JOptionPane.showMessageDialog(this, 
+            "Filtros aplicados! " + count + " contratações encontradas.");
+    }
+    
+    private void limparFiltros() {
+        jComboBox3.setSelectedIndex(0);
+        jComboBox4.setSelectedIndex(0);
+        jTextField3.setText("dd/MM/yyyy - dd/MM/yyyy");
+        carregarContratacoes();
+    }
+    
+    private void carregarDetalhesContratacao() {
+        int row = jTable1.getSelectedRow();
+        if (row < 0) return;
+        
+        int id = (int) jTable1.getValueAt(row, 0);
+        contratacaoSelecionada = contratacaoController.buscar(id);
+        
+        if (contratacaoSelecionada != null) {
+            jTextField4.setText(String.valueOf(contratacaoSelecionada.getSalarioProposto()));
+            jComboBox2.setSelectedItem(contratacaoSelecionada.getRegimeContratacao());
+            
+            if (contratacaoSelecionada.getDataInicioProposta() != null) {
+                SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+                jTextField2.setText(sdf.format(contratacaoSelecionada.getDataInicioProposta()));
+            }
+        }
+    }
+    
+    private void efetivarContratacao() {
+        if (contratacaoSelecionada == null) {
+            JOptionPane.showMessageDialog(this, "Selecione uma contratação da tabela!");
+            return;
+        }
+        
+        if (!contratacaoSelecionada.isAutorizada()) {
+            JOptionPane.showMessageDialog(this, 
+                "Apenas contratações AUTORIZADAS podem ser efetivadas!\n" +
+                "Status atual: " + contratacaoSelecionada.getStatusSolicitacao());
+            return;
+        }
+        
+        int confirm = JOptionPane.showConfirmDialog(this,
+            "Deseja efetivar a contratação #" + contratacaoSelecionada.getId() + "?\n\n" +
+            "Candidato: " + contratacaoSelecionada.getCandidaturaId() + "\n" +
+            "Salário: R$ " + String.format("%.2f", contratacaoSelecionada.getSalarioProposto()) + "\n" +
+            "Regime: " + contratacaoSelecionada.getRegimeContratacao(),
+            "Confirmar Efetivação",
+            JOptionPane.YES_NO_OPTION);
+            
+        if (confirm == JOptionPane.YES_OPTION) {
+            contratacaoController.efetivar(contratacaoSelecionada.getId());
+            carregarContratacoes();
+            limparSelecao();
+        }
+    }
+    
+    private void cancelarSolicitacao() {
+        if (contratacaoSelecionada == null) {
+            JOptionPane.showMessageDialog(this, "Selecione uma contratação da tabela!");
+            return;
+        }
+        
+        if (!contratacaoSelecionada.isPendente()) {
+            JOptionPane.showMessageDialog(this, 
+                "Apenas contratações PENDENTES podem ser canceladas!\n" +
+                "Status atual: " + contratacaoSelecionada.getStatusSolicitacao());
+            return;
+        }
+        
+        int confirm = JOptionPane.showConfirmDialog(this,
+            "Deseja cancelar a solicitação #" + contratacaoSelecionada.getId() + "?",
+            "Confirmar Cancelamento",
+            JOptionPane.YES_NO_OPTION);
+            
+        if (confirm == JOptionPane.YES_OPTION) {
+            contratacaoController.negar(contratacaoSelecionada.getId(), 
+                recrutadorLogado.getNome(), "Cancelado pelo recrutador");
+            carregarContratacoes();
+            limparSelecao();
+        }
+    }
+    
+    private void limparSelecao() {
+        jTable1.clearSelection();
+        jTextField4.setText("");
+        jTextField2.setText("");
+        jComboBox1.setSelectedIndex(0);
+        jComboBox2.setSelectedIndex(0);
+        contratacaoSelecionada = null;
+    }
+    
+    private void voltarMenu() {
+        Main menu = new Main();
+        menu.carregarRecrutador(recrutadorLogado.getCpf());
+        menu.setVisible(true);
+        this.dispose();
     }
 
-    /**
-     * This method is called from within the constructor to initialize the form.
-     * WARNING: Do NOT modify this code. The content of this method is always
-     * regenerated by the Form Editor.
-     */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
