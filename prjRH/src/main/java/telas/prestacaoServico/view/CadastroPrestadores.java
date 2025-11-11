@@ -27,22 +27,17 @@ public class CadastroPrestadores extends JFrame {
         setLocationRelativeTo(null);
         setLayout(new BorderLayout(10, 10));
         
-        // Painel superior
         JPanel painelTitulo = new JPanel();
-        painelTitulo.setBackground(new Color(52, 152, 219));
         JLabel lblTitulo = new JLabel("CADASTRO DE PRESTADORES");
         lblTitulo.setFont(new Font("Arial", Font.BOLD, 18));
-        lblTitulo.setForeground(Color.WHITE);
         painelTitulo.add(lblTitulo);
         
-        // Painel de formulário
         JPanel painelFormulario = new JPanel(new GridBagLayout());
         painelFormulario.setBorder(BorderFactory.createTitledBorder("Dados do Prestador"));
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(5, 5, 5, 5);
         gbc.fill = GridBagConstraints.HORIZONTAL;
         
-        // Tipo
         gbc.gridx = 0; gbc.gridy = 0;
         painelFormulario.add(new JLabel("Tipo:"), gbc);
         gbc.gridx = 1;
@@ -51,7 +46,6 @@ public class CadastroPrestadores extends JFrame {
         cmbTipo.addActionListener(e -> atualizarLabelCpfCnpj());
         painelFormulario.add(cmbTipo, gbc);
         
-        // Nome
         gbc.gridx = 0; gbc.gridy = 1;
         painelFormulario.add(new JLabel("Nome:"), gbc);
         gbc.gridx = 1; gbc.gridwidth = 3;
@@ -59,14 +53,12 @@ public class CadastroPrestadores extends JFrame {
         painelFormulario.add(txtNome, gbc);
         gbc.gridwidth = 1;
         
-        // CPF/CNPJ
         gbc.gridx = 0; gbc.gridy = 2;
         painelFormulario.add(new JLabel("CPF/CNPJ:"), gbc);
         gbc.gridx = 1;
         txtCpfCnpj = new JTextField(20);
         painelFormulario.add(txtCpfCnpj, gbc);
         
-        // Categoria
         gbc.gridx = 2; gbc.gridy = 2;
         painelFormulario.add(new JLabel("Categoria:"), gbc);
         gbc.gridx = 3;
@@ -74,21 +66,18 @@ public class CadastroPrestadores extends JFrame {
         cmbCategoria = new JComboBox<>(categorias);
         painelFormulario.add(cmbCategoria, gbc);
         
-        // Contato
         gbc.gridx = 0; gbc.gridy = 3;
         painelFormulario.add(new JLabel("Contato:"), gbc);
         gbc.gridx = 1;
         txtContato = new JTextField(20);
         painelFormulario.add(txtContato, gbc);
         
-        // Email
         gbc.gridx = 2;
         painelFormulario.add(new JLabel("Email:"), gbc);
         gbc.gridx = 3;
         txtEmail = new JTextField(20);
         painelFormulario.add(txtEmail, gbc);
         
-        // Endereço
         gbc.gridx = 0; gbc.gridy = 4;
         painelFormulario.add(new JLabel("Endereço:"), gbc);
         gbc.gridx = 1; gbc.gridwidth = 3;
@@ -96,7 +85,6 @@ public class CadastroPrestadores extends JFrame {
         painelFormulario.add(txtEndereco, gbc);
         gbc.gridwidth = 1;
         
-        // Painel de botões do formulário
         JPanel painelBotoesForm = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 10));
         JButton btnNovo = new JButton("Novo");
         JButton btnSalvar = new JButton("Salvar");
@@ -116,7 +104,6 @@ public class CadastroPrestadores extends JFrame {
         painelBotoesForm.add(btnExcluir);
         painelBotoesForm.add(btnLimpar);
         
-        // Painel de filtros
         JPanel painelFiltros = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 10));
         painelFiltros.setBorder(BorderFactory.createTitledBorder("Filtros"));
         
@@ -142,7 +129,6 @@ public class CadastroPrestadores extends JFrame {
         });
         painelFiltros.add(btnLimparFiltros);
         
-        // Tabela de prestadores
         String[] colunas = {"ID", "Nome", "Tipo", "CPF/CNPJ", "Categoria", "Contato", "Status"};
         modeloTabela = new DefaultTableModel(colunas, 0) {
             @Override
@@ -161,17 +147,14 @@ public class CadastroPrestadores extends JFrame {
         JScrollPane scrollPane = new JScrollPane(tabelaPrestadores);
         scrollPane.setBorder(BorderFactory.createTitledBorder("Prestadores Cadastrados"));
         
-        // Painel central
         JPanel painelCentral = new JPanel(new BorderLayout(5, 5));
         painelCentral.add(painelFormulario, BorderLayout.NORTH);
         painelCentral.add(painelBotoesForm, BorderLayout.CENTER);
         
-        // Painel inferior
         JPanel painelInferior = new JPanel(new BorderLayout(5, 5));
         painelInferior.add(painelFiltros, BorderLayout.NORTH);
         painelInferior.add(scrollPane, BorderLayout.CENTER);
         
-        // Painel de botão voltar
         JPanel painelRodape = new JPanel(new FlowLayout(FlowLayout.RIGHT));
         JButton btnVoltar = new JButton("Voltar ao Menu");
         btnVoltar.addActionListener(e -> dispose());
@@ -185,7 +168,6 @@ public class CadastroPrestadores extends JFrame {
     
     private void atualizarLabelCpfCnpj() {
         String tipo = (String) cmbTipo.getSelectedItem();
-        // Atualização visual já está no label fixo
     }
     
     private void salvarPrestador() {
@@ -196,7 +178,6 @@ public class CadastroPrestadores extends JFrame {
         String tipo = cmbTipo.getSelectedIndex() == 0 ? "PF" : "PJ";
         String cpfCnpj = txtCpfCnpj.getText().trim();
         
-        // Valida CPF ou CNPJ
         if (tipo.equals("PF")) {
             if (!PrestadorServico.validarCPF(cpfCnpj)) {
                 JOptionPane.showMessageDialog(this, "CPF inválido!", "Erro", JOptionPane.ERROR_MESSAGE);

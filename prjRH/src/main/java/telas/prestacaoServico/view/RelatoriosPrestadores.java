@@ -31,10 +31,8 @@ public class RelatoriosPrestadores extends JFrame {
         
         // Painel superior
         JPanel painelTitulo = new JPanel();
-        painelTitulo.setBackground(new Color(155, 89, 182));
         JLabel lblTitulo = new JLabel("RELATÓRIOS DE PRESTADORES");
         lblTitulo.setFont(new Font("Arial", Font.BOLD, 18));
-        lblTitulo.setForeground(Color.WHITE);
         painelTitulo.add(lblTitulo);
         
         // Painel de seleção de relatório
@@ -58,20 +56,13 @@ public class RelatoriosPrestadores extends JFrame {
         painelSelecao.add(cmbParametro);
         
         JButton btnGerar = new JButton("Gerar Relatório");
-        btnGerar.setBackground(new Color(155, 89, 182));
-        btnGerar.setForeground(Color.WHITE);
-        btnGerar.setFocusPainted(false);
         btnGerar.addActionListener(e -> gerarRelatorio());
         painelSelecao.add(btnGerar);
         
         JButton btnExportar = new JButton("Exportar para Texto");
-        btnExportar.setBackground(new Color(52, 152, 219));
-        btnExportar.setForeground(Color.WHITE);
-        btnExportar.setFocusPainted(false);
         btnExportar.addActionListener(e -> exportarRelatorio());
         painelSelecao.add(btnExportar);
         
-        // Painel de resumo
         JPanel painelResumo = new JPanel(new BorderLayout());
         painelResumo.setBorder(BorderFactory.createTitledBorder("Resumo"));
         txtResumo = new JTextArea(3, 50);
@@ -81,7 +72,6 @@ public class RelatoriosPrestadores extends JFrame {
         JScrollPane scrollResumo = new JScrollPane(txtResumo);
         painelResumo.add(scrollResumo, BorderLayout.CENTER);
         
-        // Tabela de relatório
         modeloTabela = new DefaultTableModel() {
             @Override
             public boolean isCellEditable(int row, int column) {
@@ -108,7 +98,6 @@ public class RelatoriosPrestadores extends JFrame {
         add(painelCentral, BorderLayout.CENTER);
         add(painelRodape, BorderLayout.SOUTH);
         
-        // Inicializa os parâmetros
         atualizarParametros();
     }
     

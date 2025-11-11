@@ -34,10 +34,8 @@ public class GestaoContratos extends JFrame {
         
         // Painel superior
         JPanel painelTitulo = new JPanel();
-        painelTitulo.setBackground(new Color(46, 204, 113));
         JLabel lblTitulo = new JLabel("GESTÃO DE CONTRATOS");
         lblTitulo.setFont(new Font("Arial", Font.BOLD, 18));
-        lblTitulo.setForeground(Color.WHITE);
         painelTitulo.add(lblTitulo);
         
         // Painel de formulário

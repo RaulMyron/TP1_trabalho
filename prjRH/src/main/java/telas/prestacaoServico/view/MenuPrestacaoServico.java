@@ -17,14 +17,12 @@ public class MenuPrestacaoServico extends JFrame {
         setLocationRelativeTo(null);
         setLayout(new BorderLayout(10, 10));
         
-        // Painel do título
         JPanel painelTitulo = new JPanel();
         painelTitulo.setBorder(BorderFactory.createEmptyBorder(20, 10, 10, 10));
         JLabel lblTitulo = new JLabel("Gestão de Prestadores de Serviço");
         lblTitulo.setFont(new Font("Arial", Font.BOLD, 16));
         painelTitulo.add(lblTitulo);
         
-        // Painel de botões
         JPanel painelBotoes = new JPanel();
         painelBotoes.setLayout(new GridLayout(5, 1, 10, 10));
         painelBotoes.setBorder(BorderFactory.createEmptyBorder(20, 40, 20, 40));
@@ -35,7 +33,6 @@ public class MenuPrestacaoServico extends JFrame {
         JButton btnAlertas = new JButton("Alertas de Vencimento");
         JButton btnSair = new JButton("Voltar");
         
-        // Adiciona os eventos aos botões
         btnCadastrarPrestador.addActionListener((ActionEvent e) -> {
             new CadastroPrestadores().setVisible(true);
         });

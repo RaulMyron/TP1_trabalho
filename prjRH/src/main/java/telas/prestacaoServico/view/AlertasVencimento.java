@@ -29,10 +29,8 @@ public class AlertasVencimento extends JFrame {
         
         // Painel superior
         JPanel painelTitulo = new JPanel();
-        painelTitulo.setBackground(new Color(230, 126, 34));
         JLabel lblTitulo = new JLabel("⚠ ALERTAS DE VENCIMENTO");
         lblTitulo.setFont(new Font("Arial", Font.BOLD, 18));
-        lblTitulo.setForeground(Color.WHITE);
         painelTitulo.add(lblTitulo);
         
         // Painel de informações
@@ -53,21 +51,12 @@ public class AlertasVencimento extends JFrame {
         JPanel painelBotoes = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 10));
         
         JButton btnAtualizar = new JButton("Atualizar Alertas");
-        btnAtualizar.setBackground(new Color(230, 126, 34));
-        btnAtualizar.setForeground(Color.WHITE);
-        btnAtualizar.setFocusPainted(false);
         btnAtualizar.addActionListener(e -> carregarAlertas());
         
         JButton btnVerContrato = new JButton("Ver Detalhes do Contrato");
-        btnVerContrato.setBackground(new Color(52, 152, 219));
-        btnVerContrato.setForeground(Color.WHITE);
-        btnVerContrato.setFocusPainted(false);
         btnVerContrato.addActionListener(e -> verDetalhesContrato());
         
         JButton btnGestaoContratos = new JButton("Ir para Gestão de Contratos");
-        btnGestaoContratos.setBackground(new Color(46, 204, 113));
-        btnGestaoContratos.setForeground(Color.WHITE);
-        btnGestaoContratos.setFocusPainted(false);
         btnGestaoContratos.addActionListener(e -> {
             new GestaoContratos().setVisible(true);
         });
@@ -76,7 +65,6 @@ public class AlertasVencimento extends JFrame {
         painelBotoes.add(btnVerContrato);
         painelBotoes.add(btnGestaoContratos);
         
-        // Tabela de alertas
         String[] colunas = {
             "ID", "Prestador", "CPF/CNPJ", "Tipo Serviço", 
             "Valor", "Data Vencimento", "Dias Restantes", "Status"
@@ -92,7 +80,6 @@ public class AlertasVencimento extends JFrame {
         tabelaAlertas.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         tabelaAlertas.setRowHeight(25);
         
-        // Configura renderizador personalizado para destacar linhas críticas
         tabelaAlertas.setDefaultRenderer(Object.class, new javax.swing.table.DefaultTableCellRenderer() {
             @Override
             public Component getTableCellRendererComponent(JTable table, Object value,
@@ -124,7 +111,6 @@ public class AlertasVencimento extends JFrame {
         JScrollPane scrollPane = new JScrollPane(tabelaAlertas);
         scrollPane.setBorder(BorderFactory.createTitledBorder("Contratos Próximos do Vencimento"));
         
-        // Painel de legenda
         JPanel painelLegenda = new JPanel(new FlowLayout(FlowLayout.LEFT, 20, 5));
         painelLegenda.setBorder(BorderFactory.createTitledBorder("Legenda de Prioridade"));
         
@@ -144,13 +130,11 @@ public class AlertasVencimento extends JFrame {
         painelLegenda.add(lblAlerta);
         painelLegenda.add(lblAtencao);
         
-        // Painel central
         JPanel painelCentral = new JPanel(new BorderLayout(5, 5));
         painelCentral.add(painelInfo, BorderLayout.NORTH);
         painelCentral.add(scrollPane, BorderLayout.CENTER);
         painelCentral.add(painelLegenda, BorderLayout.SOUTH);
         
-        // Painel inferior
         JPanel painelInferior = new JPanel(new BorderLayout());
         painelInferior.add(painelBotoes, BorderLayout.CENTER);
         
@@ -187,7 +171,6 @@ public class AlertasVencimento extends JFrame {
         
         lblTotalAlertas.setText(contratosProximos.size() + " contrato(s)");
         
-        // Mostra mensagem se houver contratos críticos (≤ 7 dias)
         long contratosCriticos = contratosProximos.stream()
                 .filter(c -> c.diasRestantes() <= 7)
                 .count();
@@ -236,7 +219,6 @@ public class AlertasVencimento extends JFrame {
                 detalhes.append("Observações: ").append(contrato.getObservacoes()).append("\n");
             }
             
-            // Recomendação baseada nos dias restantes
             long diasRestantes = contrato.diasRestantes();
             detalhes.append("\n").append("=".repeat(50)).append("\n");
             detalhes.append("RECOMENDAÇÃO:\n");
