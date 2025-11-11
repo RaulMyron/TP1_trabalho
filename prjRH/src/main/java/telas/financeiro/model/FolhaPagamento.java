@@ -6,9 +6,7 @@ import java.time.YearMonth;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * MODEL - Representa a Folha de Pagamento mensal
- */
+
 public class FolhaPagamento implements Serializable {
     
     private YearMonth mesReferencia;
@@ -16,7 +14,7 @@ public class FolhaPagamento implements Serializable {
     private List<ItemFolha> itens;
     private double totalFolha;
     
-    // CONSTRUTOR
+    
     public FolhaPagamento(YearMonth mesReferencia) {
         this.mesReferencia = mesReferencia;
         this.dataGeracao = LocalDate.now();
@@ -24,13 +22,13 @@ public class FolhaPagamento implements Serializable {
         this.totalFolha = 0.0;
     }
     
-    // ADICIONAR ITEM NA FOLHA
+    
     public void adicionarItem(ItemFolha item) {
         this.itens.add(item);
         this.totalFolha += item.getSalarioLiquido();
     }
     
-    // GETTERS
+    
     public YearMonth getMesReferencia() {
         return mesReferencia;
     }
@@ -51,7 +49,7 @@ public class FolhaPagamento implements Serializable {
         return itens.size();
     }
     
-    // CLASSE INTERNA - Item da Folha
+    
     public static class ItemFolha implements Serializable {
         private String matricula;
         private String nomeFuncionario;
@@ -76,7 +74,7 @@ public class FolhaPagamento implements Serializable {
             this.salarioLiquido = salarioLiquido;
         }
         
-        // GETTERS
+        
         public String getMatricula() {
             return matricula;
         }

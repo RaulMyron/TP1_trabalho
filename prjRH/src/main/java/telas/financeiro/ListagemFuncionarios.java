@@ -1,7 +1,4 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
+
 package telas.financeiro;
 import telas.financeiro.controller.ControllerManager;
 import telas.financeiro.controller.FinanceiroController;
@@ -11,10 +8,7 @@ import telas.financeiro.exception.FuncionarioException;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import java.util.List;
-/**
- *
- * @author felip
- */
+
 public class ListagemFuncionarios extends javax.swing.JFrame {
     
     private FinanceiroController controller;
@@ -32,21 +26,19 @@ public class ListagemFuncionarios extends javax.swing.JFrame {
         setLocationRelativeTo(null);
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         
-        // Configurar modelo da tabela
+        
         modeloTabela = (DefaultTableModel) tblFuncionarios.getModel();
     }
     
-    /**
-     * Carrega os funcionários na tabela
-     */
+    
     private void carregarFuncionarios() {
-        // Limpa a tabela
+        
         modeloTabela.setRowCount(0);
         
-        // Busca todos os funcionários
+        
         List<Funcionario> funcionarios = controller.listarTodos();
         
-        // Adiciona cada funcionário como uma linha
+        
         for (Funcionario func : funcionarios) {
             Object[] linha = {
                 func.getMatricula(),
@@ -61,15 +53,13 @@ public class ListagemFuncionarios extends javax.swing.JFrame {
             modeloTabela.addRow(linha);
         }
         
-        // Atualiza o título com a quantidade
+        
         setTitle("Listagem de Funcionários (" + funcionarios.size() + ")");
     }
     
-    /**
-     * Inativa o funcionário selecionado
-     */
+    
     private void inativarSelecionado() {
-        // Verifica se há linha selecionada
+        
         int linhaSelecionada = tblFuncionarios.getSelectedRow();
         
         if (linhaSelecionada == -1) {
@@ -80,7 +70,7 @@ public class ListagemFuncionarios extends javax.swing.JFrame {
             return;
         }
         
-        // Confirma a inativação
+        
         int confirma = JOptionPane.showConfirmDialog(this, 
             "Tem certeza que deseja inativar este funcionário?", 
             "Confirmar Inativação", 
@@ -91,10 +81,10 @@ public class ListagemFuncionarios extends javax.swing.JFrame {
         }
         
         try {
-            // Pega a matrícula da linha selecionada
+            
             String matricula = (String) modeloTabela.getValueAt(linhaSelecionada, 0);
             
-            // Chama o controller para inativar
+            
             controller.inativarFuncionario(matricula);
             
             JOptionPane.showMessageDialog(this, 
@@ -102,7 +92,7 @@ public class ListagemFuncionarios extends javax.swing.JFrame {
                 "Sucesso", 
                 JOptionPane.INFORMATION_MESSAGE);
             
-            // Atualiza a tabela
+            
             carregarFuncionarios();
             
         } catch (FuncionarioException ex) {
@@ -219,9 +209,7 @@ public class ListagemFuncionarios extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_btnVoltarActionPerformed
 
-    /**
-     * @param args the command line arguments
-     */
+    
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(() -> {
             new ListagemFuncionarios().setVisible(true);

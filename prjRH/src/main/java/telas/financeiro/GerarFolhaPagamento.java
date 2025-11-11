@@ -1,7 +1,4 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
+
 package telas.financeiro;
 import telas.financeiro.controller.ControllerManager;
 import telas.financeiro.controller.FinanceiroController;
@@ -11,13 +8,10 @@ import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import java.time.LocalDate;
 import java.time.YearMonth;
-/**
- *
- * @author felip
- */
+
 public class GerarFolhaPagamento extends javax.swing.JFrame {
     
-    // ATRIBUTOS
+    
     private FinanceiroController controller;
     private DefaultTableModel modeloTabela;
     private FolhaPagamento folhaAtual;
@@ -33,29 +27,27 @@ public class GerarFolhaPagamento extends javax.swing.JFrame {
         setLocationRelativeTo(null);
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         
-        // Configurar modelo da tabela
+        
         modeloTabela = (DefaultTableModel) tblFolha.getModel();
         
-        // Selecionar mês/ano atual
+        
         LocalDate hoje = LocalDate.now();
-        cmbMes.setSelectedIndex(hoje.getMonthValue() - 1); // Janeiro = 0
+        cmbMes.setSelectedIndex(hoje.getMonthValue() - 1); 
         cmbAno.setSelectedItem(String.valueOf(hoje.getYear()));
         
-        // Desabilitar botão exportar até gerar folha
+        
         btnExportar.setEnabled(false);
     }
     
-    /**
-     * Gera a folha de pagamento
-     */
+    
     private void gerarFolha() {
         try {
-            // 1. OBTER mês e ano selecionados
-            int mes = cmbMes.getSelectedIndex() + 1; // Janeiro = 1
+            
+            int mes = cmbMes.getSelectedIndex() + 1; 
             int ano = Integer.parseInt((String) cmbAno.getSelectedItem());
             YearMonth mesReferencia = YearMonth.of(ano, mes);
             
-            // 2. CONFIRMAR com o usuário
+            
             String mesNome = (String) cmbMes.getSelectedItem();
             int confirma = JOptionPane.showConfirmDialog(this,
                 "Deseja gerar a folha de pagamento para " + mesNome + "/" + ano + "?",
@@ -66,13 +58,13 @@ public class GerarFolhaPagamento extends javax.swing.JFrame {
                 return;
             }
             
-            // 3. GERAR através do controller
+            
             folhaAtual = controller.gerarFolhaPagamento(mesReferencia);
             
-            // 4. EXIBIR na tabela
+            
             exibirFolhaNaTabela(folhaAtual);
             
-            // 5. SUCESSO!
+            
             JOptionPane.showMessageDialog(this,
                 "Folha de pagamento gerada com sucesso!\n" +
                 "Total de funcionários: " + folhaAtual.getQuantidadeFuncionarios() +
@@ -80,7 +72,7 @@ public class GerarFolhaPagamento extends javax.swing.JFrame {
                 "Sucesso",
                 JOptionPane.INFORMATION_MESSAGE);
             
-            // Habilitar exportação
+            
             btnExportar.setEnabled(true);
             
         } catch (FolhaPagamentoException ex) {
@@ -91,14 +83,12 @@ public class GerarFolhaPagamento extends javax.swing.JFrame {
         }
     }
     
-    /**
-     * Exibe a folha na tabela
-     */
+    
     private void exibirFolhaNaTabela(FolhaPagamento folha) {
-        // Limpa a tabela
+        
         modeloTabela.setRowCount(0);
         
-        // Adiciona cada item da folha como uma linha
+        
         for (FolhaPagamento.ItemFolha item : folha.getItens()) {
             Object[] linha = {
                 item.getMatricula(),
@@ -114,14 +104,12 @@ public class GerarFolhaPagamento extends javax.swing.JFrame {
             modeloTabela.addRow(linha);
         }
         
-        // Atualiza os labels de totais
+        
         lblTotalFuncionarios.setText(String.valueOf(folha.getQuantidadeFuncionarios()));
         lblTotalFolha.setText(String.format("R$ %.2f", folha.getTotalFolha()));
     }
     
-    /**
-     * Exporta a folha para PDF (simplificado - só mostra mensagem)
-     */
+    
     private void exportarPDF() {
         if (folhaAtual == null) {
             JOptionPane.showMessageDialog(this,
@@ -131,8 +119,7 @@ public class GerarFolhaPagamento extends javax.swing.JFrame {
             return;
         }
         
-        // AQUI você pode implementar a geração de PDF real
-        // Por enquanto, vamos apenas mostrar uma mensagem
+        
         JOptionPane.showMessageDialog(this,
             "Funcionalidade de exportação em desenvolvimento!\n\n" +
             "A folha contém:\n" +
@@ -294,9 +281,7 @@ public class GerarFolhaPagamento extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_btnVoltarActionPerformed
 
-    /**
-     * @param args the command line arguments
-     */
+    
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(() -> {
             new GerarFolhaPagamento().setVisible(true);

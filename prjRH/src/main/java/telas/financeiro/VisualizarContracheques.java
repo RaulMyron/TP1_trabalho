@@ -1,7 +1,4 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
+
 package telas.financeiro;
 import telas.financeiro.controller.ControllerManager;
 import telas.financeiro.controller.FinanceiroController;
@@ -13,13 +10,10 @@ import java.time.LocalDate;
 import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
-/**
- *
- * @author felip
- */
+
 public class VisualizarContracheques extends javax.swing.JFrame {
     
-    // ATRIBUTOS
+    
     private FinanceiroController controller;
     
     public VisualizarContracheques() {
@@ -34,27 +28,25 @@ public class VisualizarContracheques extends javax.swing.JFrame {
         setLocationRelativeTo(null);
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         
-        // Configurar meses
+        
         String[] meses = {"Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho",
                          "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"};
         cmbMes.setModel(new javax.swing.DefaultComboBoxModel<>(meses));
         
-        // Configurar anos
+        
         String[] anos = {"2024", "2025", "2026"};
         cmbAno.setModel(new javax.swing.DefaultComboBoxModel<>(anos));
         
-        // Selecionar mês/ano atual
+        
         LocalDate hoje = LocalDate.now();
         cmbMes.setSelectedIndex(hoje.getMonthValue() - 1);
         cmbAno.setSelectedItem(String.valueOf(hoje.getYear()));
         
-        // Desabilitar botão imprimir
+        
         btnImprimir.setEnabled(false);
     }
     
-    /**
-     * Carrega a lista de funcionários ativos no ComboBox
-     */
+    
     private void carregarFuncionarios() {
         cmbFuncionario.removeAllItems();
         
@@ -67,18 +59,16 @@ public class VisualizarContracheques extends javax.swing.JFrame {
         }
         
         for (Funcionario func : funcionarios) {
-            // Formato: "001 - João Silva"
+            
             String item = func.getMatricula() + " - " + func.getNome();
             cmbFuncionario.addItem(item);
         }
     }
     
-    /**
-     * Busca e exibe o contracheque
-     */
+    
     private void buscarContracheque() {
         try {
-            // 1. OBTER funcionário selecionado
+            
             String itemSelecionado = (String) cmbFuncionario.getSelectedItem();
             
             if (itemSelecionado == null || itemSelecionado.equals("Nenhum funcionário ativo")) {
@@ -89,7 +79,7 @@ public class VisualizarContracheques extends javax.swing.JFrame {
                 return;
             }
             
-            // Extrair matrícula (formato: "001 - João Silva")
+            
             String matricula = itemSelecionado.split(" - ")[0];
             Funcionario func = controller.buscarPorMatricula(matricula);
             
@@ -101,12 +91,12 @@ public class VisualizarContracheques extends javax.swing.JFrame {
                 return;
             }
             
-            // 2. OBTER mês/ano
+            
             int mes = cmbMes.getSelectedIndex() + 1;
             int ano = Integer.parseInt((String) cmbAno.getSelectedItem());
             YearMonth mesReferencia = YearMonth.of(ano, mes);
             
-            // 3. BUSCAR a folha daquele mês
+            
             FolhaPagamento folha = controller.buscarFolhaPorMes(mesReferencia);
             
             if (folha == null) {
@@ -118,7 +108,7 @@ public class VisualizarContracheques extends javax.swing.JFrame {
                 return;
             }
             
-            // 4. BUSCAR o item do funcionário na folha
+            
             FolhaPagamento.ItemFolha item = null;
             for (FolhaPagamento.ItemFolha i : folha.getItens()) {
                 if (i.getMatricula().equals(matricula)) {
@@ -136,13 +126,13 @@ public class VisualizarContracheques extends javax.swing.JFrame {
                 return;
             }
             
-            // 5. GERAR o texto do contracheque
+            
             String contracheque = gerarTextoContracheque(func, item, mesReferencia);
             
-            // 6. EXIBIR na área de texto
+            
             txtContracheque.setText(contracheque);
             
-            // Habilitar impressão
+            
             btnImprimir.setEnabled(true);
             
         } catch (Exception ex) {
@@ -153,9 +143,7 @@ public class VisualizarContracheques extends javax.swing.JFrame {
         }
     }
     
-    /**
-     * Gera o texto formatado do contracheque
-     */
+   
     private String gerarTextoContracheque(Funcionario func, 
                                           FolhaPagamento.ItemFolha item, 
                                           YearMonth mesRef) {
@@ -234,9 +222,7 @@ public class VisualizarContracheques extends javax.swing.JFrame {
         return sb.toString();
     }
     
-    /**
-     * Imprime o contracheque (simplificado)
-     */
+    
     private void imprimirContracheque() {
         if (txtContracheque.getText().isEmpty()) {
             JOptionPane.showMessageDialog(this,
@@ -246,7 +232,7 @@ public class VisualizarContracheques extends javax.swing.JFrame {
             return;
         }
         
-        // Usar a funcionalidade de impressão do Java
+        
         try {
             boolean imprimiu = txtContracheque.print();
             if (imprimiu) {
@@ -263,11 +249,7 @@ public class VisualizarContracheques extends javax.swing.JFrame {
         }
     }
 
-    /**
-     * This method is called from within the constructor to initialize the form.
-     * WARNING: Do NOT modify this code. The content of this method is always
-     * regenerated by the Form Editor.
-     */
+    
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -403,9 +385,7 @@ public class VisualizarContracheques extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_btnVoltarActionPerformed
 
-    /**
-     * @param args the command line arguments
-     */
+    
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(() -> {
             new VisualizarContracheques().setVisible(true);

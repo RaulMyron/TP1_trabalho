@@ -2,19 +2,17 @@ package telas.financeiro.model;
 
 import java.io.Serializable;
 
-/**
- * MODEL - Representa as regras de cálculo salarial
- */
+
 public class RegraSalario implements Serializable {
     
-    // ATRIBUTOS - Valores configuráveis
+    
     private double percentualINSS;
     private double percentualIRRF;
     private double valorValeTransporte;
     private double valorValeAlimentacao;
     private double valorAuxilioTransporteEstagio;
     
-    // CONSTRUTOR PADRÃO
+    
     public RegraSalario() {
         this.percentualINSS = 11.0;
         this.percentualIRRF = 7.5;
@@ -23,7 +21,7 @@ public class RegraSalario implements Serializable {
         this.valorAuxilioTransporteEstagio = 150.0;
     }
     
-    // CONSTRUTOR COMPLETO
+    
     public RegraSalario(double percentualINSS, double percentualIRRF,
                         double valorValeTransporte, double valorValeAlimentacao,
                         double valorAuxilioTransporteEstagio) {
@@ -34,7 +32,7 @@ public class RegraSalario implements Serializable {
         this.valorAuxilioTransporteEstagio = valorAuxilioTransporteEstagio;
     }
     
-    // GETTERS E SETTERS
+   
     public double getPercentualINSS() {
         return percentualINSS;
     }

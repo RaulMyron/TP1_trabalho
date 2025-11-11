@@ -3,34 +3,31 @@ package telas.financeiro.model;
 import java.io.Serializable;
 import java.time.LocalDate;
 
-/**
- * MODEL - Representa um Funcionário (dados + comportamento básico)
- * Herda de Pessoa (se existir) ou tem todos os dados aqui
- */
+
 public class Funcionario implements Serializable {
     
-    // DADOS PESSOAIS (caso não herde de Pessoa)
+    
     private String nome;
     private String cpf;
     private String email;
     private String telefone;
     private String endereco;
     
-    // DADOS DO FUNCIONÁRIO
+    
     private String matricula;
     private String cargo;
     private String departamento;
     private double salarioBase;
     private LocalDate dataAdmissao;
-    private String regimeContratacao; // "CLT", "Estágio" ou "PJ"
+    private String regimeContratacao; 
     private boolean ativo;
     
-    // CONSTRUTOR VAZIO
+    
     public Funcionario() {
         this.ativo = true;
     }
     
-    // CONSTRUTOR COMPLETO
+    
     public Funcionario(String nome, String cpf, String email, String telefone,
                        String matricula, String cargo, String departamento,
                        double salarioBase, LocalDate dataAdmissao, 
@@ -48,7 +45,7 @@ public class Funcionario implements Serializable {
         this.ativo = true;
     }
     
-    // GETTERS E SETTERS
+    
     public String getNome() {
         return nome;
     }

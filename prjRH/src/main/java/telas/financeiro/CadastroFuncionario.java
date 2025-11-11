@@ -20,21 +20,17 @@ public class CadastroFuncionario extends javax.swing.JFrame {
         configurarTela();
     }
     
-    /**
-     * Configurações iniciais da tela
-     */
+  
     private void configurarTela() {
         setTitle("Cadastro de Funcionário");
-        setLocationRelativeTo(null); // Centraliza a tela
-        setDefaultCloseOperation(DISPOSE_ON_CLOSE); // Fecha só esta janela
+        setLocationRelativeTo(null); 
+        setDefaultCloseOperation(DISPOSE_ON_CLOSE); 
     }
     
-    /**
-     * Método chamado quando clica no botão SALVAR
-     */
+    
     private void salvarFuncionario() {
         try {
-            // 1. VALIDAR OS CAMPOS
+            
             if (camposVazios()) {
                 JOptionPane.showMessageDialog(this, 
                     "Por favor, preencha todos os campos obrigatórios!", 
@@ -43,7 +39,7 @@ public class CadastroFuncionario extends javax.swing.JFrame {
                 return;
             }
             
-            // 2. COLETAR OS DADOS DA TELA
+            
             String nome = txtNome.getText().trim();
             String cpf = txtCpf.getText().trim();
             String email = txtEmail.getText().trim();
@@ -53,7 +49,7 @@ public class CadastroFuncionario extends javax.swing.JFrame {
             String departamento = txtDepartamento.getText().trim();
             String regimeContratacao = (String) cmbRegime.getSelectedItem();
             
-            // 3. CONVERTER SALÁRIO (de String para double)
+            
             double salarioBase = 0.0;
             try {
                 salarioBase = Double.parseDouble(txtSalarioBase.getText().trim());
@@ -65,7 +61,7 @@ public class CadastroFuncionario extends javax.swing.JFrame {
                 return;
             }
             
-            // 4. CONVERTER DATA (de String para LocalDate)
+            
             LocalDate dataAdmissao = null;
             try {
                 DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
@@ -78,27 +74,27 @@ public class CadastroFuncionario extends javax.swing.JFrame {
                 return;
             }
             
-            // 5. CRIAR OBJETO FUNCIONARIO
+            
             Funcionario funcionario = new Funcionario(
                 nome, cpf, email, telefone, matricula, 
                 cargo, departamento, salarioBase, 
                 dataAdmissao, regimeContratacao
             );
             
-            // 6. CHAMAR O CONTROLLER PARA SALVAR
+            
             controller.cadastrarFuncionario(funcionario);
             
-            // 7. SUCESSO!
+            
             JOptionPane.showMessageDialog(this, 
                 "Funcionário cadastrado com sucesso!", 
                 "Sucesso", 
                 JOptionPane.INFORMATION_MESSAGE);
             
-            // 8. LIMPAR OS CAMPOS
+            
             limparCampos();
             
         } catch (FuncionarioException ex) {
-            // TRATA EXCEÇÕES DE NEGÓCIO (CPF duplicado, etc.)
+            
             JOptionPane.showMessageDialog(this, 
                 ex.getMessage(), 
                 "Erro ao cadastrar", 
@@ -106,9 +102,7 @@ public class CadastroFuncionario extends javax.swing.JFrame {
         }
     }
     
-    /**
-     * Verifica se os campos obrigatórios estão vazios
-     */
+    
     private boolean camposVazios() {
         return txtNome.getText().trim().isEmpty() ||
                txtCpf.getText().trim().isEmpty() ||
@@ -119,9 +113,7 @@ public class CadastroFuncionario extends javax.swing.JFrame {
                txtDataAdmissao.getText().trim().isEmpty();
     }
     
-    /**
-     * Limpa todos os campos
-     */
+    
     private void limparCampos() {
         txtNome.setText("");
         txtCpf.setText("");
@@ -133,11 +125,10 @@ public class CadastroFuncionario extends javax.swing.JFrame {
         txtSalarioBase.setText("");
         txtDataAdmissao.setText("");
         cmbRegime.setSelectedIndex(0);
-        txtNome.requestFocus(); // Foco no primeiro campo
+        txtNome.requestFocus(); 
     }
     
-    // AQUI FICA O CÓDIGO GERADO AUTOMATICAMENTE (initComponents, etc.)
-    // NÃO APAGUE!
+    
     
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">

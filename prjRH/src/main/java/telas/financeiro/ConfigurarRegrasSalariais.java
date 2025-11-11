@@ -1,49 +1,37 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
+
 package telas.financeiro;
 import telas.financeiro.controller.ControllerManager;
 import telas.financeiro.controller.FinanceiroController;
 import telas.financeiro.model.RegraSalario;
 import javax.swing.JOptionPane;
 
-/**
- *
- * @author felip
- */
+
 public class ConfigurarRegrasSalariais extends javax.swing.JFrame {
     
-    // ATRIBUTOS DA CLASSE
+    
     private FinanceiroController controller;
     
-    /**
-     * Construtor - chamado quando a tela é criada
-     */
+   
     public ConfigurarRegrasSalariais() {
-        initComponents(); // Método gerado automaticamente
+        initComponents(); 
         this.controller = ControllerManager.getFinanceiroController();
         configurarTela();
-        carregarValoresAtuais(); // Já carrega os valores ao abrir
+        carregarValoresAtuais(); 
     }
     
-    /**
-     * Configurações iniciais da tela
-     */
+    
     private void configurarTela() {
         setTitle("Configurar Regras Salariais");
-        setLocationRelativeTo(null); // Centraliza na tela
-        setDefaultCloseOperation(DISPOSE_ON_CLOSE); // Fecha só esta janela
+        setLocationRelativeTo(null); 
+        setDefaultCloseOperation(DISPOSE_ON_CLOSE); 
     }
     
-    /**
-     * Carrega os valores atuais da regra salarial nos campos
-     */
+    
     private void carregarValoresAtuais() {
-        // Busca a regra salarial atual do controller
+        
         RegraSalario regra = controller.getRegraSalarialAtual();
         
-        // Preenche os campos com os valores atuais
+        
         txtPercentualINSS.setText(String.valueOf(regra.getPercentualINSS()));
         txtPercentualIRRF.setText(String.valueOf(regra.getPercentualIRRF()));
         txtValeTransporte.setText(String.valueOf(regra.getValorValeTransporte()));
@@ -51,12 +39,10 @@ public class ConfigurarRegrasSalariais extends javax.swing.JFrame {
         txtAuxilioEstagio.setText(String.valueOf(regra.getValorAuxilioTransporteEstagio()));
     }
     
-    /**
-     * Salva as novas configurações
-     */
+    
     private void salvarConfiguracoes() {
         try {
-            // 1. VALIDAR se os campos estão preenchidos
+            
             if (camposVazios()) {
                 JOptionPane.showMessageDialog(this, 
                     "Por favor, preencha todos os campos!", 
@@ -65,14 +51,14 @@ public class ConfigurarRegrasSalariais extends javax.swing.JFrame {
                 return;
             }
             
-            // 2. CONVERTER os textos para números
+            
             double percentualINSS = Double.parseDouble(txtPercentualINSS.getText().trim());
             double percentualIRRF = Double.parseDouble(txtPercentualIRRF.getText().trim());
             double valeTransporte = Double.parseDouble(txtValeTransporte.getText().trim());
             double valeAlimentacao = Double.parseDouble(txtValeAlimentacao.getText().trim());
             double auxilioEstagio = Double.parseDouble(txtAuxilioEstagio.getText().trim());
             
-            // 3. VALIDAR se os valores são positivos
+            
             if (percentualINSS < 0 || percentualIRRF < 0 || 
                 valeTransporte < 0 || valeAlimentacao < 0 || auxilioEstagio < 0) {
                 JOptionPane.showMessageDialog(this, 
@@ -82,7 +68,7 @@ public class ConfigurarRegrasSalariais extends javax.swing.JFrame {
                 return;
             }
             
-            // 4. VALIDAR se os percentuais não ultrapassam 100%
+            
             if (percentualINSS > 100 || percentualIRRF > 100) {
                 JOptionPane.showMessageDialog(this, 
                     "Os percentuais não podem ser maiores que 100%!", 
@@ -91,7 +77,7 @@ public class ConfigurarRegrasSalariais extends javax.swing.JFrame {
                 return;
             }
             
-            // 5. CRIAR nova regra salarial com os valores digitados
+            
             RegraSalario novaRegra = new RegraSalario(
                 percentualINSS,
                 percentualIRRF,
@@ -100,7 +86,7 @@ public class ConfigurarRegrasSalariais extends javax.swing.JFrame {
                 auxilioEstagio
             );
             
-            // 6. CONFIRMAR com o usuário antes de salvar
+            
             int confirma = JOptionPane.showConfirmDialog(this,
                 "Atenção! Esta alteração afetará o cálculo de TODOS os salários.\n" +
                 "Deseja realmente salvar estas configurações?",
@@ -109,13 +95,13 @@ public class ConfigurarRegrasSalariais extends javax.swing.JFrame {
                 JOptionPane.WARNING_MESSAGE);
             
             if (confirma != JOptionPane.YES_OPTION) {
-                return; // Usuário cancelou
+                return; 
             }
             
-            // 7. SALVAR através do controller
+            
             controller.atualizarRegraSalarial(novaRegra);
             
-            // 8. SUCESSO!
+            
             JOptionPane.showMessageDialog(this,
                 "Configurações salvas com sucesso!\n" +
                 "Os novos valores serão aplicados no próximo cálculo de folha.",
@@ -123,7 +109,7 @@ public class ConfigurarRegrasSalariais extends javax.swing.JFrame {
                 JOptionPane.INFORMATION_MESSAGE);
             
         } catch (NumberFormatException ex) {
-            // Erro ao converter texto para número
+           
             JOptionPane.showMessageDialog(this,
                 "Valores inválidos! Use apenas números.\n" +
                 "Para decimais, use ponto (ex: 11.5)",
@@ -132,9 +118,7 @@ public class ConfigurarRegrasSalariais extends javax.swing.JFrame {
         }
     }
     
-    /**
-     * Verifica se algum campo está vazio
-     */
+    
     private boolean camposVazios() {
         return txtPercentualINSS.getText().trim().isEmpty() ||
                txtPercentualIRRF.getText().trim().isEmpty() ||
@@ -143,11 +127,7 @@ public class ConfigurarRegrasSalariais extends javax.swing.JFrame {
                txtAuxilioEstagio.getText().trim().isEmpty();
     }
 
-    /**
-     * This method is called from within the constructor to initialize the form.
-     * WARNING: Do NOT modify this code. The content of this method is always
-     * regenerated by the Form Editor.
-     */
+    
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -323,9 +303,7 @@ public class ConfigurarRegrasSalariais extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_txtValeAlimentacaoActionPerformed
 
-    /**
-     * @param args the command line arguments
-     */
+    
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(() -> {
             new ConfigurarRegrasSalariais().setVisible(true);
