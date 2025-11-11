@@ -1,4 +1,3 @@
-/home/raulm/unb/TP1_trabalho/prjRH/src/main/java/TesteRecrutamento/TesteRecrutamento.java
 /home/raulm/unb/TP1_trabalho/prjRH/src/main/java/com/mycompany/prjrh/PrjRH.java
 /home/raulm/unb/TP1_trabalho/prjRH/src/main/java/telas/administracaoGestao/controller/GestaoService.java
 /home/raulm/unb/TP1_trabalho/prjRH/src/main/java/telas/administracaoGestao/excecoes/NegocioException.java
@@ -66,4 +65,3 @@
 /home/raulm/unb/TP1_trabalho/prjRH/src/main/java/telas/recrutamento/view/Main.java
 /home/raulm/unb/TP1_trabalho/prjRH/src/main/java/telas/recrutamento/view/MarcarEntrevistas.java
 /home/raulm/unb/TP1_trabalho/prjRH/src/main/java/telas/recrutamento/view/SolicitarContratacoes.java
-/home/raulm/unb/TP1_trabalho/prjRH/src/main/java/telas/recrutamento/view/TesteSistemaRecrutamento.java

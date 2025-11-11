@@ -4,11 +4,14 @@
  */
 package telas.recrutamento.view;
 
+import telas.administracaoGestao.controller.GestaoService;
+import telas.administracaoGestao.model.Vaga;
 import telas.recrutamento.controller.VagaController;
 import telas.recrutamento.model.Recrutador;
-import telas.recrutamento.model.Vaga;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import telas.candidatura.Model.CandidatoDAO;
+import telas.candidatura.Model.Candidato;
 import java.util.List;
 
 public class GerenciarCandidaturas extends javax.swing.JFrame {
@@ -17,16 +20,22 @@ public class GerenciarCandidaturas extends javax.swing.JFrame {
     
     private VagaController vagaController;
     private Recrutador recrutadorLogado;
+    private GestaoService gestaoService;
     private Vaga vagaSelecionada;
+    private CandidatoDAO candidatoDAO;
     
     public GerenciarCandidaturas(Recrutador recrutador) {
         initComponents();
         this.recrutadorLogado = recrutador;
         this.vagaController = new VagaController();
+        this.gestaoService = new GestaoService();
+        this.candidatoDAO = new CandidatoDAO();
         setLocationRelativeTo(null);
         setTitle("Gerenciar Candidaturas");
         configurarEventos();
         carregarVagasRecrutador();
+        carregarTabelaVagas();
+        carregarTabelaCandidatos();
     }
 
     private void configurarEventos() {
@@ -43,6 +52,46 @@ public class GerenciarCandidaturas extends javax.swing.JFrame {
         });
         
         jComboBox1.addActionListener(e -> carregarCandidatosVaga());
+    }
+
+    private void carregarTabelaVagas() {
+        try {
+            List<Vaga> vagas = this.gestaoService.listarTodasVagas(); 
+
+            DefaultTableModel model = (DefaultTableModel) tblMinhasVagas.getModel();
+            model.setRowCount(0);
+
+            for (Vaga vaga : vagas) {
+                model.addRow(new Object[]{
+                    vaga.getCargo(),
+                    vaga.getDepartamento(), 
+                    vaga.getStatus()
+                });
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Erro ao carregar vagas: " + e.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
+        }
+    }    
+ 
+    private void carregarTabelaCandidatos() {
+        try {
+            List<Candidato> candidatos = this.candidatoDAO.carregarCandidatos();
+
+            DefaultTableModel model = (DefaultTableModel) tblCandidatosDisponiveis.getModel();
+            model.setRowCount(0);
+
+            for (Candidato c : candidatos) {
+                model.addRow(new Object[]{
+                    c.getNome(),
+                    c.getCpf(),
+                    c.getFormacao(),
+                    c.getExperiencia(),
+                    "Disponível"
+                });
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Erro ao carregar candidatos: " + e.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
+        }
     }
     
     private void carregarVagasRecrutador() {
