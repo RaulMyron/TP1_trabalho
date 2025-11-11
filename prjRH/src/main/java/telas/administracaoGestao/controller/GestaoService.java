@@ -100,8 +100,29 @@ public class GestaoService {
         // GestaoService já carregou do arquivo no construtor.
         return this.vagas;
     }
-    public Usuario login(String login, char[] senha) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+// Em GestaoService.java
+// Substitua o método login(String, char[]) antigo por este:
+
+    public Usuario login(String login, char[] senha) throws NegocioException {
+        // 1. Converte o array de char para String
+        String senhaString = new String(senha);
+
+        // 2. Agora, a lógica do seu OUTRO método de login vai funcionar
+        Optional<Usuario> optUsuario = usuarios.stream()
+                .filter(u -> u.getLogin().equals(login))
+                .findFirst();
+
+        if (optUsuario.isEmpty()) {
+            throw new NegocioException("Usuário não encontrado.");
+        }
+        
+        Usuario u = optUsuario.get();
+        
+        // 3. Autentica usando a senha como String
+        if (u.autenticar(senhaString)) {
+            return u; // Login bem-sucedido
+        } else {
+            throw new NegocioException("Senha incorreta.");
+        }
     }
-    
 }

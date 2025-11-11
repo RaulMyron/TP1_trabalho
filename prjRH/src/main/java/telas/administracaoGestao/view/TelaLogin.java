@@ -111,19 +111,33 @@ public class TelaLogin extends javax.swing.JFrame {
     }//GEN-LAST:event_jPasswordField1ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        String login = jTextField1.getText(); // Troque 'txtLogin' pelo nome do seu campo de texto de login
-        char[] senha = jPasswordField1.getPassword(); // Troque 'txtSenha' pelo nome do seu campo de senha
-        // 1. CHAMA O CONTROLLER
-        Usuario usuarioLogado = gestaoService.login(login, senha);
-        // 2. DEU CERTO!
-        JOptionPane.showMessageDialog(this, "Login bem-sucedido! Bem-vindo, " + usuarioLogado.getNome());
-        // 3. ABRE A PRÓXIMA TELA
-        // (Substitua 'TelaPrincipal' pelo nome da sua próxima tela)
-        // TelaPrincipal telaPrincipal = new TelaPrincipal(usuarioLogado, gestaoService);
-        // telaPrincipal.setVisible(true);
-        
-        this.dispose(); // Fecha a tela de login
-                                             
+        String login = jTextField1.getText();
+        char[] senha = jPasswordField1.getPassword();
+
+        try {
+            // --- TENTA FAZER O LOGIN ---
+            // 1. CHAMA O CONTROLLER (Esta é a linha 117)
+            Usuario usuarioLogado = gestaoService.login(login, senha);
+
+            // --- SE DEU CERTO (código "Feliz") ---
+            // 2. MOSTRA MENSAGEM DE SUCESSO
+            JOptionPane.showMessageDialog(this, "Login bem-sucedido! Bem-vindo, " + usuarioLogado.getNome());
+
+            // 3. ABRE A TELA PRINCIPAL
+            // (Eu descomentei e corrigi esta linha para você)
+            TelaPrincipal telaPrincipal = new TelaPrincipal(usuarioLogado, gestaoService);
+            telaPrincipal.setVisible(true);
+
+            this.dispose(); // Fecha a tela de login
+
+        } catch (NegocioException e) {
+            // --- SE DEU ERRADO (código "Triste") ---
+            // 4. CAPTURA O ERRO E MOSTRA NUM POP-UP
+            JOptionPane.showMessageDialog(this, 
+                    e.getMessage(), // A mensagem (ex: "Senha incorreta.")
+                    "Erro de Login", // O título do pop-up
+                    JOptionPane.ERROR_MESSAGE);
+        }                
 
     }//GEN-LAST:event_jButton3ActionPerformed
 
