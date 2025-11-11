@@ -4,12 +4,11 @@ import telas.candidatura.Excecao.RHException;
 import telas.candidatura.Model.Candidato;
 import telas.candidatura.Model.CandidatoDAO;
 import java.util.List;
-import telas.recrutamento.model.Vaga;
+import telas.administracaoGestao.model.Vaga;
 import telas.candidatura.Model.Candidatura;
 import java.util.ArrayList;
 import telas.candidatura.Model.CandidaturaDAO;
 import java.text.SimpleDateFormat; // Para formatar a data
-import telas.recrutamento.model.Vaga;
 
 
 
@@ -37,8 +36,8 @@ public class CandidatoController {
         
         // Simulação de vagas (para não depender do Aluno 1 ainda)
         this.vagasDisponiveis = new ArrayList<>();
-        this.vagasDisponiveis.add(new Vaga("Desenvolvedor Java Pleno", 5000.0, "TI", "Java 8+, Spring", "CLT"));
-        this.vagasDisponiveis.add(new Vaga("Analista de Dados Júnior", 3500.0, "BI", "SQL, Python", "Estágio"));
+        this.vagasDisponiveis.add(new Vaga("Desenvolvedor Java Pleno", 5000.0));
+        this.vagasDisponiveis.add(new Vaga("Analista de Dados Júnior", 3500.0));
     }
     
 

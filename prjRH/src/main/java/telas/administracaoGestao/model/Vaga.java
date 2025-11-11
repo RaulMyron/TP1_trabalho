@@ -14,4 +14,11 @@ public class Vaga implements Serializable {
     }
     
     public String getCargo() { return cargo; }
+    public String getStatus() {
+    return this.status;
+}
+    @Override
+public String toString() {
+    return this.cargo;
+}
 }

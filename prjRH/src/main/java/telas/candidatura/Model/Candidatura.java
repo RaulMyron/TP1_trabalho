@@ -3,7 +3,7 @@ package telas.candidatura.Model;
 import telas.candidatura.Model.Candidato;
 import java.io.Serializable;
 import java.util.Date;
-import telas.recrutamento.model.Vaga;
+import telas.administracaoGestao.model.Vaga;
 
 /**
  * Classe de associação que representa a aplicação de um Candidato a uma Vaga.

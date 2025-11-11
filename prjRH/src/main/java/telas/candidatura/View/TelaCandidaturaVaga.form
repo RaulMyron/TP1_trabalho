@@ -142,7 +142,7 @@
         </Property>
       </Properties>
       <AuxValues>
-        <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;telas.recrutamento.model.Vaga&gt;"/>
+        <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;telas.administracaoGestao.model.Vaga&gt;"/>
       </AuxValues>
     </Component>
     <Component class="javax.swing.JButton" name="jButton2">
