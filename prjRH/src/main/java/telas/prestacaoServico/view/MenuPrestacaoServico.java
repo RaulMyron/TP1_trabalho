@@ -50,6 +50,7 @@ public class MenuPrestacaoServico extends JFrame {
         });
         
         btnSair.addActionListener((ActionEvent e) -> {
+            new telas.administracaoGestao.view.TelaLogin().setVisible(true);
             dispose();
         });
         
