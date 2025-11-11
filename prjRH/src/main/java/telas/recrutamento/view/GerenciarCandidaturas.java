@@ -5,47 +5,46 @@
 package telas.recrutamento.view;
 
 import telas.administracaoGestao.controller.GestaoService;
-import telas.administracaoGestao.model.Vaga;
-import telas.recrutamento.controller.VagaController;
 import telas.recrutamento.model.Recrutador;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import telas.candidatura.Model.CandidatoDAO;
 import telas.candidatura.Model.Candidato;
 import java.util.List;
+import telas.recrutamento.view.Main;
+import telas.administracaoGestao.controller.GestaoService;
+import telas.administracaoGestao.model.Vaga;
 
 public class GerenciarCandidaturas extends javax.swing.JFrame {
     
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(GerenciarCandidaturas.class.getName());
-    
-    private VagaController vagaController;
+    private Main menuPai;
     private Recrutador recrutadorLogado;
     private GestaoService gestaoService;
     private Vaga vagaSelecionada;
     private CandidatoDAO candidatoDAO;
     
-    public GerenciarCandidaturas(Recrutador recrutador) {
+    public GerenciarCandidaturas(Main menuPai, Recrutador recrutador) {
         initComponents();
         this.recrutadorLogado = recrutador;
-        this.vagaController = new VagaController();
+        this.menuPai = menuPai; 
         this.gestaoService = new GestaoService();
         this.candidatoDAO = new CandidatoDAO();
         setLocationRelativeTo(null);
         setTitle("Gerenciar Candidaturas");
         configurarEventos();
-        carregarVagasRecrutador();
         carregarTabelaVagas();
         carregarTabelaCandidatos();
     }
 
     private void configurarEventos() {
-        jButton1.addActionListener(e -> carregarVagasRecrutador());
+        jButton1.addActionListener(e -> carregarTabelaVagas());
         jButton5.addActionListener(e -> voltarMenu());
         jButton2.addActionListener(e -> pesquisarCandidato());
         jButton3.addActionListener(e -> atualizarStatusCandidatura());
         jButton4.addActionListener(e -> removerCandidatura());
         
-        jTable1.getSelectionModel().addListSelectionListener(e -> {
+        tblMinhasVagas.getSelectionModel().addListSelectionListener(e -> {
             if (!e.getValueIsAdjusting()) {
                 carregarCandidaturasVaga();
             }
@@ -64,8 +63,8 @@ public class GerenciarCandidaturas extends javax.swing.JFrame {
             for (Vaga vaga : vagas) {
                 model.addRow(new Object[]{
                     vaga.getCargo(),
-                    vaga.getDepartamento(), 
-                    vaga.getStatus()
+                    // vaga.getDepartamento(), 
+                    // vaga.getStatus()
                 });
             }
         } catch (Exception e) {
@@ -75,7 +74,7 @@ public class GerenciarCandidaturas extends javax.swing.JFrame {
  
     private void carregarTabelaCandidatos() {
         try {
-            List<Candidato> candidatos = this.candidatoDAO.carregarCandidatos();
+            List<Candidato> candidatos = this.candidatoDAO.carregar();
 
             DefaultTableModel model = (DefaultTableModel) tblCandidatosDisponiveis.getModel();
             model.setRowCount(0);
@@ -95,16 +94,16 @@ public class GerenciarCandidaturas extends javax.swing.JFrame {
     }
     
     private void carregarVagasRecrutador() {
-        DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+        DefaultTableModel model = (DefaultTableModel) tblMinhasVagas.getModel();
         model.setRowCount(0);
         
-        List<Vaga> vagas = vagaController.listarPorRecrutador(recrutadorLogado.getCpf());
+        List<Vaga> vagas = this.gestaoService.listarTodasVagas();
         
         for (Vaga v : vagas) {
             model.addRow(new Object[]{
                 v.getCargo(),
-                v.getDepartamento(),
-                v.getStatus()
+                // v.getDepartamento(),
+                // v.getStatus()
             });
         }
         
@@ -112,9 +111,9 @@ public class GerenciarCandidaturas extends javax.swing.JFrame {
     }
     
     private void carregarCandidaturasVaga() {
-        int row = jTable1.getSelectedRow();
+        int row = tblMinhasVagas.getSelectedRow();
         if (row >= 0) {
-            String cargo = jTable1.getValueAt(row, 0).toString();
+            String cargo = tblMinhasVagas.getValueAt(row, 0).toString();
             List<Vaga> vagas = vagaController.listarPorRecrutador(recrutadorLogado.getCpf());
             vagaSelecionada = vagas.stream()
                 .filter(v -> v.getCargo().equals(cargo))
@@ -147,7 +146,7 @@ public class GerenciarCandidaturas extends javax.swing.JFrame {
             return;
         }
         
-        DefaultTableModel model = (DefaultTableModel) jTable3.getModel();
+        DefaultTableModel model = (DefaultTableModel) tblCandidatosDisponiveis.getModel();
         model.setRowCount(0);
         
         JOptionPane.showMessageDialog(this, 
@@ -197,10 +196,8 @@ public class GerenciarCandidaturas extends javax.swing.JFrame {
     }
     
     private void voltarMenu() {
-        Main menu = new Main();
-        menu.carregarRecrutador(recrutadorLogado.getCpf());
-        menu.setVisible(true);
-        this.dispose();
+        this.menuPai.setVisible(true);
+        this.dispose(); //
     }
 
     @SuppressWarnings("unchecked")
@@ -211,7 +208,7 @@ public class GerenciarCandidaturas extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        tblMinhasVagas = new javax.swing.JTable();
         jButton5 = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
@@ -219,7 +216,7 @@ public class GerenciarCandidaturas extends javax.swing.JFrame {
         jTextField1 = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
         jScrollPane3 = new javax.swing.JScrollPane();
-        jTable3 = new javax.swing.JTable();
+        tblCandidatosDisponiveis = new javax.swing.JTable();
         jPanel3 = new javax.swing.JPanel();
         jLabel4 = new javax.swing.JLabel();
         jComboBox1 = new javax.swing.JComboBox<>();
@@ -236,7 +233,7 @@ public class GerenciarCandidaturas extends javax.swing.JFrame {
 
         jButton1.setText("Atualizar Lista");
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        tblMinhasVagas.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null},
                 {null, null, null},
@@ -255,7 +252,7 @@ public class GerenciarCandidaturas extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
-        jScrollPane1.setViewportView(jTable1);
+        jScrollPane1.setViewportView(tblMinhasVagas);
 
         jButton5.setText("Voltar");
 
@@ -304,7 +301,7 @@ public class GerenciarCandidaturas extends javax.swing.JFrame {
 
         jLabel3.setText("Buscar por nome ou CPF:");
 
-        jTable3.setModel(new javax.swing.table.DefaultTableModel(
+        tblCandidatosDisponiveis.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null, null},
                 {null, null, null, null, null},
@@ -323,9 +320,9 @@ public class GerenciarCandidaturas extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
-        jScrollPane3.setViewportView(jTable3);
-        if (jTable3.getColumnModel().getColumnCount() > 0) {
-            jTable3.getColumnModel().getColumn(4).setHeaderValue("Status Geral");
+        jScrollPane3.setViewportView(tblCandidatosDisponiveis);
+        if (tblCandidatosDisponiveis.getColumnModel().getColumnCount() > 0) {
+            tblCandidatosDisponiveis.getColumnModel().getColumn(4).setHeaderValue("Status Geral");
         }
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
@@ -514,9 +511,9 @@ public class GerenciarCandidaturas extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
-    private javax.swing.JTable jTable1;
     private javax.swing.JTable jTable2;
-    private javax.swing.JTable jTable3;
     private javax.swing.JTextField jTextField1;
+    private javax.swing.JTable tblCandidatosDisponiveis;
+    private javax.swing.JTable tblMinhasVagas;
     // End of variables declaration//GEN-END:variables
 }

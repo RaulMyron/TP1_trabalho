@@ -4,28 +4,30 @@
  */
 package telas.recrutamento.view;
 import telas.recrutamento.controller.ContratacaoController;
-import telas.recrutamento.controller.VagaController;
 import telas.recrutamento.model.Contratacao;
 import telas.recrutamento.model.Recrutador;
-import telas.recrutamento.model.Vaga;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import java.text.SimpleDateFormat;
 import java.util.List;
+import telas.administracaoGestao.controller.GestaoService;
+import telas.administracaoGestao.model.Vaga;
 
 public class ConsultarContratações extends javax.swing.JFrame {
     
+    private Main menuPai;
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(ConsultarContratações.class.getName());
     private ContratacaoController contratacaoController;
-    private VagaController vagaController;
     private Recrutador recrutadorLogado;
     private Contratacao contratacaoSelecionada;
+    private GestaoService gestaoService;
     
     public ConsultarContratações(Recrutador recrutador) {
         initComponents();
         this.recrutadorLogado = recrutador;
         this.contratacaoController = new ContratacaoController();
         this.vagaController = new VagaController();
+        this.gestaoService = new GestaoService();
         setLocationRelativeTo(null);
         setTitle("Consultar Contratações");
         configurarEventos();
@@ -58,7 +60,7 @@ public class ConsultarContratações extends javax.swing.JFrame {
         // ComboBox Vagas
         jComboBox4.removeAllItems();
         jComboBox4.addItem("Todas");
-        List<Vaga> vagas = vagaController.listarPorRecrutador(recrutadorLogado.getCpf());
+        List<Vaga> vagas = this.gestaoService.listarTodasVagas();
         for (Vaga v : vagas) {
             jComboBox4.addItem(v.getIdVaga() + " - " + v.getCargo());
         }

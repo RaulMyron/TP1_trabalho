@@ -4,9 +4,7 @@
  */
 package telas.recrutamento.view;
 import telas.recrutamento.controller.ContratacaoController;
-import telas.recrutamento.controller.VagaController;
 import telas.recrutamento.model.Recrutador;
-import telas.recrutamento.model.Vaga;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import java.text.SimpleDateFormat;
@@ -16,10 +14,11 @@ import java.util.List;
 
 public class SolicitarContratacoes extends javax.swing.JFrame {
     
+    private Main menuPai;
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(SolicitarContratacoes.class.getName());
     private ContratacaoController contratacaoController;
-    private VagaController vagaController;
     private Recrutador recrutadorLogado;
+    private GestaoService gestaoService;
     
     public SolicitarContratacoes(Recrutador recrutador) {
         initComponents();

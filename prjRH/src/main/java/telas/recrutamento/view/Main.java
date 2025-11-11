@@ -7,14 +7,18 @@ package telas.recrutamento.view;
 import telas.recrutamento.controller.RecrutadorController;
 import telas.recrutamento.model.Recrutador;
 import javax.swing.JOptionPane;
-
+import telas.administracaoGestao.controller.GestaoService;
+import telas.administracaoGestao.model.Vaga;
+import telas.administracaoGestao.view.TelaLogin;
 
 public class Main extends javax.swing.JFrame {
     
+    private Main menuPai;
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(Main.class.getName());
     private RecrutadorController recrutadorController;
     private Recrutador recrutadorLogado;
-
+    private GestaoService gestaoService;
+    
     public Main() {
         initComponents();
         recrutadorController = new RecrutadorController();
@@ -85,10 +89,11 @@ public class Main extends javax.swing.JFrame {
     }
     
     private void sair() {
-        int confirm = JOptionPane.showConfirmDialog(this, 
-            "Deseja realmente sair?", "Confirmar", JOptionPane.YES_NO_OPTION);
+        int confirm = JOptionPane.showConfirmDialog(this,
+                "Deseja realmente sair e voltar para a tela de Login?", "Confirmar", JOptionPane.YES_NO_OPTION);
         if (confirm == JOptionPane.YES_OPTION) {
-            System.exit(0);
+            new TelaLogin().setVisible(true);
+            this.dispose();
         }
     }
     
@@ -271,7 +276,7 @@ public class Main extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
-        this.menuPai.setVisible(true);
+        new TelaLogin().setVisible(true);
         this.dispose();
     }//GEN-LAST:event_jButton6ActionPerformed
 

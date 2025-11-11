@@ -3,10 +3,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 package telas.recrutamento.view;
-import telas.recrutamento.controller.VagaController;
 import telas.recrutamento.controller.EntrevistaController;
-import telas.recrutamento.model.Recrutador;
-import telas.recrutamento.model.Vaga;
 import telas.recrutamento.model.Entrevista;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
@@ -14,20 +11,25 @@ import java.text.SimpleDateFormat;
 import java.text.ParseException;
 import java.util.Date;
 import java.util.List;
+import telas.recrutamento.view.Main;
+import telas.administracaoGestao.controller.GestaoService;
+import telas.administracaoGestao.model.Vaga;
 
 public class MarcarEntrevistas extends javax.swing.JFrame {
     
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(MarcarEntrevistas.class.getName());
 
-    private VagaController vagaController;
+    private Main menuPai;
+    private GestaoService gestaoService;
     private EntrevistaController entrevistaController;
     private Recrutador recrutadorLogado;
     private String candidaturaSelecionada;
     
-    public MarcarEntrevistas(Recrutador recrutador) {
+    public MarcarEntrevistas(Main menuPai, Recrutador recrutador) {
         initComponents();
+        this.gestaoService = new GestaoService();
         this.recrutadorLogado = recrutador;
-        this.vagaController = new VagaController();
+        this.menuPai = menuPai;
         this.entrevistaController = new EntrevistaController();
         setLocationRelativeTo(null);
         setTitle("Marcar Entrevistas");
@@ -62,13 +64,13 @@ public class MarcarEntrevistas extends javax.swing.JFrame {
         jComboBox1.removeAllItems();
         jComboBox2.removeAllItems();
         
-        List<Vaga> vagas = vagaController.listarPorRecrutador(recrutadorLogado.getCpf());
+        List<Vaga> vagas = gestaoService.listarTodasVagas();        
         
         jComboBox1.addItem("Selecione uma vaga");
         jComboBox2.addItem("Selecione uma vaga");
         
         for (Vaga v : vagas) {
-            String item = v.getIdVaga() + " - " + v.getCargo();
+            String item = v.getCargo();
             jComboBox1.addItem(item);
             jComboBox2.addItem(item);
         }
@@ -90,8 +92,6 @@ public class MarcarEntrevistas extends javax.swing.JFrame {
             return;
         }
         
-        // Aqui você vai carregar as candidaturas "Em Análise" dessa vaga
-        // Quando tiver integração com Candidatura do Aluno 2
         model.addRow(new Object[]{"João Silva", "123.456.789-00", vagaSelecionada, "10/10/2024", "Não"});
         model.addRow(new Object[]{"Maria Santos", "987.654.321-00", vagaSelecionada, "12/10/2024", "Não"});
     }
@@ -119,9 +119,7 @@ public class MarcarEntrevistas extends javax.swing.JFrame {
             return;
         }
         
-        // Filtrar tabela
         DefaultTableModel model = (DefaultTableModel) jTable2.getModel();
-        // Implementar filtro depois
         JOptionPane.showMessageDialog(this, "Pesquisa por: " + busca);
     }
     
@@ -132,11 +130,9 @@ public class MarcarEntrevistas extends javax.swing.JFrame {
             return;
         }
         
-        // Verificar se já tem entrevista agendada
         JOptionPane.showMessageDialog(this, "Candidato verificado. Pode agendar entrevista!");
         habilitarCamposEntrevista(true);
         
-        // Adicionar botão agendar dinamicamente
         if (jButton4.getText().equals("Verificar")) {
             jButton4.setText("Agendar Entrevista");
             jButton4.removeActionListener(jButton4.getActionListeners()[0]);
@@ -271,9 +267,7 @@ public class MarcarEntrevistas extends javax.swing.JFrame {
     }
     
     private void voltarMenu() {
-        Main menu = new Main();
-        menu.carregarRecrutador(recrutadorLogado.getCpf());
-        menu.setVisible(true);
+        this.menuPai.setVisible(true);
         this.dispose();
     }
     
