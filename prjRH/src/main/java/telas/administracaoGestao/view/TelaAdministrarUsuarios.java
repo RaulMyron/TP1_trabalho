@@ -6,6 +6,7 @@ package telas.administracaoGestao.view;
 import telas.administracaoGestao.controller.GestaoService;
 import telas.administracaoGestao.model.Usuario;
 import java.util.List;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel; // Importante para a tabela
 /**
  *
@@ -201,35 +202,21 @@ public class TelaAdministrarUsuarios extends javax.swing.JFrame {
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
         
-        new TelaRelatoriosGestao().setVisible(true);
-    // Fecha a tela de Administração
+        new TelaRelatoriosGestao(this.usuarioLogado, this.gestaoService).setVisible(true);
+        // Fecha a tela de Administração
         this.dispose(); 
+ 
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        String nome = jTextField1.getText();
-        String cpf = jTable1.getText();
-        String email = jTextField1.getText();
-        String login = jButton5.getText();
-        String senha = new String(jPasswordField1.getPassword());
-        String tipoUsuario = (String) jComboBox1.getSelectedItem();
-        
-        try {
-            // 2. Chama o Controller, passando o ADMIN LOGADO como o "ator" [cite: 69]
-            gestaoService.cadastrarUsuario(this.usuarioLogado, nome, cpf, email, login, senha, tipoUsuario);
-            
-            // 3. Deu certo!
-            JOptionPane.showMessageDialog(this, "Usuário cadastrado com sucesso!");
-            
-            this.dispose(); // Fecha a tela de cadastro
+        // 1. Cria a sua tela de cadastro
+       TelaCadastroUsuario telaCadastro = new TelaCadastroUsuario(this.usuarioLogado, this.gestaoService);
 
-        } catch (NegocioException e) {
-            // 4. Erro de Regra de Negócio (Ex: "CPF já existe" ou "Acesso Negado")
-            JOptionPane.showMessageDialog(this, e.getMessage(), "Erro de Negócio", JOptionPane.ERROR_MESSAGE);
-        } catch (IOException e) {
-            // 5. Erro ao salvar o arquivo
-            JOptionPane.showMessageDialog(this, "Erro ao salvar no arquivo: " + e.getMessage(), "Erro de Persistência", JOptionPane.ERROR_MESSAGE);
-        }    // TODO add your handling code here:
+        // 2. Mostra a tela de cadastro
+       telaCadastro.setVisible(true);
+
+        // 3. Fecha esta tela (a TelaAdministrarUsuarios)
+       this.dispose();
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed

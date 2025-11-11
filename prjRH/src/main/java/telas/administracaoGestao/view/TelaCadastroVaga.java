@@ -16,17 +16,12 @@ public class TelaCadastroVaga extends javax.swing.JFrame {
     private Usuario usuarioLogado;
     private GestaoService gestaoService;
     
-    private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(TelaCadastroVaga.class.getName());
-
-    /**
-     * Creates new form TelaCadastroVaga
-     */
-    public TelaCadastroVaga() {
-        initComponents();
-        this.usuarioLogado = usuario;
-        this.gestaoService = service;
-    }
-
+    public TelaCadastroVaga(Usuario usuario, GestaoService service) {
+    initComponents();
+    this.usuarioLogado = usuario; // O erro era aqui (variável 'usuario' não existia)
+    this.gestaoService = service; // O erro era aqui (variável 'service' não existia)
+}
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always

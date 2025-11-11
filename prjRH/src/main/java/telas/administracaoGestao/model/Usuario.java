@@ -6,26 +6,35 @@ import java.util.List;
 public abstract class Usuario extends Pessoa implements Serializable {
     private String login;
     private String senha;
-    private List<Perfil> perfis; 
+    private List<Perfil> perfil; 
 
     public Usuario(String nome, String cpf, String email, String login, String senha) {
         super(nome, cpf, email);
         this.login = login;
         this.senha = senha;
-        this.perfis = new ArrayList<>();
+        this.perfil= new ArrayList<>();
     }
     
-    public String getLogin() { return login; }
-    public List<Perfil> getPerfis() { return perfis; }
-    
+    public String getLogin() {
+        return login;
+    }
+    public void setLogin(String login){
+        this.login = login;
+    }
+    public List<Perfil> getPerfis() {
+        return perfil; 
+    }
+    public void setSenha(String senha){
+        this.senha = senha;
+    }
     public void addPerfil(Perfil p) {
-        if (!this.perfis.contains(p)) {
-            this.perfis.add(p);
+        if (!this.perfil.contains(p)) {
+            this.perfil.add(p);
         }
     }
     
     public void removePerfil(Perfil p) {
-        this.perfis.remove(p);
+        this.perfil.remove(p);
     }
     
     public boolean autenticar(String senhaFornecida) {

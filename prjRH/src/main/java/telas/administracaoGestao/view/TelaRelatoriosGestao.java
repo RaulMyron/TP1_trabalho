@@ -162,7 +162,7 @@ public class TelaRelatoriosGestao extends javax.swing.JFrame {
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         
-        new TelaAdministrarUsuarios().setVisible(true);
+        new TelaAdministrarUsuarios(this.usuarioLogado, this.gestaoService).setVisible(true);
         // Fecha a tela de Relatórios
         this.dispose();    // TODO add your handling code here:
     }//GEN-LAST:event_jButton3ActionPerformed

@@ -95,7 +95,11 @@ public class GestaoService {
     public List<Usuario> listarTodosUsuarios() {
         return this.usuarios;
     }
-
+    public List<Vaga> listarTodasVagas() {
+        // Este método simplesmente retorna a lista de vagas que o 
+        // GestaoService já carregou do arquivo no construtor.
+        return this.vagas;
+    }
     public Usuario login(String login, char[] senha) {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
