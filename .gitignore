@@ -1,0 +1,62 @@
+# === DADOS GERADOS PELO PROJETO ===
+# Ignora arquivos de persistência (.dat)
+*.dat
+
+# === MAVEN (Java) ===
+# Ignora a pasta principal de build
+target/
+
+# === GERAL (Java) ===
+# Ignora arquivos de log
+*.log
+*.log.*
+
+# Arquivos de pacote
+*.jar
+*.war
+*.ear
+
+# Arquivos compilados
+*.class
+
+# === IDE: NETBEANS ===
+# (Baseado nos seus logs de build)
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
+
+# === OUTRAS IDES (Boas práticas) ===
+
+# IntelliJ IDEA
+.idea/
+*.iml
+*.iws
+out/
+
+# VS Code
+.vscode/
+
+# Eclipse
+.classpath
+.project
+.settings/
+.factorypath
+.apt_generated
+.springBeans
+.sts4-cache
+bin/
+
+# === ARQUIVOS DE SISTEMA OPERACIONAL ===
+
+# Mac OS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
