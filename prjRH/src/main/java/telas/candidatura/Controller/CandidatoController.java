@@ -9,6 +9,8 @@ import telas.candidatura.Model.Candidatura;
 import java.util.ArrayList;
 import telas.candidatura.Model.CandidaturaDAO;
 import java.text.SimpleDateFormat; // Para formatar a data
+import telas.administracaoGestao.controller.GestaoService;
+import telas.administracaoGestao.model.Vaga;
 
 
 
@@ -23,6 +25,7 @@ public class CandidatoController {
     private List<Candidato> candidatos;
     private List<Candidatura> candidaturas; // Para gerenciar as candidaturas em memória
     private List<Vaga> vagasDisponiveis; // Para simular as vagas disponíveis
+    private final GestaoService gestaoService;
 
     // O construtor é executado quando o controller é criado.
     public CandidatoController() {
@@ -34,10 +37,9 @@ public class CandidatoController {
         // Inicializa as novas listas
         this.candidaturas = this.candidaturaDAO.carregar();
         
-        // Simulação de vagas (para não depender do Aluno 1 ainda)
-        this.vagasDisponiveis = new ArrayList<>();
-        this.vagasDisponiveis.add(new Vaga("Desenvolvedor Java Pleno", 5000.0));
-        this.vagasDisponiveis.add(new Vaga("Analista de Dados Júnior", 3500.0));
+        // Inicialize o Service dela
+        this.gestaoService = new GestaoService();
+
     }
     
 
@@ -86,12 +88,11 @@ public class CandidatoController {
         }
         return null; // Retorna null se não encontrar.
     }
-    /**
-     * Retorna a lista de vagas disponíveis para preencher a ComboBox.
-     */
-    public List<Vaga> getVagasDisponiveis() {
-        return this.vagasDisponiveis;
-    }
+   public List<Vaga> getVagasDisponiveis() {
+    // Agora ele chama o Service da sua colega para buscar as vagas REAIS
+    // Usando o nome exato do método que encontramos: "listarTodasVagas"
+    return this.gestaoService.listarTodasVagas(); 
+}
     
     /**
      * Retorna a lista de todas as candidaturas feitas.
