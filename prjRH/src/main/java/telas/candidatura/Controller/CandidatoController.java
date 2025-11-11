@@ -10,6 +10,8 @@ import java.util.ArrayList;
 import telas.candidatura.Model.CandidaturaDAO;
 import java.text.SimpleDateFormat; // Para formatar a data
 
+
+
 /**
  * Controller responsável por intermediar as ações da View com a lógica do Model
  * para a entidade Candidato.
@@ -97,6 +99,88 @@ public class CandidatoController {
     public List<Candidatura> getListaCandidaturas() {
         return this.candidaturas;
     }
+    // Este é um NOVO MÉTODO dentro da sua classe CandidatoController
+/**
+ * Busca na lista de candidaturas por um termo (Nome ou CPF do candidato).
+ * A busca não diferencia maiúsculas de minúsculas.
+ *
+ * @param termo O texto a ser buscado no nome ou CPF.
+ * @return Uma nova lista contendo apenas as candidaturas que correspondem ao filtro.
+ */
+// Este é o NOVO método de filtro. Adicione-o ao seu CandidatoController.
+
+/**
+ * Filtra a lista de candidaturas com base em três critérios combinados.
+ * A busca não diferencia maiúsculas de minúsculas.
+ *
+ * @param filtroVaga O texto do cargo da vaga (ou vazio).
+ * @param filtroStatus O status selecionado (ou "Todos").
+ * @param filtroNomeCpf O nome ou CPF do candidato (ou vazio).
+ * @return Uma nova lista contendo apenas as candidaturas que passam por todos os filtros.
+ */
+public List<Candidatura> filtrarCandidaturas(String filtroVaga, String filtroStatus, String filtroNomeCpf) {
+    
+    // Converte os filtros para minúsculas para a busca ser flexível
+    String vagaTermo = filtroVaga.toLowerCase();
+    String statusTermo = filtroStatus.toLowerCase();
+    String nomeCpfTermo = filtroNomeCpf.toLowerCase();
+
+    // Cria a lista de resultados
+    List<Candidatura> resultados = new ArrayList<>();
+
+    // Percorre a lista principal de candidaturas (this.candidaturas)
+    for (Candidatura c : this.candidaturas) {
+        // Pega os dados da candidatura atual em minúsculas
+        String vagaDaCandidatura = c.getVaga().getCargo().toLowerCase();
+        String statusDaCandidatura = c.getStatus().toLowerCase();
+        String nomeDoCandidato = c.getCandidato().getNome().toLowerCase();
+        String cpfDoCandidato = c.getCandidato().getCpf().toLowerCase();
+
+        // --------------------------------------------------------------------
+        // LÓGICA DO FILTRO: O candidato só passa se atender a TODOS os critérios
+        // --------------------------------------------------------------------
+
+        // 1. Verifica o filtro de Vaga
+        // Se o filtro de vaga não estiver vazio E o cargo da candidatura não contiver o termo, REJEITA.
+        if (!vagaTermo.isEmpty() && !vagaDaCandidatura.contains(vagaTermo)) {
+            continue; // Pula para a próxima candidatura
+        }
+
+        // 2. Verifica o filtro de Status
+        // Se o status NÃO for "todos" E o status da candidatura não contiver o termo, REJEITA.
+        if (!statusTermo.equals("todos") && !statusDaCandidatura.contains(statusTermo)) {
+            continue; // Pula para a próxima candidatura
+        }
+
+        // 3. Verifica o filtro de Nome/CPF
+        // Se o filtro não estiver vazio E (nem o nome E nem o CPF contiverem o termo), REJEITA.
+        if (!nomeCpfTermo.isEmpty() && (!nomeDoCandidato.contains(nomeCpfTermo) && !cpfDoCandidato.contains(nomeCpfTermo))) {
+            continue; // Pula para a próxima candidatura
+        }
+
+        // Se a candidatura sobreviveu a todos os filtros, é um resultado válido.
+        resultados.add(c);
+    }
+
+    return resultados; // Retorna a lista filtrada
+}
+
+// Este é um NOVO MÉTODO dentro da sua classe CandidatoController
+
+/**
+ * Altera o status de uma candidatura específica e salva a lista atualizada no arquivo.
+ *
+ * @param candidatura O objeto Candidatura a ser modificado.
+ * @param novoStatus O novo status (ex: "Aprovado").
+ */
+public void alterarStatusCandidatura(Candidatura candidatura, String novoStatus) {
+    // 1. Altera o status do objeto que está na memória
+    candidatura.setStatus(novoStatus);
+    
+    // 2. Salva a lista inteira (this.candidaturas), que agora contém o objeto
+    //    modificado, de volta no arquivo.
+    this.candidaturaDAO.salvar(this.candidaturas);
+}
 
     /**
      * Cria e salva uma nova candidatura.

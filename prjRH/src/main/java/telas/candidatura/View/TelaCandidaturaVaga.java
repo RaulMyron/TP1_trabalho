@@ -18,6 +18,7 @@ import telas.candidatura.Model.Vaga;
 public class TelaCandidaturaVaga extends javax.swing.JFrame {
     
     private final CandidatoController Controller;
+    private Candidato candidatoEncontrado = null;
 
     
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(TelaCandidaturaVaga.class.getName());
@@ -69,7 +70,7 @@ public class TelaCandidaturaVaga extends javax.swing.JFrame {
         jLabel2.setText("Associe um candidato cadastrado a uma vaga disponível");
 
         jLabel3.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        jLabel3.setText("Buscar um Candidato (Nome):");
+        jLabel3.setText("Buscar um Candidato (CPF):");
 
         jTextField1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -168,6 +169,26 @@ public class TelaCandidaturaVaga extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
+        // Lembre-se de trocar "jTextFieldCpf" pelo nome da variável do seu campo de texto
+    String cpf = jTextField1.getText();
+    
+    // Chama o controller para buscar o candidato
+    this.candidatoEncontrado = Controller.buscarPorCpf(cpf);
+    
+    // Agora, damos o feedback IMEDIATO
+    if (this.candidatoEncontrado != null) {
+        // Se encontrou, mostra uma mensagem de sucesso
+        JOptionPane.showMessageDialog(this, 
+                "Candidato encontrado: " + this.candidatoEncontrado.getNome(), 
+                "Busca Concluída", 
+                JOptionPane.INFORMATION_MESSAGE);
+    } else {
+        // Se não encontrou, mostra uma mensagem de erro
+        JOptionPane.showMessageDialog(this, 
+                "Nenhum candidato encontrado com o CPF informado.", 
+                "Erro na Busca", 
+                JOptionPane.ERROR_MESSAGE);
+    }
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
@@ -200,6 +221,7 @@ public class TelaCandidaturaVaga extends javax.swing.JFrame {
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         // TODO add your handling code here:
+        this.dispose();
     }//GEN-LAST:event_jButton3ActionPerformed
 
     /**

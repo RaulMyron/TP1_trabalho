@@ -10,6 +10,7 @@ import java.util.List;
 import javax.swing.table.DefaultTableModel;
 import telas.candidatura.Model.Candidato;
 import java.text.SimpleDateFormat;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -25,14 +26,17 @@ public class TelaStatusCandidatura extends javax.swing.JFrame {
      * Creates new form TelaStatusCandidatura
      */
     public TelaStatusCandidatura() {
-        initComponents();
-        this.Controller = new CandidatoController(); // 
-        popularTabela(); // <-- E ESTA CHAMADA DE MÉTODO
-    }
+    initComponents();
+    this.Controller = new CandidatoController();
     
-    private void popularTabela() {
-    // 1. Pega a lista de CANDIDATURAS do controller.
-    List<Candidatura> listaCandidaturas = Controller.getListaCandidaturas();
+    // ALTERAÇÃO AQUI: Agora passamos a lista completa para o método
+    popularTabela(this.Controller.getListaCandidaturas()); 
+}
+    
+    // ALTERAÇÃO AQUI: O método agora "recebe" a lista como parâmetro
+private void popularTabela(List<Candidatura> listaParaExibir) {
+    
+    // 1. A linha que buscava a lista foi REMOVIDA.
 
     // 2. Pega o modelo da tabela.
     // Troque "jTable1" pelo nome da variável da sua tabela.
@@ -42,8 +46,8 @@ public class TelaStatusCandidatura extends javax.swing.JFrame {
     // Define um formato para a data ficar mais legível
     SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 
-    // 4. Percorre a lista e adiciona os dados de cada candidatura.
-    for (Candidatura c : listaCandidaturas) {
+    // 4. ALTERAÇÃO AQUI: Percorre a lista que recebemos no parâmetro
+    for (Candidatura c : listaParaExibir) {
         Object[] rowData = {
             c.getCandidato().getNome(),      // Coluna "Nome do Candidato"
             c.getVaga().getCargo(),          // Coluna "Vaga Aplicada"
@@ -94,6 +98,12 @@ public class TelaStatusCandidatura extends javax.swing.JFrame {
 
         jLabel5.setText("Buscar por Nome/CPF:");
 
+        jTextField2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTextField2ActionPerformed(evt);
+            }
+        });
+
         jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Todos", "Pendente", "Em Análise", "Aprovado", "Reprovado" }));
         jComboBox1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -109,6 +119,11 @@ public class TelaStatusCandidatura extends javax.swing.JFrame {
         });
 
         jButton2.setText("Limpar Filtros");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -181,6 +196,11 @@ public class TelaStatusCandidatura extends javax.swing.JFrame {
         });
 
         jButton4.setText("Alterar Status");
+        jButton4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton4ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -202,30 +222,27 @@ public class TelaStatusCandidatura extends javax.swing.JFrame {
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
-                        .addComponent(jButton3)
+                        .addComponent(jButton4)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jButton4)))
+                        .addComponent(jButton3)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap(17, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(jLabel1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabel2)
-                        .addGap(18, 18, 18)
-                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(41, 41, 41))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jButton3)
-                            .addComponent(jButton4))
-                        .addContainerGap())))
+                .addComponent(jLabel1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel2)
+                .addGap(18, 18, 18)
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButton3)
+                    .addComponent(jButton4))
+                .addContainerGap())
         );
 
         pack();
@@ -237,11 +254,96 @@ public class TelaStatusCandidatura extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
+        // 1. Pega os dados dos TRÊS campos de filtro
+    // Lembre-se de trocar os nomes das variáveis (ex: jTextField1) pelos seus nomes corretos!
+    
+    String vaga = jTextField1.getText(); // <-- TROQUE PELO NOME DO SEU CAMPO "Filtrar por Vaga"
+    String status = jComboBox1.getSelectedItem().toString(); // <-- TROQUE PELO NOME DA SUA COMBOBOX "Filtrar por Status"
+    String nomeCpf = jTextField2.getText(); // <-- TROQUE PELO NOME DO SEU CAMPO "Buscar por Nome/CPF"
+
+    // 2. Chama o NOVO método do Controller, passando os três filtros
+    List<Candidatura> resultados = Controller.filtrarCandidaturas(vaga, status, nomeCpf);
+
+    // 3. Usa o método popularTabela para exibir os resultados filtrados
+    popularTabela(resultados);
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         // TODO add your handling code here:
+        this.dispose();
     }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void jTextField2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField2ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTextField2ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        // TODO add your handling code here:
+        // 1. Limpa os TRÊS campos de filtro
+    // Lembre-se de trocar os nomes das variáveis!
+    
+    jTextField1.setText(""); // <-- TROQUE PELO NOME DO SEU CAMPO "Filtrar por Vaga"
+    jComboBox1.setSelectedItem("Todos"); // <-- TROQUE PELO NOME DA SUA COMBOBOX "Filtrar por Status"
+    jTextField2.setText(""); // <-- TROQUE PELO NOME DO SEU CAMPO "Buscar por Nome/CPF"
+
+    // 2. Pega a lista COMPLETA de candidaturas do Controller
+    List<Candidatura> listaCompleta = Controller.getListaCandidaturas();
+
+    // 3. Usa o método popularTabela para exi   bir a lista completa
+    popularTabela(listaCompleta);
+    }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+        // TODO add your handling code here:
+        // 1. Descobre qual linha da tabela está selecionada
+    // Lembre-se de trocar "jTable1" pelo nome da variável da sua tabela
+    int linhaSelecionada = jTable1.getSelectedRow();
+
+    // 2. Verifica se o usuário realmente selecionou uma linha
+    if (linhaSelecionada == -1) {
+        JOptionPane.showMessageDialog(this, "Por favor, selecione uma candidatura na tabela para alterar.", "Aviso", JOptionPane.WARNING_MESSAGE);
+        return;
+    }
+
+    // 3. Pega o objeto Candidatura correspondente àquela linha
+    Candidatura candidaturaSelecionada = Controller.getListaCandidaturas().get(linhaSelecionada);
+
+    // --- MUDANÇA PRINCIPAL AQUI ---
+    
+    // 4. Define as opções válidas de status
+    Object[] statusOpcoes = { "Pendente", "Em Análise", "Aprovado", "Reprovado" };
+
+    // 5. Mostra um JOptionPane com uma CAIXA DE SELEÇÃO, em vez de um campo de texto.
+    // O último parâmetro ("candidaturaSelecionada.getStatus()") é inteligente:
+    // ele já deixa a opção atual do candidato pré-selecionada no dropdown.
+    Object selecionado = JOptionPane.showInputDialog(
+            this, // Componente pai
+            "Selecione o novo status:", // Mensagem
+            "Alterar Status", // Título
+            JOptionPane.PLAIN_MESSAGE, // Tipo de mensagem
+            null, // Ícone (padrão)
+            statusOpcoes, // O array de opções para o dropdown
+            candidaturaSelecionada.getStatus() // Opção inicial selecionada
+    );
+
+    // 6. Verifica se o usuário selecionou algo (se for null, ele clicou em "Cancelar")
+    if (selecionado != null) {
+        
+        // Converte o objeto selecionado para String
+        String novoStatus = selecionado.toString();
+
+        // 7. Chama o Controller para fazer a alteração
+        Controller.alterarStatusCandidatura(candidaturaSelecionada, novoStatus);
+
+        // 8. Atualiza a tabela na tela para mostrar o novo status imediatamente
+        popularTabela(Controller.getListaCandidaturas());
+        
+        // 9. Feedback de sucesso
+        JOptionPane.showMessageDialog(this, "Status alterado com sucesso!", "Sucesso", JOptionPane.INFORMATION_MESSAGE);
+    }
+    // Se o usuário clicou em "Cancelar" (selecionado == null), nada acontece.
+   
+    }//GEN-LAST:event_jButton4ActionPerformed
 
     /**
      * @param args the command line arguments
