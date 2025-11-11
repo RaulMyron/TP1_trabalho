@@ -26,7 +26,6 @@ public class ConsultarContratações extends javax.swing.JFrame {
         initComponents();
         this.recrutadorLogado = recrutador;
         this.contratacaoController = new ContratacaoController();
-        this.vagaController = new VagaController();
         this.gestaoService = new GestaoService();
         setLocationRelativeTo(null);
         setTitle("Consultar Contratações");
@@ -62,7 +61,7 @@ public class ConsultarContratações extends javax.swing.JFrame {
         jComboBox4.addItem("Todas");
         List<Vaga> vagas = this.gestaoService.listarTodasVagas();
         for (Vaga v : vagas) {
-            jComboBox4.addItem(v.getIdVaga() + " - " + v.getCargo());
+            jComboBox4.addItem(v.getCargo());
         }
         
         // Combo Regime (parte de baixo)
@@ -75,7 +74,7 @@ public class ConsultarContratações extends javax.swing.JFrame {
         jComboBox1.removeAllItems();
         jComboBox1.addItem("Selecione");
         for (Vaga v : vagas) {
-            jComboBox1.addItem(v.getIdVaga() + " - " + v.getCargo());
+            jComboBox1.addItem(v.getCargo());
         }
         
         // Formato de período
@@ -474,7 +473,7 @@ public class ConsultarContratações extends javax.swing.JFrame {
         }
 
         java.awt.EventQueue.invokeLater(() -> {
-            Recrutador recrutadorTeste = new Recrutador("12345678900", "João Teste", "teste@empresa.com");
+            Recrutador recrutadorTeste = new Recrutador("João Teste", "12345678900", "teste@empresa.com", "12345678900", "senha123");
             new ConsultarContratações(recrutadorTeste).setVisible(true);
         });
         

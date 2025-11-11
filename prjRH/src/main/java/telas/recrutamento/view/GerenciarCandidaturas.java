@@ -114,7 +114,7 @@ public class GerenciarCandidaturas extends javax.swing.JFrame {
         int row = tblMinhasVagas.getSelectedRow();
         if (row >= 0) {
             String cargo = tblMinhasVagas.getValueAt(row, 0).toString();
-            List<Vaga> vagas = vagaController.listarPorRecrutador(recrutadorLogado.getCpf());
+            List<Vaga> vagas = gestaoService.listarTodasVagas();
             vagaSelecionada = vagas.stream()
                 .filter(v -> v.getCargo().equals(cargo))
                 .findFirst()
@@ -488,8 +488,8 @@ public class GerenciarCandidaturas extends javax.swing.JFrame {
         
         java.awt.EventQueue.invokeLater(() -> {
             // Recrutador de teste - só para preview do NetBeans
-            Recrutador recrutadorTeste = new Recrutador("12345678900", "Teste", "teste@email.com");
-            new GerenciarCandidaturas(recrutadorTeste).setVisible(true);
+            Recrutador recrutadorTeste = new Recrutador("Teste", "12345678900", "teste@email.com", "12345678900", "senha123");
+            new GerenciarCandidaturas(null, recrutadorTeste).setVisible(true);
         });
     
     }

@@ -27,7 +27,7 @@ public class RecrutadorController {
                 throw new RecrutamentoException("CPF já cadastrado!");
             }
             
-            Recrutador recrutador = new Recrutador(cpf, nome, email);
+            Recrutador recrutador = new Recrutador(nome, cpf, email, cpf, cpf);
             recrutador.setDepartamento(departamento);
             dao.salvar(recrutador);
             

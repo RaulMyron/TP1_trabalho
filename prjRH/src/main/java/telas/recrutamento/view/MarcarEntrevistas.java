@@ -14,6 +14,7 @@ import java.util.List;
 import telas.recrutamento.view.Main;
 import telas.administracaoGestao.controller.GestaoService;
 import telas.administracaoGestao.model.Vaga;
+import telas.recrutamento.model.Recrutador;
 
 public class MarcarEntrevistas extends javax.swing.JFrame {
     
@@ -643,8 +644,8 @@ public class MarcarEntrevistas extends javax.swing.JFrame {
         }
 
         java.awt.EventQueue.invokeLater(() -> {
-            Recrutador recrutadorTeste = new Recrutador("12345678900", "João Teste", "teste@empresa.com");
-            new MarcarEntrevistas(recrutadorTeste).setVisible(true);
+            Recrutador recrutadorTeste = new Recrutador("João Teste", "12345678900", "teste@empresa.com", "12345678900", "senha123");
+            new MarcarEntrevistas(null, recrutadorTeste).setVisible(true);
         });
         
     }

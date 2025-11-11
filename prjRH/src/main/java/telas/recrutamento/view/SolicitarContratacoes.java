@@ -11,6 +11,8 @@ import java.text.SimpleDateFormat;
 import java.text.ParseException;
 import java.util.Date;
 import java.util.List;
+import telas.administracaoGestao.controller.GestaoService;
+import telas.administracaoGestao.model.Vaga;
 
 public class SolicitarContratacoes extends javax.swing.JFrame {
     
@@ -24,7 +26,7 @@ public class SolicitarContratacoes extends javax.swing.JFrame {
         initComponents();
         this.recrutadorLogado = recrutador;
         this.contratacaoController = new ContratacaoController();
-        this.vagaController = new VagaController();
+        this.gestaoService = new GestaoService();
         setLocationRelativeTo(null);
         setTitle("Solicitar Contratações");
         configurarEventos();
@@ -41,11 +43,11 @@ public class SolicitarContratacoes extends javax.swing.JFrame {
     
     private void carregarVagas() {
         jComboBox1.removeAllItems();
-        List<Vaga> vagas = vagaController.listarPorRecrutador(recrutadorLogado.getCpf());
+        List<Vaga> vagas = gestaoService.listarTodasVagas();
         
         jComboBox1.addItem("Selecione uma vaga");
         for (Vaga v : vagas) {
-            jComboBox1.addItem(v.getIdVaga() + " - " + v.getCargo());
+            jComboBox1.addItem(v.getCargo());
         }
         
         // Popular regime
@@ -435,7 +437,7 @@ public class SolicitarContratacoes extends javax.swing.JFrame {
         }
 
         java.awt.EventQueue.invokeLater(() -> {
-            Recrutador recrutadorTeste = new Recrutador("12345678900", "João Teste", "teste@empresa.com");
+            Recrutador recrutadorTeste = new Recrutador("João Teste", "12345678900", "teste@empresa.com", "12345678900", "senha123");
             new SolicitarContratacoes(recrutadorTeste).setVisible(true);
         });
         

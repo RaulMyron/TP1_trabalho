@@ -18,7 +18,7 @@ public class Main extends javax.swing.JFrame {
     private RecrutadorController recrutadorController;
     private Recrutador recrutadorLogado;
     private GestaoService gestaoService;
-    
+
     public Main() {
         initComponents();
         recrutadorController = new RecrutadorController();
@@ -53,7 +53,7 @@ public class Main extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Nenhum recrutador logado!");
             return;
         }
-        GerenciarCandidaturas tela = new GerenciarCandidaturas(recrutadorLogado);
+        GerenciarCandidaturas tela = new GerenciarCandidaturas(this, recrutadorLogado);
         tela.setVisible(true);
         this.dispose();
     }
@@ -63,7 +63,7 @@ public class Main extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Nenhum recrutador logado!");
             return;
         }
-        MarcarEntrevistas tela = new MarcarEntrevistas(recrutadorLogado);
+        MarcarEntrevistas tela = new MarcarEntrevistas(this, recrutadorLogado);
         tela.setVisible(true);
         this.dispose();
     }
@@ -281,7 +281,7 @@ public class Main extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton6ActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-        ConsultarContratações telaConsultar = new ConsultarContratações(this, this.recrutadorLogado);
+        ConsultarContratações telaConsultar = new ConsultarContratações(this.recrutadorLogado);
         telaConsultar.setVisible(true);
         this.setVisible(false);
     }//GEN-LAST:event_jButton4ActionPerformed
