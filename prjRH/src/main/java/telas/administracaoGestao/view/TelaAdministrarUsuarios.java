@@ -6,15 +6,8 @@ package telas.administracaoGestao.view;
 import telas.administracaoGestao.controller.GestaoService;
 import telas.administracaoGestao.model.Usuario;
 import java.util.List;
-<<<<<<< HEAD
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel; // Importante para a tabela
-=======
-import javax.swing.table.DefaultTableModel;
-import javax.swing.JOptionPane;
-import java.io.IOException;
-import telas.administracaoGestao.excecoes.NegocioException;
->>>>>>> 827a72835f273f05bdeadc5f030a69c6a098e342
 /**
  *
  * @author Nati
@@ -210,7 +203,6 @@ public class TelaAdministrarUsuarios extends javax.swing.JFrame {
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
         
         new TelaRelatoriosGestao(this.usuarioLogado, this.gestaoService).setVisible(true);
-<<<<<<< HEAD
         // Fecha a tela de Administração
         this.dispose(); 
  
@@ -225,58 +217,13 @@ public class TelaAdministrarUsuarios extends javax.swing.JFrame {
 
         // 3. Fecha esta tela (a TelaAdministrarUsuarios)
        this.dispose();
-=======
-        //this.dispose();
-        
-    }//GEN-LAST:event_jButton4ActionPerformed
-
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        String nome = jTextField1.getText();
-        String cpf = txtCpf.getText();
-        String email = txtEmail.getText();
-        String login = txtLogin.getText();
-        String senha = new String(jPasswordField1.getPassword());
-        String tipoUsuario = (String) jComboBox1.getSelectedItem();
-        
-        try {
-                // 2. Chama o Controller
-                gestaoService.cadastrarUsuario(this.usuarioLogado, nome, cpf, email, login, senha, tipoUsuario);
-
-                // 3. Deu certo!
-                JOptionPane.showMessageDialog(this, "Usuário cadastrado com sucesso!");
-
-                carregarTabela(); // Atualiza a tabela após o cadastro
-                // Limpar campos após cadastro (opcional)
-                jTextField1.setText("");
-                txtCpf.setText("");
-                txtEmail.setText("");
-                txtLogin.setText("");
-                jPasswordField1.setText("");
-                jComboBox1.setSelectedIndex(0);
-
-
-            } catch (NegocioException e) {
-        // 4. Erro de Regra de Negócio
-        JOptionPane.showMessageDialog(this, e.getMessage(), "Erro de Negócio", JOptionPane.ERROR_MESSAGE);
-    } catch (IOException e) {
-        // 5. Erro ao salvar o arquivo
-        JOptionPane.showMessageDialog(this, "Erro ao salvar no arquivo: " + e.getMessage(), "Erro de Persistência", JOptionPane.ERROR_MESSAGE);
-        logger.log(java.util.logging.Level.SEVERE, "Erro de I/O ao salvar usuário", e); // Log do erro
-    } catch (NullPointerException e) {
-        // Captura erro se gestaoService ou usuarioLogado forem nulos
-         JOptionPane.showMessageDialog(this, "Erro interno: Serviço de gestão ou usuário logado não inicializado.", "Erro Interno", JOptionPane.ERROR_MESSAGE);
-         logger.log(java.util.logging.Level.SEVERE, "GestaoService ou UsuarioLogado nulo", e); // Log do erro
-    } catch (Exception e) {
-        // Captura outros erros inesperados
-        JOptionPane.showMessageDialog(this, "Ocorreu um erro inesperado: " + e.getMessage(), "Erro Inesperado", JOptionPane.ERROR_MESSAGE);
-        logger.log(java.util.logging.Level.SEVERE, "Erro inesperado em jButton1ActionPerformed", e); // Log do erro
-    }
->>>>>>> 827a72835f273f05bdeadc5f030a69c6a098e342
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
         new TelaLogin().setVisible(true);
-        this.dispose();
+    // Fecha a tela atual (AdminUsuarios)
+        this.dispose();   
+// TODO add your handling code here:
     }//GEN-LAST:event_jButton5ActionPerformed
 
     private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
