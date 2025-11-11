@@ -9,7 +9,8 @@ import telas.candidatura.Excecao.RHException;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
 import telas.candidatura.Model.Candidato;
-import telas.candidatura.Model.Vaga;
+import telas.recrutamento.model.Vaga;
+import telas.recrutamento.model.Vaga;
 
 /**
  *
@@ -253,7 +254,7 @@ public class TelaCandidaturaVaga extends javax.swing.JFrame {
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
-    private javax.swing.JComboBox<telas.candidatura.Model.Vaga> jComboBox2;
+    private javax.swing.JComboBox<telas.recrutamento.model.Vaga> jComboBox2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
