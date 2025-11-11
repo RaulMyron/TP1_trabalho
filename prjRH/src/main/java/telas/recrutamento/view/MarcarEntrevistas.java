@@ -336,8 +336,6 @@ public class MarcarEntrevistas extends javax.swing.JFrame {
 
         jLayeredPane1.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
 
-        jTextField1.setText("jTextField1");
-
         jLabel4.setText("Candidato");
 
         jButton2.setText("Pesquisar");
@@ -464,21 +462,13 @@ public class MarcarEntrevistas extends javax.swing.JFrame {
 
         jLabel10.setText("Agendar Entrevista para:");
 
-        jTextField6.setText("jTextField2");
-
         jButton4.setText("Verificar");
 
         jLabel11.setText("Data:");
 
-        jTextField7.setText("jTextField3");
-
         jLabel12.setText("Horario:");
 
-        jTextField8.setText("jTextField3");
-
         jLabel13.setText("Local");
-
-        jTextField9.setText("jTextField3");
 
         jComboBox4.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 

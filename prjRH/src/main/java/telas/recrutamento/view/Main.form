@@ -176,8 +176,11 @@
       <SubComponents>
         <Component class="javax.swing.JButton" name="jButton2">
           <Properties>
-            <Property name="text" type="java.lang.String" value="\ud83d\udccb Gerenciar Candidaturas" containsInvalidXMLChars="true"/>
+            <Property name="text" type="java.lang.String" value="Gerenciar Candidaturas"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton2ActionPerformed"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JButton" name="jButton3">
           <Properties>
@@ -186,12 +189,12 @@
         </Component>
         <Component class="javax.swing.JButton" name="jButton4">
           <Properties>
-            <Property name="text" type="java.lang.String" value="\ud83d\udcca Consultar Contrata&#xe7;&#xf5;es" containsInvalidXMLChars="true"/>
+            <Property name="text" type="java.lang.String" value="Consultar Contrata&#xe7;&#xf5;es"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JButton" name="jButton5">
           <Properties>
-            <Property name="text" type="java.lang.String" value="&#x2705; Solicitar Contrata&#xe7;&#xf5;es"/>
+            <Property name="text" type="java.lang.String" value="Solicitar Contrata&#xe7;&#xf5;es"/>
           </Properties>
         </Component>
       </SubComponents>

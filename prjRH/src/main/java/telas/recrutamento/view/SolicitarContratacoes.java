@@ -286,10 +286,6 @@ public class SolicitarContratacoes extends javax.swing.JFrame {
 
         jLabel6.setText("Data de Inicio");
 
-        jTextField1.setText("jTextField1");
-
-        jTextField2.setText("jTextField1");
-
         jLabel7.setText("Salário Proposto");
 
         jLabel8.setText("Justificativa Contratação");

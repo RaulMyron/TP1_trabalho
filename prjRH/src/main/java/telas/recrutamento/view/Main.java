@@ -168,13 +168,18 @@ public class Main extends javax.swing.JFrame {
             }
         });
 
-        jButton2.setText("📋 Gerenciar Candidaturas");
+        jButton2.setText("Gerenciar Candidaturas");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
         jButton3.setText("📅 Marcar Entrevistas");
 
-        jButton4.setText("📊 Consultar Contratações");
+        jButton4.setText("Consultar Contratações");
 
-        jButton5.setText("✅ Solicitar Contratações");
+        jButton5.setText("Solicitar Contratações");
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -237,6 +242,10 @@ public class Main extends javax.swing.JFrame {
     private void jPanel3ComponentRemoved(java.awt.event.ContainerEvent evt) {//GEN-FIRST:event_jPanel3ComponentRemoved
         // TODO add your handling code here:
     }//GEN-LAST:event_jPanel3ComponentRemoved
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton2ActionPerformed
 
     /**
      * @param args the command line arguments

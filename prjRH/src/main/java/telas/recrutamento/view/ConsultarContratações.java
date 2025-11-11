@@ -289,8 +289,6 @@ public class ConsultarContratações extends javax.swing.JFrame {
 
         jLabel10.setText("Periodo");
 
-        jTextField3.setText("jTextField3");
-
         jButton4.setText("Limpar Filtros");
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
@@ -323,8 +321,6 @@ public class ConsultarContratações extends javax.swing.JFrame {
         jTextField2.setText("jTextField1");
 
         jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-
-        jTextField4.setText("jTextField4");
 
         jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
