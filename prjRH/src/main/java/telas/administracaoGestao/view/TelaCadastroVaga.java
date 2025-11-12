@@ -8,6 +8,7 @@ import telas.administracaoGestao.excecoes.NegocioException;
 import telas.administracaoGestao.model.Usuario;
 import javax.swing.JOptionPane;
 import java.io.IOException;
+import java.util.List;
 /**
  *
  * @author Nati
@@ -16,10 +17,20 @@ public class TelaCadastroVaga extends javax.swing.JFrame {
     private Usuario usuarioLogado;
     private GestaoService gestaoService;
     
-    public TelaCadastroVaga(Usuario usuario, GestaoService service) {
+public TelaCadastroVaga(Usuario usuario, GestaoService service) {
     initComponents();
     this.usuarioLogado = usuario; // O erro era aqui (variável 'usuario' não existia)
     this.gestaoService = service; // O erro era aqui (variável 'service' não existia)
+    
+    jComboBox1.removeAllItems(); 
+    
+    // Busca a lista de recrutadores no service
+    List<Usuario> recrutadores = gestaoService.listarRecrutadores();
+    
+    // Adiciona cada recrutador ao ComboBox
+    for (Usuario rec : recrutadores) {
+        jComboBox1.addItem(rec);
+    }
 }
     
     /**
@@ -32,10 +43,16 @@ public class TelaCadastroVaga extends javax.swing.JFrame {
     private void initComponents() {
 
         jButton1 = new javax.swing.JButton();
-        jTextField1 = new javax.swing.JTextField();
-        jTextField2 = new javax.swing.JTextField();
+        jTextField4 = new javax.swing.JTextField();
+        jTextField5 = new javax.swing.JTextField();
+        jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        jButton2 = new javax.swing.JButton();
+        jLabel3 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
+        jComboBox1 = new javax.swing.JComboBox<>();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         jButton1.setText("Salvar");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -44,75 +61,147 @@ public class TelaCadastroVaga extends javax.swing.JFrame {
             }
         });
 
-        jTextField1.setText("Cargo");
-        jTextField1.addActionListener(new java.awt.event.ActionListener() {
+        jTextField4.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField1ActionPerformed(evt);
+                jTextField4ActionPerformed(evt);
             }
         });
 
-        jTextField2.setText("Salário ");
-        jTextField2.addActionListener(new java.awt.event.ActionListener() {
+        jTextField5.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField2ActionPerformed(evt);
+                jTextField5ActionPerformed(evt);
             }
         });
+
+        jLabel1.setText("Cargo:");
+
+        jLabel2.setText("Salário:");
+
+        jButton2.setText("Voltar");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
+
+        jLabel3.setText("Cadastrar Vaga");
+
+        jLabel4.setText("Recrutador:");
+
+        jComboBox1.setName("cmbRecrutador"); // NOI18N
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(153, 153, 153)
-                .addComponent(jButton1)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(160, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(169, 169, 169))
+                .addGap(0, 162, Short.MAX_VALUE)
+                .addComponent(jLabel3)
+                .addGap(158, 158, 158))
+            .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jButton1)
+                        .addGap(47, 47, 47)
+                        .addComponent(jButton2))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(56, 56, 56)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(jLabel1)
+                                    .addComponent(jLabel2)))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addContainerGap()
+                                .addComponent(jLabel4)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jTextField4)
+                            .addComponent(jTextField5)
+                            .addComponent(jComboBox1, 0, 180, Short.MAX_VALUE))))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(47, 47, 47)
-                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(44, 44, 44)
-                .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 68, Short.MAX_VALUE)
-                .addComponent(jButton1)
-                .addGap(74, 74, 74))
+                .addGap(23, 23, 23)
+                .addComponent(jLabel3)
+                .addGap(50, 50, 50)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel1))
+                .addGap(37, 37, 37)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel2)
+                    .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 32, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jComboBox1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(34, 34, 34)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButton1)
+                    .addComponent(jButton2))
+                .addGap(19, 19, 19))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        String cargo = jTextField1.getText();
-        double salario = Double.parseDouble(jTextField2.getText());
+        String cargo = jTextField4.getText();
+        String salarioStr = jTextField5.getText();
         
+        // 1. Pega o recrutador selecionado no JComboBox (usando o nome certo)
+        Usuario recrutadorSelecionado = (Usuario) jComboBox1.getSelectedItem();
+
         try {
-            // Chama o Controller [cite: 81]
-            gestaoService.criarVaga(this.usuarioLogado, cargo, salario);
+            // Validação simples
+            if (cargo.isEmpty() || salarioStr.isEmpty()) {
+                throw new NegocioException("Cargo e Salário são obrigatórios.");
+            }
+            
+            // Converte o salário (é mais seguro fazer dentro do try)
+            double salario = Double.parseDouble(salarioStr);
+            
+            // 2. Chama o Controller (Correção da Linha 164)
+            // Agora estamos passando o "recrutadorSelecionado"
+            gestaoService.criarVaga(this.usuarioLogado, cargo, salario, recrutadorSelecionado);
             
             JOptionPane.showMessageDialog(this, "Vaga criada com sucesso!");
+            
+            // Volta para o Menu do Gestor
+            new TelaMenuGestor(this.usuarioLogado, this.gestaoService).setVisible(true);
             this.dispose(); // Fecha a tela
 
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "Erro: O salário deve ser um número.", "Erro de Formato", JOptionPane.ERROR_MESSAGE);
         } catch (NegocioException e) {
             JOptionPane.showMessageDialog(this, e.getMessage(), "Erro de Negócio", JOptionPane.ERROR_MESSAGE);
-        } catch (IOException e) {
+        } catch (IOException e) { // (Correção da Linha 176 - já estava correta, mas faz parte do bloco)
             JOptionPane.showMessageDialog(this, "Erro ao salvar no arquivo.", "Erro de Persistência", JOptionPane.ERROR_MESSAGE);
-        }    // TODO add your handling code here:
+        }
     }//GEN-LAST:event_jButton1ActionPerformed
 
-    private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
+    private void jTextField4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField4ActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField1ActionPerformed
+    }//GEN-LAST:event_jTextField4ActionPerformed
 
-    private void jTextField2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField2ActionPerformed
+    private void jTextField5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField5ActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField2ActionPerformed
+    }//GEN-LAST:event_jTextField5ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        // Volta para a tela anterior
+        TelaMenuGestor telaMenu = new TelaMenuGestor(this.usuarioLogado, this.gestaoService);
+
+        // 2. Mostra o menu
+        telaMenu.setVisible(true);
+
+        // 3. Fecha a tela atual (Cadastro de Vaga)
+        this.dispose();
+    }//GEN-LAST:event_jButton2ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -121,7 +210,13 @@ public class TelaCadastroVaga extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
+    private javax.swing.JButton jButton2;
+    private javax.swing.JComboBox<Usuario> jComboBox1;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JTextField jTextField4;
+    private javax.swing.JTextField jTextField5;
     // End of variables declaration//GEN-END:variables
 }

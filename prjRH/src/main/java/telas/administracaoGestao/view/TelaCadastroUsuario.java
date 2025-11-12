@@ -14,6 +14,7 @@ import java.io.IOException;
 public class TelaCadastroUsuario extends javax.swing.JFrame {
     private Usuario usuarioLogado;
     private GestaoService gestaoService;
+    private Usuario usuarioEditando;
     
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(TelaCadastroUsuario.class.getName());
 
@@ -27,25 +28,50 @@ public class TelaCadastroUsuario extends javax.swing.JFrame {
         
         configurarTela(); // Chama um método para "limpar" a tela
     }
+    public TelaCadastroUsuario(Usuario usuarioLogado, GestaoService service, Usuario usuarioParaEditar) {
+        // 1. Chama o construtor principal (o que você já tem)
+        this(usuarioLogado, service); 
+        
+        // 2. Armazena o usuário que estamos editando
+        this.usuarioEditando = usuarioParaEditar;
+        
+        // 3. Preenche os campos da tela com os dados do usuário
+        jTextField1.setText(usuarioEditando.getNome());
+        jTextField2.setText(usuarioEditando.getCpf());
+        jTextField3.setText(usuarioEditando.getEmail());
+        jTextField4.setText(usuarioEditando.getLogin());
+        
+        // 4. Trava campos que não podem ser editados
+        jTextField2.setEditable(false); // Não pode editar CPF
+        jPasswordField1.setEnabled(false); // Não vamos editar senha nesta tela
+        Perfil.setEnabled(false); // Não vamos editar perfil nesta tela
+        
+        // 5. Muda o título e o botão
+        jButton1.setText("Editar Usuário"); // 'jTextField11' é o seu título
+        jButton1.setText("Atualizar"); // 'jButton1' é o seu botão "Salvar"
+    }
     private void configurarTela() {
-        // Limpa os textos de placeholder que você tinha (ex: "Nome", "CPF")
-        jTextField1.setText(""); // Nome
-        jTextField2.setText(""); // CPF
-        jTextField3.setText(""); // Email
-        jTextField4.setText(""); // Login
-        jPasswordField1.setText(""); // Senha
+       // SÓ LIMPA OS CAMPOS SE NÃO ESTIVERMOS EDITANDO
+        if (this.usuarioEditando == null) {
+            jTextField1.setText(""); // Nome
+            jTextField2.setText(""); // CPF
+            jTextField3.setText(""); // Email
+            jTextField4.setText(""); // Login
+            jPasswordField1.setText(""); // Senha
+        }
         
         // Configura o JComboBox (que você chamou de "Perfil")
-        Perfil.removeAllItems(); // Limpa o "Item 1", "Item 2", etc.
+        Perfil.removeAllItems(); 
         
-        // ATENÇÃO: Adicione aqui os perfis que o seu GestaoService sabe criar.
-        // O seu GestaoService que você me mostrou só sabe criar "Gestor" e "Administrador".
         Perfil.addItem("Gestor");
         Perfil.addItem("Administrador");
-        // Se o seu GestaoService também souber criar "Recrutador", adicione:
-        // Perfil.addItem("Recrutador"); 
+        Perfil.addItem("Recrutador");
+        Perfil.addItem("Recrutador");
+        
+        jComboBox1.removeAllItems(); // Limpa o "Item 1", "Item 2", etc.
+        jComboBox1.addItem("Ativo");
+        jComboBox1.addItem("Inativo");
     }
-
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -63,23 +89,30 @@ public class TelaCadastroUsuario extends javax.swing.JFrame {
         Perfil = new javax.swing.JComboBox<>();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
+        jComboBox1 = new javax.swing.JComboBox<>();
+        jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
+        jLabel6 = new javax.swing.JLabel();
+        jLabel7 = new javax.swing.JLabel();
+        jLabel8 = new javax.swing.JLabel();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
-        jTextField1.setText("Nome");
+        jTextField1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTextField1ActionPerformed(evt);
+            }
+        });
 
-        jTextField2.setText("CPF");
-
-        jTextField3.setText("Email");
         jTextField3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jTextField3ActionPerformed(evt);
             }
         });
 
-        jTextField4.setText("Login");
-
-        jPasswordField1.setText("Password");
         jPasswordField1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jPasswordField1ActionPerformed(evt);
@@ -87,6 +120,11 @@ public class TelaCadastroUsuario extends javax.swing.JFrame {
         });
 
         Perfil.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        Perfil.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                PerfilActionPerformed(evt);
+            }
+        });
 
         jButton1.setText("Salvar");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -102,52 +140,105 @@ public class TelaCadastroUsuario extends javax.swing.JFrame {
             }
         });
 
+        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+
+        jLabel1.setText("Status:");
+
+        jLabel2.setText("Perfil:");
+
+        jLabel3.setText("Senha:");
+
+        jLabel4.setText("Login");
+
+        jLabel5.setText("E-mail");
+
+        jLabel6.setText("CPF:");
+
+        jLabel7.setText("Nome:");
+
+        jLabel8.setText("Cadastar Usuario");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(93, Short.MAX_VALUE)
-                .addComponent(jButton1)
-                .addGap(60, 60, 60)
-                .addComponent(jButton2)
-                .addGap(76, 76, 76))
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(Perfil, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                        .addGroup(layout.createSequentialGroup()
-                            .addContainerGap()
-                            .addComponent(jPasswordField1, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                            .addGap(159, 159, 159)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                .addGap(0, 0, Short.MAX_VALUE))
+                .addGap(81, 81, 81)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(42, 42, 42)
+                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(67, 67, 67)
+                        .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap(104, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel3)
+                                    .addComponent(jLabel2)
+                                    .addComponent(jLabel1))
+                                .addGap(44, 44, 44)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(Perfil, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(jComboBox1, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel7)
+                                    .addComponent(jLabel6)
+                                    .addComponent(jLabel5)
+                                    .addComponent(jLabel4))
+                                .addGap(44, 44, 44)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jTextField3)
+                                    .addComponent(jTextField2)
+                                    .addComponent(jTextField4)
+                                    .addComponent(jTextField1)
+                                    .addComponent(jPasswordField1, javax.swing.GroupLayout.Alignment.TRAILING))))
+                        .addGap(59, 59, 59))))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jLabel8)
+                .addGap(188, 188, 188))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(36, 36, 36)
-                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(30, 30, 30)
+                .addComponent(jLabel8)
                 .addGap(18, 18, 18)
-                .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel7))
                 .addGap(18, 18, 18)
-                .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel6))
                 .addGap(18, 18, 18)
-                .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel5))
                 .addGap(18, 18, 18)
-                .addComponent(jPasswordField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(Perfil, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(34, 34, 34)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel4))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jPasswordField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel3))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(Perfil, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel2))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 21, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel1)
+                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(42, 42, 42)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jButton2))
-                .addContainerGap())
+                .addGap(15, 15, 15))
         );
 
         pack();
@@ -161,38 +252,49 @@ public class TelaCadastroUsuario extends javax.swing.JFrame {
             String email = jTextField3.getText();
             String login = jTextField4.getText();
             String senha = new String(jPasswordField1.getPassword());
-            
-            // 2. Pega o perfil selecionado (como String)
             String perfilSelecionado = (String) Perfil.getSelectedItem();
 
-            // 3. Validação simples 
-            if (nome.isEmpty() || cpf.isEmpty() || email.isEmpty() || login.isEmpty() || senha.isEmpty() || perfilSelecionado == null) {
-                throw new NegocioException("Todos os campos são obrigatórios.");
+            // 2. VERIFICA SE ESTAMOS EM MODO DE EDIÇÃO OU CADASTRO
+            if (this.usuarioEditando == null) {
+                // --- MODO CADASTRO ---
+                
+                // Validação de cadastro
+                if (nome.isEmpty() || cpf.isEmpty() || email.isEmpty() || login.isEmpty() || senha.isEmpty() || perfilSelecionado == null) {
+                    throw new NegocioException("Todos os campos são obrigatórios.");
+                }
+                
+                // Chama o GestaoService para CADASTRAR
+                gestaoService.cadastrarUsuario(
+                    this.usuarioLogado, nome, cpf, email, login, senha, perfilSelecionado
+                );
+                JOptionPane.showMessageDialog(this, "Usuário cadastrado com sucesso!");
+
+            } else {
+                // --- MODO EDIÇÃO ---
+
+                // Validação de edição
+                if (nome.isEmpty() || email.isEmpty() || login.isEmpty()) {
+                    throw new NegocioException("Nome, Email e Login são obrigatórios.");
+                }
+                
+                // Chama o GestaoService para EDITAR
+                gestaoService.editarUsuario(
+                    this.usuarioLogado,
+                    this.usuarioEditando, // O usuário original
+                    nome,  // O novo nome
+                    email, // O novo email
+                    login  // O novo login
+                );
+                JOptionPane.showMessageDialog(this, "Usuário atualizado com sucesso!");
             }
 
-            // 4. CHAMA O GestaoService (O Controller)
-            // Usando o método que o seu GestaoService realmente tem:
-            gestaoService.cadastrarUsuario(
-                this.usuarioLogado, // O "ator" (o admin logado)
-                nome, 
-                cpf, 
-                email, 
-                login, 
-                senha, 
-                perfilSelecionado // O "tipo" (String)
-            );
-
-            JOptionPane.showMessageDialog(this, "Usuário cadastrado com sucesso!");
-            
             // 5. Volta para a tela de listagem
             new TelaAdministrarUsuarios(this.usuarioLogado, this.gestaoService).setVisible(true);
             this.dispose(); // Fecha esta tela de cadastro
 
         } catch (NegocioException | IOException e) {
-            // 6. Mostra o erro do Model (Ex: "CPF já existe")
-            JOptionPane.showMessageDialog(this, "Erro ao cadastrar: " + e.getMessage(), "Erro de Negócio", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Erro: " + e.getMessage(), "Erro de Negócio", JOptionPane.ERROR_MESSAGE);
         } catch (Exception e) {
-            // Pega qualquer outro erro inesperado
             JOptionPane.showMessageDialog(this, "Erro inesperado: " + e.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_jButton1ActionPerformed
@@ -209,6 +311,14 @@ public class TelaCadastroUsuario extends javax.swing.JFrame {
         new TelaAdministrarUsuarios(this.usuarioLogado, this.gestaoService).setVisible(true);
         this.dispose(); // Fecha esta tela de cadastro
     }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTextField1ActionPerformed
+
+    private void PerfilActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PerfilActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_PerfilActionPerformed
 
     public static void main(String args[]) {
         try {
@@ -233,6 +343,15 @@ public class TelaCadastroUsuario extends javax.swing.JFrame {
     private javax.swing.JComboBox<String> Perfil;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
+    private javax.swing.JComboBox<String> jComboBox1;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
     private javax.swing.JPasswordField jPasswordField1;
     private javax.swing.JTextField jTextField1;
     private javax.swing.JTextField jTextField2;

@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 // O CONTROLLER
 public class GestaoService {
@@ -81,13 +82,20 @@ public class GestaoService {
     }
     
     // Método para a TELA DE GESTÃO DE VAGAS (GESTOR)
-    public void criarVaga(Usuario ator, String cargo, double salario) throws NegocioException, IOException {
+    public void criarVaga(Usuario ator, String cargo, double salario, Usuario recrutador) throws NegocioException, IOException {
         
         if (!ator.getPerfis().contains(Perfil.GESTOR)) {
             throw new NegocioException("Acesso negado: Somente gestores podem criar vagas.");
         }
         
+        if (recrutador == null) {
+            throw new NegocioException("Erro: Você deve selecionar um recrutador responsável.");
+        }
+        
         Vaga novaVaga = new Vaga(cargo, salario);
+        
+        novaVaga.setRecrutadorResponsavel(recrutador);
+        
         vagas.add(novaVaga);
         repoVagas.salvar(vagas, ARQUIVO_VAGAS);
     }
@@ -100,6 +108,11 @@ public class GestaoService {
         // GestaoService já carregou do arquivo no construtor.
         return this.vagas;
     }
+    public List<Usuario> listarRecrutadores() {
+        return this.usuarios.stream()
+            .filter(u -> u.getPerfis().contains(Perfil.RECRUTADOR))
+            .collect(Collectors.toList());
+    }
 // Em GestaoService.java
 // Substitua o método login(String, char[]) antigo por este:
 
@@ -107,13 +120,13 @@ public class GestaoService {
         // 1. Converte o array de char para String
         String senhaString = new String(senha);
 
-        // 2. Agora, a lógica do seu OUTRO método de login vai funcionar
+        // 2. CORREÇÃO: Procurar pelo LOGIN, não pelo CPF
         Optional<Usuario> optUsuario = usuarios.stream()
-                .filter(u -> u.getLogin().equals(login))
+                .filter(u -> u.getLogin().equals(login)) // <-- MUDANÇA AQUI
                 .findFirst();
 
         if (optUsuario.isEmpty()) {
-            throw new NegocioException("Usuário não encontrado.");
+            throw new NegocioException("Usuário não encontrado."); // Mensagem de erro
         }
         
         Usuario u = optUsuario.get();
@@ -125,4 +138,76 @@ public class GestaoService {
             throw new NegocioException("Senha incorreta.");
         }
     }
+    public Usuario buscarUsuarioPorCpf(String cpf) throws NegocioException {
+        return this.usuarios.stream()
+            .filter(u -> u.getCpf().equals(cpf))
+            .findFirst()
+            .orElseThrow(() -> new NegocioException("Usuário com CPF " + cpf + " não encontrado."));
+    }
+
+    /**
+     * Exclui um usuário do sistema, com regras de negócio.
+     * (Necessário para o botão Excluir)
+     */
+    public void excluirUsuario(Usuario ator, Usuario usuarioParaExcluir) throws NegocioException, IOException {
+        
+        // Regra 1: Ator deve ser admin
+        if (!ator.getPerfis().contains(Perfil.ADMINISTRADOR)) {
+            throw new NegocioException("Acesso negado: Somente administradores podem excluir usuários.");
+        }
+        
+        // Regra 2: Não pode excluir a si mesmo
+        if (usuarioParaExcluir.getCpf().equals(ator.getCpf())) {
+            throw new NegocioException("Erro: Você não pode excluir a sua própria conta.");
+        }
+
+        // Regra 3: Não pode excluir o último administrador
+        if (usuarioParaExcluir.getPerfis().contains(Perfil.ADMINISTRADOR)) {
+            long contagemAdmins = usuarios.stream()
+                .filter(u -> u.getPerfis().contains(Perfil.ADMINISTRADOR))
+                .count();
+            
+            if (contagemAdmins <= 1) {
+                throw new NegocioException("Erro: Não é possível excluir o último administrador do sistema.");
+            }
+        }
+
+        // Se passou em tudo, remove e salva
+        usuarios.remove(usuarioParaExcluir);
+        repoUsuarios.salvar(usuarios, ARQUIVO_USUARIOS);
+        System.out.println("Usuário excluído: " + usuarioParaExcluir.getNome());
+    }
+    
+    /**
+     * Edita os dados de um usuário existente.
+     * (Necessário para o botão Editar/Salvar)
+     */
+    public void editarUsuario(Usuario ator, Usuario usuarioParaEditar, String novoNome, String novoEmail, String novoLogin) throws NegocioException, IOException {
+        
+        if (!ator.getPerfis().contains(Perfil.ADMINISTRADOR)) {
+            throw new NegocioException("Acesso negado: Somente administradores podem editar usuários.");
+        }
+        
+        // Validação de dados únicos (Email e Login)
+        for (Usuario u : usuarios) {
+            // Se o email novo JÁ EXISTE em outro usuário
+            if (u.getEmail().equalsIgnoreCase(novoEmail) && !u.getCpf().equals(usuarioParaEditar.getCpf())) {
+                throw new NegocioException("Erro: O novo email '" + novoEmail + "' já pertence a outro usuário.");
+            }
+            // Se o login novo JÁ EXISTE em outro usuário
+            if (u.getLogin().equalsIgnoreCase(novoLogin) && !u.getCpf().equals(usuarioParaEditar.getCpf())) {
+                throw new NegocioException("Erro: O novo login '" + novoLogin + "' já pertence a outro usuário.");
+            }
+        }
+        
+        // Atualiza os dados no objeto (que está na lista "this.usuarios")
+        usuarioParaEditar.setNome(novoNome);
+        usuarioParaEditar.setEmail(novoEmail);
+        usuarioParaEditar.setLogin(novoLogin); 
+        
+        // Salva a lista inteira (com o usuário atualizado) no arquivo
+        repoUsuarios.salvar(usuarios, ARQUIVO_USUARIOS);
+        System.out.println("Usuário editado: " + usuarioParaEditar.getNome());
+    }
 }
+

@@ -7,6 +7,7 @@ import telas.administracaoGestao.controller.GestaoService;
 import telas.administracaoGestao.model.Usuario;
 import java.util.List;
 import javax.swing.table.DefaultTableModel; // Importante para a tabela
+import telas.administracaoGestao.model.Perfil;
 /**
  *
  * @author Nati
@@ -161,10 +162,22 @@ public class TelaRelatoriosGestao extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        
-        new TelaAdministrarUsuarios(this.usuarioLogado, this.gestaoService).setVisible(true);
+        // Verifica o perfil do usuário para decidir para onde voltar
+        if (this.usuarioLogado.getPerfis().contains(Perfil.ADMINISTRADOR)) {
+            // Se for Admin, volta para o menu de Administração
+            new TelaAdministrarUsuarios(this.usuarioLogado, this.gestaoService).setVisible(true);
+
+        } else if (this.usuarioLogado.getPerfis().contains(Perfil.GESTOR)) {
+            // Se for Gestor (mas não Admin), volta para o Menu do Gestor
+            new TelaMenuGestor(this.usuarioLogado, this.gestaoService).setVisible(true);
+
+        } else {
+            // Fallback (plano B): Se não for nenhum dos dois, volta para a Tela Principal
+            new TelaPrincipal(this.usuarioLogado, this.gestaoService).setVisible(true);
+        }
+
         // Fecha a tela de Relatórios
-        this.dispose();    // TODO add your handling code here:
+        this.dispose();
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed

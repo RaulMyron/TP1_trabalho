@@ -28,4 +28,9 @@ public abstract class Pessoa implements Serializable {
     public void setEmail(String email) {
         this.email = email;
     }
+    @Override
+    public String toString() {
+        // Isso faz o JComboBox mostrar o nome do usuário
+        return this.nome; 
+    }
 }

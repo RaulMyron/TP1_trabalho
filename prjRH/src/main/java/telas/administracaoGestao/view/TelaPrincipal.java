@@ -19,23 +19,32 @@ public class TelaPrincipal extends javax.swing.JFrame {
     /**
      * Creates new form TelaPrincipal
      */
-    public TelaPrincipal(Usuario usuario, GestaoService service) {
-        initComponents();
-        this.usuarioLogado = usuario;
-        this.gestaoService = service;
+public TelaPrincipal(Usuario usuario, GestaoService service) {
+    initComponents();
+    this.usuarioLogado = usuario;
+    this.gestaoService = service;
         
-        jLabel1.setText(usuarioLogado.getNome()); // 'lblNomeUsuario' é um Jlabel
+    jLabel1.setText(usuarioLogado.getNome()); // 'lblNomeUsuario' é um Jlabel
+        // 1. Verifica se o usuário é Administrador
+        boolean isAdmin = this.usuarioLogado.getPerfis().contains(Perfil.ADMINISTRADOR);
         
-        // IMPORTANTE: Bloqueia botões conforme o perfil
-        // Se o usuário NÃO for admin, desabilita o botão de admin
-        if (!this.usuarioLogado.getPerfis().contains(Perfil.ADMINISTRADOR)) {
-            jButton1.setEnabled(false); // 'btnAdministrarUsuarios' é o seu botão
-        }
-        
-        // Se o usuário NÃO for gestor, desabilita o botão de gestor
-        if (!this.usuarioLogado.getPerfis().contains(Perfil.GESTOR)) {
-            jButton2.setEnabled(false); // 'btnCriarVaga' é o seu botão
-            jButton3.setEnabled(false); // 'btnRelatorios' é o seu botão
+        // 2. Se NÃO for Admin, aplicamos as restrições
+        if (!isAdmin) {
+            
+            // Lógica do Administrador (Botão Admin)
+            // (Este botão já estará desativado por esta lógica, mas mantemos por segurança)
+            if (!this.usuarioLogado.getPerfis().contains(Perfil.ADMINISTRADOR)) {
+                jButton1.setEnabled(false); 
+            }
+            
+            // Lógica do Gestor (Botão Gestor)
+            if (!this.usuarioLogado.getPerfis().contains(Perfil.GESTOR)) {
+                jButton4.setEnabled(false);
+            }
+            
+            // (Adicione aqui a lógica para os outros botões:
+            // jButton5 (Financeiro), jButton6 (Recrutamento), etc.)
+            
         }
     }
 
@@ -50,31 +59,43 @@ public class TelaPrincipal extends javax.swing.JFrame {
 
         jLabel1 = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
+        jButton4 = new javax.swing.JButton();
+        jButton5 = new javax.swing.JButton();
+        jButton6 = new javax.swing.JButton();
+        jButton7 = new javax.swing.JButton();
+        jButton8 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jLabel1.setText("jLabel1");
 
-        jButton1.setText("Administrar Usuários");
+        jButton1.setText("Administrador");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton1ActionPerformed(evt);
             }
         });
 
-        jButton2.setText("Criar Vaga");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
+        jButton4.setText("Gestor");
+        jButton4.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
+                jButton4ActionPerformed(evt);
             }
         });
 
-        jButton3.setText("Ver Relatórios");
-        jButton3.addActionListener(new java.awt.event.ActionListener() {
+        jButton5.setText("Finaceiro");
+
+        jButton6.setText("Recrutamento");
+
+        jButton7.setText("Candidatura");
+
+        jButton8.setText("Presatação de Serviço");
+
+        jButton2.setText("Voltar");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton3ActionPerformed(evt);
+                jButton2ActionPerformed(evt);
             }
         });
 
@@ -82,29 +103,47 @@ public class TelaPrincipal extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(36, 36, 36)
-                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(147, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel1)
+                    .addComponent(jButton8)
+                    .addComponent(jButton7, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jButton6, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(158, 158, 158))
+            .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jButton2)
-                        .addGap(48, 48, 48)
-                        .addComponent(jButton3)))
+                        .addGap(189, 189, 189)
+                        .addComponent(jLabel1))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(177, 177, 177)
+                        .addComponent(jButton2)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(36, 36, 36)
+                .addGap(27, 27, 27)
                 .addComponent(jLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 132, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton1)
-                    .addComponent(jButton2)
-                    .addComponent(jButton3))
-                .addGap(98, 98, 98))
+                .addGap(35, 35, 35)
+                .addComponent(jButton1)
+                .addGap(18, 18, 18)
+                .addComponent(jButton4)
+                .addGap(18, 18, 18)
+                .addComponent(jButton7)
+                .addGap(18, 18, 18)
+                .addComponent(jButton6)
+                .addGap(18, 18, 18)
+                .addComponent(jButton5)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jButton8)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 13, Short.MAX_VALUE)
+                .addComponent(jButton2)
+                .addContainerGap())
         );
 
         pack();
@@ -115,17 +154,22 @@ public class TelaPrincipal extends javax.swing.JFrame {
         telaAdm.setVisible(true);                                                                                                
     }//GEN-LAST:event_jButton1ActionPerformed
     
-    // Botão que abre a tela de CRIAR VAGA
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        TelaCadastroVaga telaVaga = new TelaCadastroVaga(this.usuarioLogado, this.gestaoService);
-        telaVaga.setVisible(true);    // TODO add your handling code here:
-    }//GEN-LAST:event_jButton2ActionPerformed
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+        // 1. Cria a nova tela "TelaMenuGestor"
+        TelaMenuGestor telaGestor = new TelaMenuGestor(this.usuarioLogado, this.gestaoService);
+        
+        // 2. Mostra a nova tela
+        telaGestor.setVisible(true);
+        
+        // 3. Fecha a TelaPrincipal
+        this.dispose();   // TODO add your handling code here:
+    }//GEN-LAST:event_jButton4ActionPerformed
 
-    //Botão que Ver Relatorio 
-    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        TelaRelatoriosGestao telaRel = new TelaRelatoriosGestao(usuarioLogado, gestaoService);
-        telaRel.setVisible(true);    // TODO add your handling code here:
-    }//GEN-LAST:event_jButton3ActionPerformed
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        new TelaLogin().setVisible(true);
+        // 2. Fecha a TelaPrincipal atual
+         this.dispose();        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton2ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -135,7 +179,11 @@ public class TelaPrincipal extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
+    private javax.swing.JButton jButton4;
+    private javax.swing.JButton jButton5;
+    private javax.swing.JButton jButton6;
+    private javax.swing.JButton jButton7;
+    private javax.swing.JButton jButton8;
     private javax.swing.JLabel jLabel1;
     // End of variables declaration//GEN-END:variables
 }

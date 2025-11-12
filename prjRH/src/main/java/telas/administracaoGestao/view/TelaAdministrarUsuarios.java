@@ -8,6 +8,7 @@ import telas.administracaoGestao.model.Usuario;
 import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel; // Importante para a tabela
+import telas.administracaoGestao.model.Perfil;
 /**
  *
  * @author Nati
@@ -35,15 +36,56 @@ public class TelaAdministrarUsuarios extends javax.swing.JFrame {
     private void carregarTabela() {
         DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
         model.setRowCount(0); // Limpa a tabela
-        
+
+        // 1. Pega os termos da busca
+        String nomeBusca = jTextField1.getText().toLowerCase(); 
+        String perfilBusca = (String) jComboBox1.getSelectedItem(); 
+
+        // 2. Pega a lista COMPLETA de usuários
         List<Usuario> usuarios = gestaoService.listarTodosUsuarios();
-        
-        for (Usuario u : usuarios) {
+
+        // 3. Filtra a lista
+        List<Usuario> usuariosFiltrados = usuarios.stream()
+            .filter(u -> {
+                // Filtro de Nome
+                boolean matchNome = u.getNome().toLowerCase().contains(nomeBusca);
+
+                // Filtro de Perfil
+                boolean matchPerfil = false;
+                if ("Todos".equals(perfilBusca)) {
+                    matchPerfil = true;
+                } else {
+                    try {
+                        // --- INÍCIO DA CORREÇÃO ---
+                        // Normaliza a string removendo acentos e convertendo para maiúsculas
+                        String perfilEnumNome = perfilBusca.toUpperCase()
+                                                          .replace("Á", "A")
+                                                          .replace("Ç", "C"); // Adicione outros se precisar
+
+                        // Usa a string normalizada
+                        Perfil p = Perfil.valueOf(perfilEnumNome);
+                        // --- FIM DA CORREÇÃO ---
+
+                        matchPerfil = u.getPerfis().contains(p);
+                    } catch (Exception e) {
+                        matchPerfil = false; // Ignora se "Funcionário" não existir no Enum
+                    }
+                }
+
+                return matchNome && matchPerfil;
+            })
+            .toList(); // Se der erro aqui, mude para .collect(Collectors.toList())
+
+        // 4. Popula a tabela com os usuários FILTRADOS
+        for (Usuario u : usuariosFiltrados) {
+            String status = u.isAtivo() ? "Ativo" : "Inativo";
+            
             model.addRow(new Object[]{
                 u.getNome(),
                 u.getCpf(),
                 u.getEmail(),
-                u.getPerfis().toString()
+                u.getPerfis().toString(),
+                status
             });
         }
     }
@@ -67,6 +109,7 @@ public class TelaAdministrarUsuarios extends javax.swing.JFrame {
         jComboBox1 = new javax.swing.JComboBox<>();
         jTextField1 = new javax.swing.JTextField();
         jButton6 = new javax.swing.JButton();
+        jButton7 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("ADMINISTRAÇÃO DE USUÁRIOS");
@@ -101,6 +144,11 @@ public class TelaAdministrarUsuarios extends javax.swing.JFrame {
 
         jButton3.setFont(new java.awt.Font("sansserif", 1, 12)); // NOI18N
         jButton3.setText("Excluir");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
 
         jButton4.setFont(new java.awt.Font("sansserif", 1, 12)); // NOI18N
         jButton4.setText("Relatórios");
@@ -141,6 +189,19 @@ public class TelaAdministrarUsuarios extends javax.swing.JFrame {
 
         jButton6.setFont(new java.awt.Font("sansserif", 1, 12)); // NOI18N
         jButton6.setText("Buscar");
+        jButton6.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton6ActionPerformed(evt);
+            }
+        });
+
+        jButton7.setFont(new java.awt.Font("SansSerif", 1, 12)); // NOI18N
+        jButton7.setText("Sair");
+        jButton7.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton7ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -148,20 +209,23 @@ public class TelaAdministrarUsuarios extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1))
+                .addComponent(jScrollPane1)
+                .addGap(84, 84, 84))
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(30, 30, 30)
+                        .addGap(42, 42, 42)
                         .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(30, 30, 30)
+                        .addGap(18, 18, 18)
                         .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(30, 30, 30)
                         .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(30, 30, 30)
+                        .addGap(40, 40, 40)
                         .addComponent(jButton4)
-                        .addGap(26, 26, 26)
-                        .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(40, 40, 40)
+                        .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(27, 27, 27)
+                        .addComponent(jButton7))
                     .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(jLabel2)
@@ -171,7 +235,7 @@ public class TelaAdministrarUsuarios extends javax.swing.JFrame {
                         .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jButton6, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(411, Short.MAX_VALUE))
+                .addContainerGap(288, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -189,7 +253,8 @@ public class TelaAdministrarUsuarios extends javax.swing.JFrame {
                     .addComponent(jButton3)
                     .addComponent(jButton2)
                     .addComponent(jButton1)
-                    .addComponent(jButton5))
+                    .addComponent(jButton5)
+                    .addComponent(jButton7))
                 .addGap(14, 14, 14))
         );
 
@@ -197,7 +262,26 @@ public class TelaAdministrarUsuarios extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        // TODO add your handling code here:
+        int selectedRow = jTable1.getSelectedRow();
+        if (selectedRow == -1) {
+            JOptionPane.showMessageDialog(this, "Por favor, selecione um usuário na tabela para editar.", "Aviso", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        try {
+            // Pega o CPF da coluna 1 (a segunda coluna)
+            String cpf = (String) jTable1.getValueAt(selectedRow, 1);
+            
+            // Busca o objeto Usuario completo
+            Usuario usuarioParaEditar = gestaoService.buscarUsuarioPorCpf(cpf);
+            
+            // Abre a TelaCadastroUsuario no MODO DE EDIÇÃO
+            new TelaCadastroUsuario(this.usuarioLogado, this.gestaoService, usuarioParaEditar).setVisible(true);
+            this.dispose();
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Erro ao buscar usuário: " + e.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
+        }
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
@@ -220,10 +304,9 @@ public class TelaAdministrarUsuarios extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
-        new TelaLogin().setVisible(true);
-    // Fecha a tela atual (AdminUsuarios)
+        // Volta para a Tela Principal, em vez de fazer Logout
+        new TelaPrincipal(this.usuarioLogado, this.gestaoService).setVisible(true);
         this.dispose();   
-// TODO add your handling code here:
     }//GEN-LAST:event_jButton5ActionPerformed
 
     private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
@@ -238,6 +321,65 @@ public class TelaAdministrarUsuarios extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextField1ActionPerformed
 
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+int selectedRow = jTable1.getSelectedRow();
+        if (selectedRow == -1) {
+            JOptionPane.showMessageDialog(this, "Por favor, selecione um usuário na tabela para excluir.", "Aviso", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        // 1. Confirmação
+        int resposta = JOptionPane.showConfirmDialog(this, 
+                "Tem certeza que deseja excluir este usuário?", 
+                "Confirmação de Exclusão", 
+                JOptionPane.YES_NO_OPTION);
+
+        if (resposta != JOptionPane.YES_OPTION) {
+            return; // Usuário cancelou
+        }
+
+        // 2. Exclusão
+        try {
+            String cpf = (String) jTable1.getValueAt(selectedRow, 1);
+            Usuario usuarioParaExcluir = gestaoService.buscarUsuarioPorCpf(cpf);
+            
+            // Chama o método do service que criámos
+            gestaoService.excluirUsuario(this.usuarioLogado, usuarioParaExcluir);
+            
+            JOptionPane.showMessageDialog(this, "Usuário excluído com sucesso!");
+            
+            // Atualiza a tabela
+            carregarTabela();
+
+        } catch (Exception e) {
+            // Mostra o erro do Model (Ex: "Não pode excluir o último admin")
+            JOptionPane.showMessageDialog(this, "Erro ao excluir: " + e.getMessage(), "Erro de Negócio", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
+        carregarTabela();
+    }//GEN-LAST:event_jButton6ActionPerformed
+
+    private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
+    // 1. Mostra uma confirmação (opcional, mas recomendado)
+        int resposta = JOptionPane.showConfirmDialog(
+            this, 
+            "Deseja realmente sair e voltar para a tela de login?", 
+            "Confirmação de Logout", 
+            JOptionPane.YES_NO_OPTION
+        );
+
+        // 2. Se o usuário clicou "Sim"
+        if (resposta == JOptionPane.YES_OPTION) {
+            // 3. Abre a TelaLogin
+            new TelaLogin().setVisible(true);
+
+            // 4. Fecha esta tela (a TelaAdministrarUsuarios)
+            this.dispose();
+        }
+    }//GEN-LAST:event_jButton7ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -250,6 +392,7 @@ public class TelaAdministrarUsuarios extends javax.swing.JFrame {
     private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5;
     private javax.swing.JButton jButton6;
+    private javax.swing.JButton jButton7;
     private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JScrollPane jScrollPane1;

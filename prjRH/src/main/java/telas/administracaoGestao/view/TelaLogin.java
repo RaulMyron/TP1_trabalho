@@ -52,7 +52,7 @@ public class TelaLogin extends javax.swing.JFrame {
         });
 
         jLabel1.setFont(new java.awt.Font("sansserif", 1, 12)); // NOI18N
-        jLabel1.setText("Usuário(CPF)");
+        jLabel1.setText("Login");
 
         jLabel2.setFont(new java.awt.Font("sansserif", 1, 12)); // NOI18N
         jLabel2.setText("Senha");
@@ -78,10 +78,14 @@ public class TelaLogin extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addGap(137, 137, 137)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel1)
                             .addComponent(jPasswordField1, javax.swing.GroupLayout.DEFAULT_SIZE, 160, Short.MAX_VALUE)
-                            .addComponent(jTextField1)))
+                            .addComponent(jTextField1)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(54, 54, 54)
+                                .addComponent(jLabel1))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(52, 52, 52)
+                                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE))))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(181, 181, 181)
                         .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)))
@@ -149,12 +153,6 @@ public class TelaLogin extends javax.swing.JFrame {
      * @param args the command line arguments
      */
     public static void main(String args[]) {
-        
-        java.awt.EventQueue.invokeLater(() -> {
-            new TelaLogin().setVisible(true);
-        });
-
-
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(() -> new TelaLogin().setVisible(true));
     }

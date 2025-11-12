@@ -31,7 +31,7 @@ public class Administrador extends Usuario {
                                     String email, String login, String senha, 
                                     Perfil perfilParaCriar) throws Exception {
 
-        // --- 1. VALIDAÇÃO DE CAMPOS NULOS OU VAZIOS ---
+        // VALIDAÇÃO DE CAMPOS NULOS OU VAZIOS ---
         if (nome == null || nome.trim().isEmpty() || 
             cpf == null || cpf.trim().isEmpty() || 
             email == null || email.trim().isEmpty() || 
@@ -42,7 +42,7 @@ public class Administrador extends Usuario {
             throw new Exception("Erro: Todos os campos, incluindo o perfil, são obrigatórios.");
         }
 
-        // --- 2. VALIDAÇÃO DA REGRA DE NEGÓCIO: SENHA ---
+        // VALIDAÇÃO DA REGRA DE NEGÓCIO: SENHA
         if (senha.length() < 8 || !senha.matches(".*[a-zA-Z].*") || !senha.matches(".*[0-9].*")) {
             throw new Exception("Erro: A senha deve ter no mínimo 8 caracteres, " +
                                   "contendo letras e números.");
