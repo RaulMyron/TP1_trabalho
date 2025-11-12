@@ -85,8 +85,18 @@ public TelaPrincipal(Usuario usuario, GestaoService service) {
         });
 
         jButton5.setText("Finaceiro");
+        jButton5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton5ActionPerformed(evt);
+            }
+        });
 
         jButton6.setText("Recrutamento");
+        jButton6.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton6ActionPerformed(evt);
+            }
+        });
 
         jButton7.setText("Candidatura");
         jButton7.addActionListener(new java.awt.event.ActionListener() {
@@ -96,6 +106,11 @@ public TelaPrincipal(Usuario usuario, GestaoService service) {
         });
 
         jButton8.setText("Presatação de Serviço");
+        jButton8.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton8ActionPerformed(evt);
+            }
+        });
 
         jButton2.setText("Voltar");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
@@ -180,6 +195,18 @@ public TelaPrincipal(Usuario usuario, GestaoService service) {
         // TODO add your handling code here:
         new telas.candidatura.View.TelaMenuCandidatura().setVisible(true);
     }//GEN-LAST:event_jButton7ActionPerformed
+
+    private void jButton8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton8ActionPerformed
+        new telas.prestacaoservico.view.MenuPrestacaoServico().setVisible(true);
+    }//GEN-LAST:event_jButton8ActionPerformed
+
+    private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
+        new telas.recrutamento.view.Main().setVisible(true);
+    }//GEN-LAST:event_jButton6ActionPerformed
+
+    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
+
+    }//GEN-LAST:event_jButton5ActionPerformed
 
     /**
      * @param args the command line arguments

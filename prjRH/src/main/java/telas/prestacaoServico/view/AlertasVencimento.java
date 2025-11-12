@@ -27,13 +27,11 @@ public class AlertasVencimento extends JFrame {
         setLocationRelativeTo(null);
         setLayout(new BorderLayout(10, 10));
         
-        // Painel superior
         JPanel painelTitulo = new JPanel();
         JLabel lblTitulo = new JLabel("⚠ ALERTAS DE VENCIMENTO");
         lblTitulo.setFont(new Font("Arial", Font.BOLD, 18));
         painelTitulo.add(lblTitulo);
         
-        // Painel de informações
         JPanel painelInfo = new JPanel(new FlowLayout(FlowLayout.LEFT, 20, 10));
         painelInfo.setBackground(new Color(255, 243, 224));
         painelInfo.setBorder(BorderFactory.createLineBorder(new Color(230, 126, 34), 2));
@@ -47,7 +45,6 @@ public class AlertasVencimento extends JFrame {
         lblTotalAlertas.setForeground(new Color(192, 57, 43));
         painelInfo.add(lblTotalAlertas);
         
-        // Painel de botões de ação
         JPanel painelBotoes = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 10));
         
         JButton btnAtualizar = new JButton("Atualizar Alertas");

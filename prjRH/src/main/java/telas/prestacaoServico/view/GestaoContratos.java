@@ -32,20 +32,17 @@ public class GestaoContratos extends JFrame {
         setLocationRelativeTo(null);
         setLayout(new BorderLayout(10, 10));
         
-        // Painel superior
         JPanel painelTitulo = new JPanel();
         JLabel lblTitulo = new JLabel("GESTÃO DE CONTRATOS");
         lblTitulo.setFont(new Font("Arial", Font.BOLD, 18));
         painelTitulo.add(lblTitulo);
         
-        // Painel de formulário
         JPanel painelFormulario = new JPanel(new GridBagLayout());
         painelFormulario.setBorder(BorderFactory.createTitledBorder("Dados do Contrato"));
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(5, 5, 5, 5);
         gbc.fill = GridBagConstraints.HORIZONTAL;
         
-        // Prestador
         gbc.gridx = 0; gbc.gridy = 0;
         painelFormulario.add(new JLabel("Prestador:"), gbc);
         gbc.gridx = 1; gbc.gridwidth = 3;
@@ -54,7 +51,6 @@ public class GestaoContratos extends JFrame {
         painelFormulario.add(cmbPrestador, gbc);
         gbc.gridwidth = 1;
         
-        // Tipo de Serviço
         gbc.gridx = 0; gbc.gridy = 1;
         painelFormulario.add(new JLabel("Tipo de Serviço:"), gbc);
         gbc.gridx = 1;
@@ -62,14 +58,12 @@ public class GestaoContratos extends JFrame {
         cmbTipoServico = new JComboBox<>(tiposServico);
         painelFormulario.add(cmbTipoServico, gbc);
         
-        // Valor
         gbc.gridx = 2;
         painelFormulario.add(new JLabel("Valor (R$):"), gbc);
         gbc.gridx = 3;
         txtValor = new JTextField(15);
         painelFormulario.add(txtValor, gbc);
         
-        // Data Início
         gbc.gridx = 0; gbc.gridy = 2;
         painelFormulario.add(new JLabel("Data Início:"), gbc);
         gbc.gridx = 1;
@@ -77,7 +71,6 @@ public class GestaoContratos extends JFrame {
         txtDataInicio.setToolTipText("Formato: dd/MM/yyyy");
         painelFormulario.add(txtDataInicio, gbc);
         
-        // Data Fim
         gbc.gridx = 2;
         painelFormulario.add(new JLabel("Data Fim:"), gbc);
         gbc.gridx = 3;
@@ -85,7 +78,6 @@ public class GestaoContratos extends JFrame {
         txtDataFim.setToolTipText("Formato: dd/MM/yyyy");
         painelFormulario.add(txtDataFim, gbc);
         
-        // Status
         gbc.gridx = 0; gbc.gridy = 3;
         painelFormulario.add(new JLabel("Status:"), gbc);
         gbc.gridx = 1;
@@ -94,7 +86,6 @@ public class GestaoContratos extends JFrame {
         cmbStatus.setEnabled(false); // Status é calculado automaticamente
         painelFormulario.add(cmbStatus, gbc);
         
-        // Observações
         gbc.gridx = 0; gbc.gridy = 4;
         painelFormulario.add(new JLabel("Observações:"), gbc);
         gbc.gridx = 1; gbc.gridwidth = 3;
@@ -102,7 +93,6 @@ public class GestaoContratos extends JFrame {
         painelFormulario.add(txtObservacoes, gbc);
         gbc.gridwidth = 1;
         
-        // Painel de botões do formulário
         JPanel painelBotoesForm = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 10));
         JButton btnNovo = new JButton("Novo");
         JButton btnSalvar = new JButton("Salvar");
@@ -122,7 +112,6 @@ public class GestaoContratos extends JFrame {
         painelBotoesForm.add(btnExcluir);
         painelBotoesForm.add(btnLimpar);
         
-        // Painel de filtros
         JPanel painelFiltros = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 10));
         painelFiltros.setBorder(BorderFactory.createTitledBorder("Filtros"));
         
@@ -148,7 +137,6 @@ public class GestaoContratos extends JFrame {
         });
         painelFiltros.add(btnLimparFiltros);
         
-        // Tabela de contratos
         String[] colunas = {"ID", "Prestador", "Tipo Serviço", "Valor", "Data Início", "Data Fim", "Status", "Dias Restantes"};
         modeloTabela = new DefaultTableModel(colunas, 0) {
             @Override
@@ -167,17 +155,14 @@ public class GestaoContratos extends JFrame {
         JScrollPane scrollPane = new JScrollPane(tabelaContratos);
         scrollPane.setBorder(BorderFactory.createTitledBorder("Contratos Cadastrados"));
         
-        // Painel central
         JPanel painelCentral = new JPanel(new BorderLayout(5, 5));
         painelCentral.add(painelFormulario, BorderLayout.NORTH);
         painelCentral.add(painelBotoesForm, BorderLayout.CENTER);
         
-        // Painel inferior
         JPanel painelInferior = new JPanel(new BorderLayout(5, 5));
         painelInferior.add(painelFiltros, BorderLayout.NORTH);
         painelInferior.add(scrollPane, BorderLayout.CENTER);
         
-        // Painel de botão voltar
         JPanel painelRodape = new JPanel(new FlowLayout(FlowLayout.RIGHT));
         JButton btnVoltar = new JButton("Voltar ao Menu");
         btnVoltar.addActionListener(e -> dispose());
@@ -354,12 +339,10 @@ public class GestaoContratos extends JFrame {
         for (ContratoServico c : contratos) {
             boolean incluir = true;
             
-            // Filtro por status
             if (!statusFiltro.equals("Todos") && !c.getStatus().equals(statusFiltro)) {
                 incluir = false;
             }
             
-            // Filtro por tipo de serviço
             if (!tipoFiltro.equals("Todos") && !c.getTipoServico().equals(tipoFiltro)) {
                 incluir = false;
             }

@@ -221,7 +221,6 @@ public class CadastroPrestadores extends JFrame {
         String tipo = cmbTipo.getSelectedIndex() == 0 ? "PF" : "PJ";
         String cpfCnpj = txtCpfCnpj.getText().trim();
         
-        // Valida CPF ou CNPJ
         if (tipo.equals("PF")) {
             if (!PrestadorServico.validarCPF(cpfCnpj)) {
                 JOptionPane.showMessageDialog(this, "CPF inválido!", "Erro", JOptionPane.ERROR_MESSAGE);
@@ -317,12 +316,10 @@ public class CadastroPrestadores extends JFrame {
         for (PrestadorServico p : prestadores) {
             boolean incluir = true;
             
-            // Filtro por categoria
             if (!categoria.equals("Todas") && !p.getCategoria().equals(categoria)) {
                 incluir = false;
             }
             
-            // Filtro por status
             if (statusFiltro.equals("Apenas Ativos") && !p.temContratoAtivo()) {
                 incluir = false;
             } else if (statusFiltro.equals("Apenas Inativos") && p.temContratoAtivo()) {

@@ -29,13 +29,11 @@ public class RelatoriosPrestadores extends JFrame {
         setLocationRelativeTo(null);
         setLayout(new BorderLayout(10, 10));
         
-        // Painel superior
         JPanel painelTitulo = new JPanel();
         JLabel lblTitulo = new JLabel("RELATÓRIOS DE PRESTADORES");
         lblTitulo.setFont(new Font("Arial", Font.BOLD, 18));
         painelTitulo.add(lblTitulo);
         
-        // Painel de seleção de relatório
         JPanel painelSelecao = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 10));
         painelSelecao.setBorder(BorderFactory.createTitledBorder("Selecione o Tipo de Relatório"));
         
@@ -82,12 +80,10 @@ public class RelatoriosPrestadores extends JFrame {
         JScrollPane scrollPane = new JScrollPane(tabelaRelatorio);
         scrollPane.setBorder(BorderFactory.createTitledBorder("Dados do Relatório"));
         
-        // Painel central
         JPanel painelCentral = new JPanel(new BorderLayout(5, 5));
         painelCentral.add(painelResumo, BorderLayout.NORTH);
         painelCentral.add(scrollPane, BorderLayout.CENTER);
         
-        // Painel de botão voltar
         JPanel painelRodape = new JPanel(new FlowLayout(FlowLayout.RIGHT));
         JButton btnVoltar = new JButton("Voltar ao Menu");
         btnVoltar.addActionListener(e -> dispose());
@@ -106,29 +102,29 @@ public class RelatoriosPrestadores extends JFrame {
         int tipoSelecionado = cmbTipoRelatorio.getSelectedIndex();
         
         switch (tipoSelecionado) {
-            case 0: // Prestadores por Categoria
+            case 0:
                 cmbParametro.addItem("Todas");
                 cmbParametro.addItem("Limpeza");
                 cmbParametro.addItem("Manutenção");
                 cmbParametro.addItem("TI");
                 cmbParametro.addItem("Consultoria");
                 break;
-            case 1: // Prestadores por Status
+            case 1:
                 cmbParametro.addItem("Ativos");
                 cmbParametro.addItem("Inativos");
                 cmbParametro.addItem("Todos");
                 break;
-            case 2: // Contratos por Tipo de Serviço
+            case 2:
                 cmbParametro.addItem("Todos");
                 cmbParametro.addItem("Limpeza");
                 cmbParametro.addItem("Manutenção");
                 cmbParametro.addItem("Consultoria");
                 cmbParametro.addItem("TI");
                 break;
-            case 3: // Prestadores Ativos com Detalhes
+            case 3:
                 cmbParametro.addItem("Todos os Ativos");
                 break;
-            case 4: // Histórico Completo
+            case 4:
                 cmbParametro.addItem("Todos os Registros");
                 break;
         }
