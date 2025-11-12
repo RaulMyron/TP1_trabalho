@@ -1,17 +1,26 @@
 
 package telas.financeiro;
 import javax.swing.JOptionPane;
+import telas.administracaoGestao.controller.GestaoService;
+import telas.administracaoGestao.model.Usuario;
+import telas.administracaoGestao.view.TelaPrincipal;
 
 public class MenuFinanceiro extends javax.swing.JFrame {
-    public MenuFinanceiro() {
+    
+    private Usuario usuarioLogado;
+    private GestaoService gestaoService;
+    
+    public MenuFinanceiro(Usuario usuario, GestaoService service) {
         initComponents();
+        this.usuarioLogado = usuario;
+        this.gestaoService = service;
         configurarTela();
     }
     
     private void configurarTela() {
         setTitle("Menu Financeiro - Sistema de RH");
         setLocationRelativeTo(null);
-        setDefaultCloseOperation(EXIT_ON_CLOSE);
+        setDefaultCloseOperation(DISPOSE_ON_CLOSE);
     }
     
     
@@ -52,7 +61,10 @@ public class MenuFinanceiro extends javax.swing.JFrame {
             JOptionPane.YES_NO_OPTION);
         
         if (confirma == JOptionPane.YES_OPTION) {
-            System.exit(0);
+            TelaPrincipal telaPrincipal = new TelaPrincipal(this.usuarioLogado, this.gestaoService);
+            telaPrincipal.setVisible(true);
+            
+            this.dispose();
         }
     }
    
@@ -199,10 +211,20 @@ public class MenuFinanceiro extends javax.swing.JFrame {
 
    
     public static void main(String args[]) {
-        java.awt.EventQueue.invokeLater(() -> {
-            new MenuFinanceiro().setVisible(true);
-        });
-    }
+    java.awt.EventQueue.invokeLater(() -> {
+        telas.administracaoGestao.controller.GestaoService serviceTemp = 
+            new telas.administracaoGestao.controller.GestaoService();
+        
+        try {
+            telas.administracaoGestao.model.Usuario usuarioTemp = 
+                serviceTemp.login("admin", "admin123".toCharArray());
+            
+            new MenuFinanceiro(usuarioTemp, serviceTemp).setVisible(true);
+        } catch (Exception e) {
+            System.out.println("Erro ao iniciar: " + e.getMessage());
+        }
+    });
+}
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCadastrar;
     private javax.swing.JButton btnConfigurar;
