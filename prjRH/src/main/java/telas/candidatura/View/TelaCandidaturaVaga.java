@@ -11,10 +11,7 @@ import javax.swing.JOptionPane;
 import telas.candidatura.Model.Candidato;
 import telas.administracaoGestao.model.Vaga;
 
-/**
- *
- * @author lipit
- */
+
 public class TelaCandidaturaVaga extends javax.swing.JFrame {
     
     private final CandidatoController Controller;
@@ -29,11 +26,11 @@ public class TelaCandidaturaVaga extends javax.swing.JFrame {
     public TelaCandidaturaVaga() {
         initComponents();
         this.Controller = new CandidatoController();
-        popularVagas(); // ChamaS o método para preencher a lista de vagas
+        popularVagas(); 
     }
-    // NOVO MÉTODO para preencher a ComboBox (caixa de seleção)
+ 
     private void popularVagas() {
-        // Troque "jComboBoxVagas" pelo nome da sua variável
+
         DefaultComboBoxModel<Vaga> model = new DefaultComboBoxModel<>();
         for (Vaga vaga : Controller.getVagasDisponiveis()) {
             model.addElement(vaga);
@@ -169,13 +166,13 @@ public class TelaCandidaturaVaga extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
-        // Lembre-se de trocar "jTextFieldCpf" pelo nome da variável do seu campo de texto
+
     String cpf = jTextField1.getText();
     
     // Chama o controller para buscar o candidato
     this.candidatoEncontrado = Controller.buscarPorCpf(cpf);
     
-    // Agora, damos o feedback IMEDIATO
+
     if (this.candidatoEncontrado != null) {
         // Se encontrou, mostra uma mensagem de sucesso
         JOptionPane.showMessageDialog(this, 

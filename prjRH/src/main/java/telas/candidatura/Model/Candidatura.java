@@ -13,18 +13,16 @@ public class Candidatura implements Serializable {
     private final Date dataCandidatura;
     private String status;
 
-    // Atributos de associação
     private final Candidato candidato;
     private final Vaga vaga;
 
     public Candidatura(Candidato candidato, Vaga vaga) {
         this.candidato = candidato;
         this.vaga = vaga;
-        this.dataCandidatura = new Date(); // Define a data no momento da criação
-        this.status = "Pendente"; // Status inicial padrão
+        this.dataCandidatura = new Date();
+        this.status = "Pendente";
     }
 
-    // Getters
     public Date getDataCandidatura() {
         return dataCandidatura;
     }
@@ -41,7 +39,7 @@ public class Candidatura implements Serializable {
         return vaga;
     }
 
-    // Método para alterar o status, uma regra de negócio desta classe.
+
     public void setStatus(String status) {
         this.status = status;
     }

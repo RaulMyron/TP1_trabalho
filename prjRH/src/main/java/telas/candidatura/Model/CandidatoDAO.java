@@ -26,16 +26,12 @@ public class CandidatoDAO {
      * @param candidatos A lista de objetos Candidato a ser salva.
      */
     public void salvar(List<Candidato> candidatos) {
-        // O "try-with-resources" garante que os streams serão fechados automaticamente.
         try (FileOutputStream fos = new FileOutputStream(NOME_ARQUIVO);
              ObjectOutputStream oos = new ObjectOutputStream(fos)) {
 
-            // Escreve a lista inteira de candidatos no arquivo.
             oos.writeObject(candidatos);
 
         } catch (IOException e) {
-            // Em uma aplicação real, trataríamos o erro de forma mais elegante.
-            // Por enquanto, imprimir o erro ajuda na depuração.
             e.printStackTrace();
         }
     }

@@ -2,9 +2,8 @@ package telas.candidatura.Model;
 
 import telas.candidatura.Model.Pessoa;
 import java.util.Date;
-// Importe a classe List se for usar o histórico de candidaturas
-// import java.util.List;
-// import java.util.ArrayList;
+import java.util.List;
+import java.util.ArrayList;
 
 /**
  * Representa um candidato no processo seletivo.
@@ -16,7 +15,7 @@ public class Candidato extends Pessoa {
     private String experiencia;
     private double pretensaoSalarial;
     private String disponibilidadeHorario;
-    private final Date dataCadastro; // final, pois a data de cadastro não deve mudar
+    private final Date dataCadastro;
 
     // Construtor da classe Candidato
     public Candidato(String nome, String cpf, String email, String formacao, String experiencia, double pretensaoSalarial, String disponibilidade) {
@@ -33,7 +32,7 @@ public class Candidato extends Pessoa {
         this.dataCadastro = new Date();
     }
 
-    // Getters e Setters para os atributos específicos de Candidato
+
     public String getFormacao() {
         return formacao;
     }

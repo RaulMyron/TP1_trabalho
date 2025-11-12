@@ -8,23 +8,20 @@ import telas.administracaoGestao.model.Vaga;
 import telas.candidatura.Model.Candidatura;
 import java.util.ArrayList;
 import telas.candidatura.Model.CandidaturaDAO;
-import java.text.SimpleDateFormat; // Para formatar a data
+import java.text.SimpleDateFormat; 
 import telas.administracaoGestao.controller.GestaoService;
 import telas.administracaoGestao.model.Vaga;
 
 
 
-/**
- * Controller responsável por intermediar as ações da View com a lógica do Model
- * para a entidade Candidato.
- */
+
 public class CandidatoController {
 
     private final CandidatoDAO candidatoDAO;
     private final CandidaturaDAO candidaturaDAO;
     private List<Candidato> candidatos;
-    private List<Candidatura> candidaturas; // Para gerenciar as candidaturas em memória
-    private List<Vaga> vagasDisponiveis; // Para simular as vagas disponíveis
+    private List<Candidatura> candidaturas; 
+    private List<Vaga> vagasDisponiveis; 
     private final GestaoService gestaoService;
 
     // O construtor é executado quando o controller é criado.
@@ -43,10 +40,7 @@ public class CandidatoController {
     }
     
 
-    /**
-     * Adiciona um novo candidato ao sistema.
-     * @throws RHException se um candidato com o mesmo CPF já existir.
-     */
+  
     public void adicionarCandidato(String nome, String cpf, String email, String formacao, String experiencia, double pretensaoSalarial, String disponibilidade) throws RHException {
         
         // Regra de negócio: Verifica se já existe um candidato com este CPF.
@@ -67,19 +61,12 @@ public class CandidatoController {
         this.candidatoDAO.salvar(this.candidatos);
     }
 
-    /**
-     * Retorna a lista completa de candidatos para exibição na View.
-     * @return A lista de todos os candidatos cadastrados.
-     */
+
     public List<Candidato> getListaCandidatos() {
         return this.candidatos;
     }
     
-    /**
-     * Busca um candidato pelo seu CPF.
-     * @param cpf O CPF a ser buscado.
-     * @return O objeto Candidato se encontrado, ou null se não existir.
-     */
+
     public Candidato buscarPorCpf(String cpf) {
         for (Candidato c : this.candidatos) {
             if (c.getCpf().equals(cpf)) {
@@ -90,7 +77,6 @@ public class CandidatoController {
     }
    public List<Vaga> getVagasDisponiveis() {
     // Agora ele chama o Service da sua colega para buscar as vagas REAIS
-    // Usando o nome exato do método que encontramos: "listarTodasVagas"
     return this.gestaoService.listarTodasVagas(); 
 }
     
@@ -100,7 +86,7 @@ public class CandidatoController {
     public List<Candidatura> getListaCandidaturas() {
         return this.candidaturas;
     }
-    // Este é um NOVO MÉTODO dentro da sua classe CandidatoController
+
 /**
  * Busca na lista de candidaturas por um termo (Nome ou CPF do candidato).
  * A busca não diferencia maiúsculas de minúsculas.
@@ -108,7 +94,6 @@ public class CandidatoController {
  * @param termo O texto a ser buscado no nome ou CPF.
  * @return Uma nova lista contendo apenas as candidaturas que correspondem ao filtro.
  */
-// Este é o NOVO método de filtro. Adicione-o ao seu CandidatoController.
 
 /**
  * Filtra a lista de candidaturas com base em três critérios combinados.
@@ -137,9 +122,6 @@ public List<Candidatura> filtrarCandidaturas(String filtroVaga, String filtroSta
         String nomeDoCandidato = c.getCandidato().getNome().toLowerCase();
         String cpfDoCandidato = c.getCandidato().getCpf().toLowerCase();
 
-        // --------------------------------------------------------------------
-        // LÓGICA DO FILTRO: O candidato só passa se atender a TODOS os critérios
-        // --------------------------------------------------------------------
 
         // 1. Verifica o filtro de Vaga
         // Se o filtro de vaga não estiver vazio E o cargo da candidatura não contiver o termo, REJEITA.
@@ -166,7 +148,6 @@ public List<Candidatura> filtrarCandidaturas(String filtroVaga, String filtroSta
     return resultados; // Retorna a lista filtrada
 }
 
-// Este é um NOVO MÉTODO dentro da sua classe CandidatoController
 
 /**
  * Altera o status de uma candidatura específica e salva a lista atualizada no arquivo.
@@ -200,10 +181,8 @@ public void alterarStatusCandidatura(Candidatura candidatura, String novoStatus)
         // Se a validação passar, cria a nova candidatura.
         Candidatura novaCandidatura = new Candidatura(candidato, vaga);
         this.candidaturas.add(novaCandidatura);
-        // AGORA VAMOS SALVAR A LISTA NO ARQUIVO
         this.candidaturaDAO.salvar(this.candidaturas);
         
-        // Futuramente, aqui também chamaremos um DAO para salvar a lista de candidaturas.
         System.out.println("Candidatura criada com sucesso!");
     }
     

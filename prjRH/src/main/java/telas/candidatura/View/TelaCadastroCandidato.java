@@ -5,23 +5,18 @@
 package telas.candidatura.View;
 
 
-import telas.candidatura.Controller.CandidatoController; // Adicione este import
-import javax.swing.JOptionPane; // E este, para as mensagens
-import telas.candidatura.Excecao.RHException; // E este, para capturar o erro
+import telas.candidatura.Controller.CandidatoController; 
+import javax.swing.JOptionPane; 
+import telas.candidatura.Excecao.RHException;
 
-/**
- *
- * @author lipit
- */
+
 public class TelaCadastroCandidato extends javax.swing.JFrame {
     
     private final CandidatoController Controller;
     
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(TelaCadastroCandidato.class.getName());
 
-    /**
-     * Creates new form TelaCadastroCandidatos
-     */
+ 
     public TelaCadastroCandidato() {
         initComponents();
         this.Controller = new CandidatoController();
@@ -221,26 +216,26 @@ public class TelaCadastroCandidato extends javax.swing.JFrame {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
         try {
-        // 1. Coleta os dados usando os NOMES CORRETOS das variáveis
-        String nome = jTextField1.getText();           // <-- TROQUE AQUI
-        String cpf = jTextField2.getText();             // <-- TROQUE AQUI
-        String email = jTextField3.getText();           // <-- TROQUE AQUI
-        String formacao = jTextField4.getText();        // <-- TROQUE AQUI
-        String experiencia = ""; // Deixamos vazio pois não há campo na tela
+        
+        String nome = jTextField1.getText();          
+        String cpf = jTextField2.getText();            
+        String email = jTextField3.getText();         
+        String formacao = jTextField4.getText();      
+        String experiencia = ""; 
 
         // Lógica para pegar dos checkboxes
         String disponibilidade = "";
-        if (matutino.isSelected()) { // <-- TROQUE AQUI (Matutino)
+        if (matutino.isSelected()) { 
             disponibilidade += "Matutino ";
         }
-        if (vespertino.isSelected()) { // <-- TROQUE AQUI (Vespertino)
+        if (vespertino.isSelected()) { 
             disponibilidade += "Vespertino";
         }
 
         // 2. Converte a pretensão salarial
         double pretensaoSalarial = 0;
-        if (!jTextField5.getText().isEmpty()) { // <-- TROQUE AQUI
-            pretensaoSalarial = Double.parseDouble(jTextField5.getText()); // <-- TROQUE AQUI
+        if (!jTextField5.getText().isEmpty()) { 
+            pretensaoSalarial = Double.parseDouble(jTextField5.getText()); 
         }
 
         // 3. Validação básica
