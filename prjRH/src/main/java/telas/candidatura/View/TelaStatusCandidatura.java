@@ -29,24 +29,24 @@ public class TelaStatusCandidatura extends javax.swing.JFrame {
     initComponents();
     this.Controller = new CandidatoController();
     
-    // ALTERAÇÃO AQUI: Agora passamos a lista completa para o método
+
     popularTabela(this.Controller.getListaCandidaturas()); 
 }
     
-    // ALTERAÇÃO AQUI: O método agora "recebe" a lista como parâmetro
+
 private void popularTabela(List<Candidatura> listaParaExibir) {
     
-    // 1. A linha que buscava a lista foi REMOVIDA.
 
-    // 2. Pega o modelo da tabela.
-    // Troque "jTable1" pelo nome da variável da sua tabela.
+
+    //Pega o modelo da tabela.
+
     DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
     model.setRowCount(0); // Limpa a tabela
 
     // Define um formato para a data ficar mais legível
     SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 
-    // 4. ALTERAÇÃO AQUI: Percorre a lista que recebemos no parâmetro
+    //Percorre a lista que recebe no parâmetro
     for (Candidatura c : listaParaExibir) {
         Object[] rowData = {
             c.getCandidato().getNome(),      // Coluna "Nome do Candidato"
@@ -255,13 +255,12 @@ private void popularTabela(List<Candidatura> listaParaExibir) {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
         // 1. Pega os dados dos TRÊS campos de filtro
-    // Lembre-se de trocar os nomes das variáveis (ex: jTextField1) pelos seus nomes corretos!
     
-    String vaga = jTextField1.getText(); // <-- TROQUE PELO NOME DO SEU CAMPO "Filtrar por Vaga"
-    String status = jComboBox1.getSelectedItem().toString(); // <-- TROQUE PELO NOME DA SUA COMBOBOX "Filtrar por Status"
-    String nomeCpf = jTextField2.getText(); // <-- TROQUE PELO NOME DO SEU CAMPO "Buscar por Nome/CPF"
+    String vaga = jTextField1.getText(); 
+    String status = jComboBox1.getSelectedItem().toString(); 
+    String nomeCpf = jTextField2.getText();
 
-    // 2. Chama o NOVO método do Controller, passando os três filtros
+    // 2. Chama ométodo do Controller, passando os três filtros
     List<Candidatura> resultados = Controller.filtrarCandidaturas(vaga, status, nomeCpf);
 
     // 3. Usa o método popularTabela para exibir os resultados filtrados
@@ -280,23 +279,21 @@ private void popularTabela(List<Candidatura> listaParaExibir) {
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
         // 1. Limpa os TRÊS campos de filtro
-    // Lembre-se de trocar os nomes das variáveis!
     
-    jTextField1.setText(""); // <-- TROQUE PELO NOME DO SEU CAMPO "Filtrar por Vaga"
-    jComboBox1.setSelectedItem("Todos"); // <-- TROQUE PELO NOME DA SUA COMBOBOX "Filtrar por Status"
-    jTextField2.setText(""); // <-- TROQUE PELO NOME DO SEU CAMPO "Buscar por Nome/CPF"
+    jTextField1.setText(""); 
+    jComboBox1.setSelectedItem("Todos");
+    jTextField2.setText("");
 
     // 2. Pega a lista COMPLETA de candidaturas do Controller
     List<Candidatura> listaCompleta = Controller.getListaCandidaturas();
 
-    // 3. Usa o método popularTabela para exi   bir a lista completa
+    // 3. Usa o método popularTabela para exibir a lista completa
     popularTabela(listaCompleta);
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
         // TODO add your handling code here:
         // 1. Descobre qual linha da tabela está selecionada
-    // Lembre-se de trocar "jTable1" pelo nome da variável da sua tabela
     int linhaSelecionada = jTable1.getSelectedRow();
 
     // 2. Verifica se o usuário realmente selecionou uma linha
@@ -308,20 +305,16 @@ private void popularTabela(List<Candidatura> listaParaExibir) {
     // 3. Pega o objeto Candidatura correspondente àquela linha
     Candidatura candidaturaSelecionada = Controller.getListaCandidaturas().get(linhaSelecionada);
 
-    // --- MUDANÇA PRINCIPAL AQUI ---
-    
     // 4. Define as opções válidas de status
     Object[] statusOpcoes = { "Pendente", "Em Análise", "Aprovado", "Reprovado" };
 
     // 5. Mostra um JOptionPane com uma CAIXA DE SELEÇÃO, em vez de um campo de texto.
-    // O último parâmetro ("candidaturaSelecionada.getStatus()") é inteligente:
-    // ele já deixa a opção atual do candidato pré-selecionada no dropdown.
     Object selecionado = JOptionPane.showInputDialog(
             this, // Componente pai
             "Selecione o novo status:", // Mensagem
             "Alterar Status", // Título
             JOptionPane.PLAIN_MESSAGE, // Tipo de mensagem
-            null, // Ícone (padrão)
+            null, // Ícone
             statusOpcoes, // O array de opções para o dropdown
             candidaturaSelecionada.getStatus() // Opção inicial selecionada
     );

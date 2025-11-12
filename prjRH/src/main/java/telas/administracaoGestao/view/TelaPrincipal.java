@@ -89,6 +89,11 @@ public TelaPrincipal(Usuario usuario, GestaoService service) {
         jButton6.setText("Recrutamento");
 
         jButton7.setText("Candidatura");
+        jButton7.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton7ActionPerformed(evt);
+            }
+        });
 
         jButton8.setText("Presatação de Serviço");
 
@@ -170,6 +175,11 @@ public TelaPrincipal(Usuario usuario, GestaoService service) {
         // 2. Fecha a TelaPrincipal atual
          this.dispose();        // TODO add your handling code here:
     }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
+        // TODO add your handling code here:
+        new telas.candidatura.View.TelaMenuCandidatura().setVisible(true);
+    }//GEN-LAST:event_jButton7ActionPerformed
 
     /**
      * @param args the command line arguments
