@@ -6,6 +6,7 @@ package telas.administracaoGestao.view;
 import telas.administracaoGestao.controller.GestaoService;
 import telas.administracaoGestao.model.Perfil;
 import telas.administracaoGestao.model.Usuario;
+
 /**
  *
  * @author Nati
@@ -205,7 +206,9 @@ public TelaPrincipal(Usuario usuario, GestaoService service) {
     }//GEN-LAST:event_jButton6ActionPerformed
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
-
+        telas.financeiro.MenuFinanceiro menuFin = 
+        new telas.financeiro.MenuFinanceiro(this.usuarioLogado, this.gestaoService);
+    menuFin.setVisible(true);
     }//GEN-LAST:event_jButton5ActionPerformed
 
     /**

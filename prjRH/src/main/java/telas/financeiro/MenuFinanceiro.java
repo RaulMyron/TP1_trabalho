@@ -206,25 +206,12 @@ public class MenuFinanceiro extends javax.swing.JFrame {
 
     private void btnSairActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSairActionPerformed
         // TODO add your handling code here:
-        sair();
+        this.dispose();
     }//GEN-LAST:event_btnSairActionPerformed
 
    
-    public static void main(String args[]) {
-    java.awt.EventQueue.invokeLater(() -> {
-        telas.administracaoGestao.controller.GestaoService serviceTemp = 
-            new telas.administracaoGestao.controller.GestaoService();
-        
-        try {
-            telas.administracaoGestao.model.Usuario usuarioTemp = 
-                serviceTemp.login("admin", "admin123".toCharArray());
-            
-            new MenuFinanceiro(usuarioTemp, serviceTemp).setVisible(true);
-        } catch (Exception e) {
-            System.out.println("Erro ao iniciar: " + e.getMessage());
-        }
-    });
-}
+    
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCadastrar;
     private javax.swing.JButton btnConfigurar;
