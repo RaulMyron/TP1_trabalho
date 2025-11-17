@@ -306,7 +306,7 @@ public class Main extends javax.swing.JFrame {
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         new GerenciarCandidaturas(this, this.recrutadorLogado).setVisible(true);
-        this.setVisible(false);
+        this.dispose(); // Troca setVisible(false) por dispose() para liberar recursos
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
@@ -317,13 +317,13 @@ public class Main extends javax.swing.JFrame {
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
         ConsultarContratações telaConsultar = new ConsultarContratações(this.recrutadorLogado);
         telaConsultar.setVisible(true);
-        this.setVisible(false);
+        this.dispose(); // Troca setVisible(false) por dispose() para liberar recursos
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         MarcarEntrevistas telaMarcar = new MarcarEntrevistas(this, this.recrutadorLogado);
         telaMarcar.setVisible(true);
-        this.setVisible(false);
+        this.dispose(); // Troca setVisible(false) por dispose() para liberar recursos
     }//GEN-LAST:event_jButton3ActionPerformed
 
     /**

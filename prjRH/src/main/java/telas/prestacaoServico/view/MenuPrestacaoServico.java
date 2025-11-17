@@ -3,11 +3,42 @@ package telas.prestacaoservico.view;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
+import telas.administracaoGestao.controller.GestaoService;
+import telas.administracaoGestao.model.Usuario;
+import telas.administracaoGestao.model.Perfil;
+import telas.administracaoGestao.view.TelaPrincipal;
 
 public class MenuPrestacaoServico extends JFrame {
-    
+
+    private Usuario usuarioLogado;
+    private GestaoService gestaoService;
+
     public MenuPrestacaoServico() {
         initComponents();
+    }
+
+    public MenuPrestacaoServico(Usuario usuario, GestaoService service) {
+        this.usuarioLogado = usuario;
+        this.gestaoService = service;
+        initComponents();
+        validarPermissoes();
+    }
+
+    private void validarPermissoes() {
+        // Valida se o usuário tem permissão para acessar o módulo de Prestação de Serviço
+        // Apenas ADMINISTRADOR e GESTOR devem ter acesso
+        boolean isAdmin = usuarioLogado.getPerfis().contains(Perfil.ADMINISTRADOR);
+        boolean isGestor = usuarioLogado.getPerfis().contains(Perfil.GESTOR);
+
+        if (!isAdmin && !isGestor) {
+            JOptionPane.showMessageDialog(this,
+                "Você não tem permissão para acessar o Módulo de Prestação de Serviço.\n" +
+                "Acesso permitido apenas para Administradores e Gestores.",
+                "Acesso Negado",
+                JOptionPane.ERROR_MESSAGE);
+            this.dispose();
+            new TelaPrincipal(usuarioLogado, gestaoService).setVisible(true);
+        }
     }
     
     private void initComponents() {
@@ -35,21 +66,29 @@ public class MenuPrestacaoServico extends JFrame {
         
         btnCadastrarPrestador.addActionListener((ActionEvent e) -> {
             new CadastroPrestadores().setVisible(true);
+            this.dispose(); // Fecha esta tela para evitar múltiplas telas abertas
         });
-        
+
         btnGestaoContratos.addActionListener((ActionEvent e) -> {
             new GestaoContratos().setVisible(true);
+            this.dispose(); // Fecha esta tela para evitar múltiplas telas abertas
         });
-        
+
         btnRelatorios.addActionListener((ActionEvent e) -> {
             new RelatoriosPrestadores().setVisible(true);
+            this.dispose(); // Fecha esta tela para evitar múltiplas telas abertas
         });
-        
+
         btnAlertas.addActionListener((ActionEvent e) -> {
             new AlertasVencimento().setVisible(true);
+            this.dispose(); // Fecha esta tela para evitar múltiplas telas abertas
         });
-        
+
         btnSair.addActionListener((ActionEvent e) -> {
+            // Volta para a Tela Principal se usuário estiver logado
+            if (usuarioLogado != null && gestaoService != null) {
+                new TelaPrincipal(usuarioLogado, gestaoService).setVisible(true);
+            }
             dispose();
         });
         

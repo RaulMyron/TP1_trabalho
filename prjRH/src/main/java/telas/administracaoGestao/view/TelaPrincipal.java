@@ -178,7 +178,8 @@ public TelaPrincipal(Usuario usuario, GestaoService service) {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         TelaAdministrarUsuarios telaAdm = new TelaAdministrarUsuarios(usuarioLogado, gestaoService);
-        telaAdm.setVisible(true);                                                                                                
+        telaAdm.setVisible(true);
+        this.dispose(); // Fecha a TelaPrincipal para evitar múltiplas telas abertas
     }//GEN-LAST:event_jButton1ActionPerformed
     
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
@@ -200,18 +201,27 @@ public TelaPrincipal(Usuario usuario, GestaoService service) {
 
     private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
         // TODO add your handling code here:
-        new telas.candidatura.View.TelaMenuCandidatura().setVisible(true);
+        new telas.candidatura.View.TelaMenuCandidatura(this.usuarioLogado, this.gestaoService).setVisible(true);
+        this.dispose(); // Fecha a TelaPrincipal para evitar múltiplas telas abertas
     }//GEN-LAST:event_jButton7ActionPerformed
 
     private void jButton8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton8ActionPerformed
-        new telas.prestacaoservico.view.MenuPrestacaoServico().setVisible(true);
+        new telas.prestacaoservico.view.MenuPrestacaoServico(this.usuarioLogado, this.gestaoService).setVisible(true);
+        this.dispose(); // Fecha a TelaPrincipal para evitar múltiplas telas abertas
     }//GEN-LAST:event_jButton8ActionPerformed
 
     private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
-        new telas.recrutamento.view.Main().setVisible(true);
+        telas.recrutamento.view.Main telaRecrutamento = new telas.recrutamento.view.Main();
+        telaRecrutamento.carregarRecrutador(usuarioLogado.getCpf()); // Passa o usuário logado
+        telaRecrutamento.setVisible(true);
+        this.dispose(); // Fecha a TelaPrincipal para evitar múltiplas telas abertas
     }//GEN-LAST:event_jButton6ActionPerformed
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
+        // Abre o Menu Financeiro passando o usuário logado
+        telas.financeiro.MenuFinanceiro menuFinanceiro = new telas.financeiro.MenuFinanceiro(this.usuarioLogado, this.gestaoService);
+        menuFinanceiro.setVisible(true);
+        this.dispose(); // Fecha a TelaPrincipal para evitar múltiplas telas abertas
     }//GEN-LAST:event_jButton5ActionPerformed
 
     /**
