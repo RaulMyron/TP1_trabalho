@@ -8,58 +8,35 @@ import telas.administracaoGestao.model.Vaga;
 import telas.candidatura.Model.Candidatura;
 import java.util.ArrayList;
 import telas.candidatura.Model.CandidaturaDAO;
-import java.text.SimpleDateFormat; 
 import telas.administracaoGestao.controller.GestaoService;
-import telas.administracaoGestao.model.Vaga;
-
-
-
 
 public class CandidatoController {
-
-    private final CandidatoDAO candidatoDAO;
-    private final CandidaturaDAO candidaturaDAO;
-    private List<Candidato> candidatos;
-    private List<Candidatura> candidaturas; 
-    private List<Vaga> vagasDisponiveis; 
-    private  GestaoService gestaoService;
-
-    // O construtor é executado quando o controller é criado.
-    public CandidatoController() {
-        this.candidatoDAO = new CandidatoDAO();
-        // Carrega a lista de candidatos do arquivo para a memória.
-        this.candidatos = this.candidatoDAO.carregar();
-        this.candidaturaDAO = new CandidaturaDAO();
-        
-        // Inicializa as novas listas
-        this.candidaturas = this.candidaturaDAO.carregar();
-        
-        // Inicializa o Service 
-        this.gestaoService =  GestaoService.getInstance();
     
-    }
-    
-
-  
-    public void adicionarCandidato(String nome, String cpf, String email, String formacao, String experiencia, double pretensaoSalarial, String disponibilidade) throws RHException {
+    private final CandidatoDAO candidatoDAO = new CandidatoDAO();
+    private final CandidaturaDAO candidaturaDAO = new CandidaturaDAO();
+    private final GestaoService gestaoService = GestaoService.getInstance();
+    private final List<Candidato> candidatos = candidatoDAO.carregar();
+    private final List<Candidatura> candidaturas = candidaturaDAO.carregar();
         
-        // Regra de negócio: Verifica se já existe um candidato com este CPF.
+    public void adicionarCandidato(String nome, String cpf, String email, 
+                                   String formacao, String experiencia, 
+                                   double pretensaoSalarial, String disponibilidade) 
+                                   throws RHException {
+        
+        // Valida se CPF já existe
         for (Candidato c : this.candidatos) {
             if (c.getCpf().equals(cpf)) {
-                // Se encontrar, lança uma exceção para a View tratar.
                 throw new RHException("Erro: Já existe um candidato cadastrado com o CPF " + cpf);
             }
         }
         
-        // Se a validação passar, cria o novo objeto Candidato.
-        Candidato novoCandidato = new Candidato(nome, cpf, email, formacao, experiencia, pretensaoSalarial, disponibilidade);
-        
-        // Adiciona o novo candidato à lista em memória.
+        // Cria e adiciona o novo candidato
+        Candidato novoCandidato = new Candidato(nome, cpf, email, formacao, 
+                                                experiencia, pretensaoSalarial, disponibilidade);
         this.candidatos.add(novoCandidato);
-        
-        // Salva a lista atualizada de volta no arquivo.
         this.candidatoDAO.salvar(this.candidatos);
     }
+
 
 
     public List<Candidato> getListaCandidatos() {

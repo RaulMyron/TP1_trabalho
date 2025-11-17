@@ -296,8 +296,18 @@ private void popularTabela(List<Candidatura> listaParaExibir) {
     }                                           
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {                                         
-        // TODO add your handling code here:
-        // 1. Limpa os TRÊS campos de filtro
+            // 1. Reseta os campos visuais
+            jTextField1.setText("");           // Limpa campo Vaga
+            jTextField2.setText("");           // Limpa campo Nome
+            jComboBox1.setSelectedItem("Todos"); // Reseta o combo para "Todos"
+
+            // 2. Força a busca da lista COMPLETA novamente
+            // (Importante: Pegar a lista original do controller, sem filtros)
+            List<Candidatura> listaCompleta = Controller.getListaCandidaturas();
+
+            // 3. Atualiza a tabela
+            popularTabela(listaCompleta);
+        }
     
     jTextField1.setText(""); 
     jComboBox1.setSelectedItem("Todos");

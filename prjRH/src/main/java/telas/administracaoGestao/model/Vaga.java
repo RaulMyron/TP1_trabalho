@@ -48,4 +48,9 @@ public class Vaga implements Serializable {
     public void setRecrutadorResponsavel(Usuario recrutadorResponsavel) {
         this.recrutadorResponsavel = recrutadorResponsavel;
     }
+
+    @Override
+    public String toString() {
+        return this.cargo; 
+    }
 }

@@ -2,6 +2,7 @@ package Model;
 
 import java.io.Serializable;
 import java.util.Date;
+import telas.administracaoGestao.model.Vaga;
 
 /**
  * Classe de associação que representa a aplicação de um Candidato a uma Vaga.
