@@ -40,10 +40,6 @@ public class MarcarEntrevistas extends javax.swing.JFrame {
         carregarVagasRecrutador();
         carregarEntrevistas();
         habilitarCamposEntrevista(false);
-        if (jComboBox1.getItemCount() > 1) {
-            jComboBox1.setSelectedIndex(1); // Seleciona a primeira vaga real
-            carregarCandidatosVaga(); // Carrega os candidatos
-        }
     }
 
     private void configurarEventos() {
@@ -62,9 +58,11 @@ public class MarcarEntrevistas extends javax.swing.JFrame {
         // Botão Voltar
         jButton5.addActionListener(e -> voltarMenu());
         
-        // ComboBox de vagas
-        jComboBox1.addActionListener(e -> carregarCandidatosVaga());
-        jComboBox2.addActionListener(e -> carregarCandidatosVaga());
+        jComboBox1.addActionListener(e -> {
+            if (jComboBox1.getSelectedIndex() > 0) { // Só carrega se não for "Selecione"
+                carregarCandidatosVaga();
+            }
+        });
     }
     
     private void carregarVagasRecrutador() {
@@ -93,50 +91,47 @@ public class MarcarEntrevistas extends javax.swing.JFrame {
     private void carregarCandidatosVaga() {
         DefaultTableModel model = (DefaultTableModel) jTable2.getModel();
         model.setRowCount(0);
-        
+
         String vagaSelecionada = (String) jComboBox1.getSelectedItem();
         if (vagaSelecionada == null || vagaSelecionada.equals("Selecione uma vaga")) {
             return;
         }
-        
+
         try {
-            // ✅ Integração com módulo de Candidatura
             telas.candidatura.Controller.CandidatoController candidatoController = 
                 new telas.candidatura.Controller.CandidatoController();
-            
+
             List<telas.candidatura.Model.Candidatura> candidaturas = 
                 candidatoController.getListaCandidaturas();
-            
+
             SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
             int count = 0;
-            
-            // Filtrar candidaturas pela vaga selecionada
+
             for (telas.candidatura.Model.Candidatura cand : candidaturas) {
                 if (cand.getVaga() != null && cand.getCandidato() != null) {
-                    
+
                     String status = cand.getStatus();
                     boolean statusValido = status.equals("Em Análise") || 
-                                        status.equals("Aprovado") ||
-                                        status.equals("Pendente");
-                    
+                                          status.equals("Aprovado") ||
+                                          status.equals("Pendente");
+
                     if (cand.getVaga().getCargo().equals(vagaSelecionada) && statusValido) {
-                        
+
                         String nomeCandidato = cand.getCandidato().getNome();
                         String cpfCandidato = cand.getCandidato().getCpf();
                         String dataCandidatura = cand.getDataCandidatura() != null ? 
                             sdf.format(cand.getDataCandidatura()) : "-";
-                        
+
                         boolean temEntrevista = false;
                         List<Entrevista> entrevistas = entrevistaController.listarTodas();
-                        
+
                         for (Entrevista e : entrevistas) {
-                            // Compara com CPF do candidato
                             if (e.getCandidaturaId().equals(cpfCandidato)) {
                                 temEntrevista = true;
                                 break;
                             }
                         }
-                        
+
                         model.addRow(new Object[]{
                             nomeCandidato,
                             cpfCandidato,
@@ -148,13 +143,7 @@ public class MarcarEntrevistas extends javax.swing.JFrame {
                     }
                 }
             }
-            
-            if (count == 0) {
-                JOptionPane.showMessageDialog(this, 
-                    "Nenhum candidato encontrado para esta vaga!\n" +
-                    "Verifique se há candidatos com status 'Pendente', 'Em Análise' ou 'Aprovado'.");
-            }
-            
+
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this, 
                 "Erro ao carregar candidatos: " + e.getMessage(), 
@@ -422,9 +411,9 @@ public class MarcarEntrevistas extends javax.swing.JFrame {
                         .addGap(6, 6, 6)
                         .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 236, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jLabel4))
-                .addContainerGap(121, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jLayeredPane1Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap(270, Short.MAX_VALUE)
                 .addComponent(jButton2)
                 .addContainerGap())
         );
@@ -476,7 +465,7 @@ public class MarcarEntrevistas extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addGap(0, 624, Short.MAX_VALUE)
+                        .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(jButton1))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -513,7 +502,7 @@ public class MarcarEntrevistas extends javax.swing.JFrame {
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jLayeredPane1)
                         .addGap(12, 12, 12)))
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 138, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jButton1)
