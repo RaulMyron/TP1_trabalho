@@ -8,10 +8,9 @@ import telas.candidatura.Controller.CandidatoController;
 import telas.candidatura.Model.Candidatura;
 import java.util.List;
 import javax.swing.table.DefaultTableModel;
-import telas.candidatura.Model.Candidato;
 import java.text.SimpleDateFormat;
 import javax.swing.JOptionPane;
-
+import javax.swing.JFrame;
 /**
  *
  * @author lipit
@@ -19,6 +18,7 @@ import javax.swing.JOptionPane;
 public class TelaStatusCandidatura extends javax.swing.JFrame {
     
     private final CandidatoController Controller;
+    private JFrame menuPai;
     
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(TelaStatusCandidatura.class.getName());
 
@@ -26,13 +26,17 @@ public class TelaStatusCandidatura extends javax.swing.JFrame {
      * Creates new form TelaStatusCandidatura
      */
     public TelaStatusCandidatura() {
-    initComponents();
-    this.Controller = new CandidatoController();
-    
-
-    popularTabela(this.Controller.getListaCandidaturas()); 
-}
-    
+            initComponents();
+            this.Controller = new CandidatoController();
+            setLocationRelativeTo(null);
+            setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE); 
+            popularTabela(this.Controller.getListaCandidaturas()); 
+    }
+  
+    public TelaStatusCandidatura(JFrame menuPai) {
+            this();
+            this.menuPai = menuPai;
+    }
 
 private void popularTabela(List<Candidatura> listaParaExibir) {
     
@@ -48,13 +52,25 @@ private void popularTabela(List<Candidatura> listaParaExibir) {
 
     //Percorre a lista que recebe no parâmetro
     for (Candidatura c : listaParaExibir) {
-        Object[] rowData = {
-            c.getCandidato().getNome(),      // Coluna "Nome do Candidato"
-            c.getVaga().getCargo(),          // Coluna "Vaga Aplicada"
-            sdf.format(c.getDataCandidatura()), // Coluna "Data da Candidatura"
-            c.getStatus()                    // Coluna "Status Atual"
-        };
-        model.addRow(rowData);
+
+            // --- BLOCO DE SEGURANÇA (Adicione isto) ---
+            String nomeVaga = "Vaga Removida/Nula";
+            if (c.getVaga() != null) {
+                nomeVaga = c.getVaga().getCargo();
+            }
+
+            String nomeCandidato = "Desconhecido";
+            if (c.getCandidato() != null) {
+                nomeCandidato = c.getCandidato().getNome();
+    }
+            
+    model.addRow(new Object[]{
+            nomeCandidato, // Use a variável segura
+            nomeVaga,      // Use a variável segura
+            // Se tiver data, use formatação, senão deixe em branco
+            "Data não disp.", 
+            c.getStatus()
+    });        
     }
 }
 
@@ -270,6 +286,9 @@ private void popularTabela(List<Candidatura> listaParaExibir) {
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         // TODO add your handling code here:
         this.dispose();
+        if (this.menuPai != null) {
+            this.menuPai.setVisible(true);
+        }
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jTextField2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField2ActionPerformed
@@ -362,7 +381,7 @@ private void popularTabela(List<Candidatura> listaParaExibir) {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(() -> new TelaStatusCandidatura().setVisible(true));
     }
-
+   
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
