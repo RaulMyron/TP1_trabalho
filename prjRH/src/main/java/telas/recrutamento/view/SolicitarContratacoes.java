@@ -295,7 +295,7 @@ public class SolicitarContratacoes extends javax.swing.JFrame {
         jTextArea1.setRows(5);
         jScrollPane2.setViewportView(jTextArea1);
 
-        jButton3.setText("✅ Enviar Solicitação ao Gestor");
+        jButton3.setText("Enviar Solicitação ao Gestor");
 
         jButton4.setText("Voltar");
 

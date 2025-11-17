@@ -44,35 +44,35 @@ public class MenuFinanceiro extends javax.swing.JFrame {
     
 
     private void abrirCadastroFuncionario() {
-        CadastroFuncionario tela = new CadastroFuncionario();
+        CadastroFuncionario tela = new CadastroFuncionario(this);
         tela.setVisible(true);
-        this.dispose(); // Fecha esta tela para evitar múltiplas telas abertas
+        this.dispose();
     }
 
 
     private void abrirListagemFuncionarios() {
-        ListagemFuncionarios tela = new ListagemFuncionarios();
+        ListagemFuncionarios tela = new ListagemFuncionarios(this);
         tela.setVisible(true);
         this.dispose(); // Fecha esta tela para evitar múltiplas telas abertas
     }
 
 
     private void abrirConfigurarRegras() {
-        ConfigurarRegrasSalariais tela = new ConfigurarRegrasSalariais();
+        ConfigurarRegrasSalariais tela = new ConfigurarRegrasSalariais(this);
         tela.setVisible(true);
         this.dispose(); // Fecha esta tela para evitar múltiplas telas abertas
     }
 
 
     private void abrirGerarFolha() {
-        GerarFolhaPagamento tela = new GerarFolhaPagamento();
+        GerarFolhaPagamento tela = new GerarFolhaPagamento(this);
         tela.setVisible(true);
         this.dispose(); // Fecha esta tela para evitar múltiplas telas abertas
     }
 
 
     private void abrirContracheques() {
-        VisualizarContracheques tela = new VisualizarContracheques();
+        VisualizarContracheques tela = new VisualizarContracheques(this);
         tela.setVisible(true);
         this.dispose(); // Fecha esta tela para evitar múltiplas telas abertas
     }

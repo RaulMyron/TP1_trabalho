@@ -10,8 +10,8 @@ import java.time.LocalDate;
 import java.time.YearMonth;
 
 public class GerarFolhaPagamento extends javax.swing.JFrame {
-    
-    
+
+    private javax.swing.JFrame menuPai;
     private FinanceiroController controller;
     private DefaultTableModel modeloTabela;
     private FolhaPagamento folhaAtual;
@@ -20,6 +20,11 @@ public class GerarFolhaPagamento extends javax.swing.JFrame {
         initComponents();
         this.controller = ControllerManager.getFinanceiroController();
         configurarTela();
+    }
+
+    public GerarFolhaPagamento(javax.swing.JFrame menuPai) {
+        this();
+        this.menuPai = menuPai;
     }
     
     private void configurarTela() {
@@ -282,6 +287,9 @@ public class GerarFolhaPagamento extends javax.swing.JFrame {
     private void btnVoltarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVoltarActionPerformed
         // TODO add your handling code here:
         this.dispose();
+        if (menuPai != null) {
+            menuPai.setVisible(true);
+        }
     }//GEN-LAST:event_btnVoltarActionPerformed
 
     

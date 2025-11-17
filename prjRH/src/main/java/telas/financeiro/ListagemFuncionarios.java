@@ -11,6 +11,7 @@ import java.util.List;
 
 public class ListagemFuncionarios extends javax.swing.JFrame {
     
+    private javax.swing.JFrame menuPai;
     private FinanceiroController controller;
     private DefaultTableModel modeloTabela;
     
@@ -19,6 +20,11 @@ public class ListagemFuncionarios extends javax.swing.JFrame {
         this.controller = ControllerManager.getFinanceiroController();
         configurarTela();
         carregarFuncionarios();
+    }
+
+    public ListagemFuncionarios(javax.swing.JFrame menuPai) {
+        this();
+        this.menuPai = menuPai;
     }
     
     private void configurarTela() {
@@ -207,6 +213,9 @@ public class ListagemFuncionarios extends javax.swing.JFrame {
     private void btnVoltarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVoltarActionPerformed
         // TODO add your handling code here:
         this.dispose();
+        if (menuPai != null) {
+            menuPai.setVisible(true);
+        }
     }//GEN-LAST:event_btnVoltarActionPerformed
 
     

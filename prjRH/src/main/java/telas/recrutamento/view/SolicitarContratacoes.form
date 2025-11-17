@@ -363,7 +363,7 @@
         </Container>
         <Component class="javax.swing.JButton" name="jButton3">
           <Properties>
-            <Property name="text" type="java.lang.String" value="&#x2705; Enviar Solicita&#xe7;&#xe3;o ao Gestor"/>
+            <Property name="text" type="java.lang.String" value="Enviar Solicita&#xe7;&#xe3;o ao Gestor"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JButton" name="jButton4">
