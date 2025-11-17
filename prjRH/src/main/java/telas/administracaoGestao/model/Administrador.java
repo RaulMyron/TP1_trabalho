@@ -32,7 +32,7 @@ public class Administrador extends Usuario implements Serializable {
                                     String email, String login, String senha, 
                                     Perfil perfilParaCriar) throws Exception {
 
-        // VALIDAÇÃO DE CAMPOS NULOS OU VAZIOS ---
+        // Validação de campos nulos ou vazios
         if (nome == null || nome.trim().isEmpty() || 
             cpf == null || cpf.trim().isEmpty() || 
             email == null || email.trim().isEmpty() || 
@@ -43,7 +43,7 @@ public class Administrador extends Usuario implements Serializable {
             throw new Exception("Erro: Todos os campos, incluindo o perfil, são obrigatórios.");
         }
 
-        // VALIDAÇÃO DA REGRA DE NEGÓCIO: SENHA
+        // Validação da regra de negócios :Senha
         if (senha.length() < 8 || !senha.matches(".*[a-zA-Z].*") || !senha.matches(".*[0-9].*")) {
             throw new Exception("Erro: A senha deve ter no mínimo 8 caracteres, " +
                                   "contendo letras e números.");
@@ -62,7 +62,7 @@ public class Administrador extends Usuario implements Serializable {
             }
         }
 
-        Usuario novoUsuario; // Declara a variável do tipo "pai" (Usuario)
+        Usuario novoUsuario; 
 
         switch (perfilParaCriar) {
             case ADMINISTRADOR:
@@ -127,12 +127,12 @@ public class Administrador extends Usuario implements Serializable {
     public void excluirUsuario(Usuario usuarioParaRemover, List<Usuario> todosOsUsuarios, 
                                Administrador adminLogado) throws Exception {
 
-        // Usamos o CPF (ou ID) para garantir que são o mesmo objeto.
+        // Usa o CPF (ou ID) para garantir que são o mesmo objeto.
         if (usuarioParaRemover.getCpf().equals(adminLogado.getCpf())) {
             throw new Exception("Erro: Você não pode excluir a sua própria conta de administrador.");
         }
 
-        // Verificamos se o usuário a ser removido é um administrador.
+        // Verifica se o usuário a ser removido é um administrador.
         if (usuarioParaRemover.getPerfis().contains(Perfil.ADMINISTRADOR)) {
             // Se sim, contamos quantos administradores existem no total.
             int contagemAdmins = 0;
@@ -188,7 +188,7 @@ public class Administrador extends Usuario implements Serializable {
                                   "' não possui o perfil " + perfilParaRemover + " para ser removido.");
         }
 
-        // Verifica se estamos tentando remover o perfil de ADMINISTRADOR
+        // Verifica se esta tentando remover o perfil de ADMINISTRADOR
         if (perfilParaRemover == Perfil.ADMINISTRADOR) {
             
             // Contamos quantos administradores existem

@@ -6,8 +6,8 @@ package telas.administracaoGestao.view;
 
 import telas.administracaoGestao.controller.GestaoService;
 import telas.administracaoGestao.model.Usuario;
-import telas.administracaoGestao.model.Perfil; // (Se GestaoService usar o Enum Perfil)
-import telas.administracaoGestao.excecoes.NegocioException; // (Importa sua exceção)
+import telas.administracaoGestao.model.Perfil; 
+import telas.administracaoGestao.excecoes.NegocioException; 
 import javax.swing.JOptionPane;
 import java.io.IOException;
 

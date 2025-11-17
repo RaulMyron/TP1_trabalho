@@ -5,9 +5,19 @@
 package telas.administracaoGestao.view;
 import telas.administracaoGestao.controller.GestaoService;
 import telas.administracaoGestao.model.Usuario;
-import java.util.List;
-import javax.swing.table.DefaultTableModel; // Importante para a tabela
 import telas.administracaoGestao.model.Perfil;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.JOptionPane; 
+import javax.swing.JFileChooser; 
+import java.io.File;             
+import java.io.BufferedWriter;   
+import java.io.FileWriter;       
+import java.io.IOException;      
+import java.util.List;
+import java.io.FileOutputStream;
+import java.io.OutputStreamWriter;
+import java.nio.charset.StandardCharsets;
+
 /**
  *
  * @author Nati
@@ -158,7 +168,53 @@ public class TelaRelatoriosGestao extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        // TODO add your handling code here:
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setDialogTitle("Salvar Relatório como CSV");
+
+        int userSelection = fileChooser.showSaveDialog(this);
+
+        if (userSelection == JFileChooser.APPROVE_OPTION) {
+            File fileToSave = fileChooser.getSelectedFile();
+
+            if (!fileToSave.getName().toLowerCase().endsWith(".csv")) {
+                fileToSave = new File(fileToSave.getParentFile(), fileToSave.getName() + ".csv");
+            }
+
+            // MUDANÇA AQUI: Usamos OutputStreamWriter para garantir UTF-8
+            try (BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(
+                    new FileOutputStream(fileToSave), StandardCharsets.UTF_8))) {
+
+                // A MÁGICA: Escreve o BOM (Byte Order Mark) para o Excel reconhecer
+                bw.write("\uFEFF"); 
+
+                // 1. Cabeçalho (com ponto e vírgula)
+                for (int i = 0; i < jTable1.getColumnCount(); i++) {
+                    bw.write(jTable1.getColumnName(i));
+                    if (i < jTable1.getColumnCount() - 1) bw.write(";");
+                }
+                bw.newLine();
+
+                // 2. Dados (com ponto e vírgula)
+                for (int i = 0; i < jTable1.getRowCount(); i++) {
+                    for (int j = 0; j < jTable1.getColumnCount(); j++) {
+                        Object value = jTable1.getValueAt(i, j);
+                        // Remove quebras de linha que possam existir no texto para não quebrar o CSV
+                        String texto = value != null ? value.toString().replace("\n", " ").replace("\r", "") : "";
+
+                        bw.write(texto);
+
+                        if (j < jTable1.getColumnCount() - 1) bw.write(";");
+                    }
+                    bw.newLine();
+                }
+
+                JOptionPane.showMessageDialog(this, "Relatório exportado com sucesso!");
+
+            } catch (IOException e) {
+                JOptionPane.showMessageDialog(this, "Erro ao exportar relatório: " + e.getMessage());
+                e.printStackTrace();
+                }
+            }
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed

@@ -100,12 +100,11 @@ public class GestaoService {
                 break;
             
             case "Recrutador":
-                // O construtor do Recrutador é um pouco diferente
                 novoUsuario = new Recrutador(cpf, nome, email, login, senha); 
                 break;
             
             default:
-                // Se selecionar "Candidatura" ou "Financeiro" (da sua imagem), dará um erro
+                // Se selecionar "Candidatura" ou "Financeiro"  dará um erro
                 throw new NegocioException("O perfil '" + tipo + "' não é um tipo de usuário que pode ser criado por aqui.");
         }
         
@@ -137,8 +136,7 @@ public class GestaoService {
         return this.usuarios;
     }
     public List<Vaga> listarTodasVagas() {
-        // Este método simplesmente retorna a lista de vagas que o 
-        // GestaoService já carregou do arquivo no construtor.
+        // Este método retorna a lista de vagas que o GestaoService já carregou do arquivo no construtor.
         return this.vagas;
     }
     public List<Usuario> listarRecrutadores() {
@@ -146,14 +144,12 @@ public class GestaoService {
             .filter(u -> u.getPerfis().contains(Perfil.RECRUTADOR))
             .collect(Collectors.toList());
     }
-// Em GestaoService.java
-// Substitua o método login(String, char[]) antigo por este:
+
 
     public Usuario login(String login, char[] senha) throws NegocioException {
-        // 1. Converte o array de char para String
         String senhaString = new String(senha);
 
-        // 2. CORREÇÃO: Procurar pelo LOGIN, não pelo CPF
+        // CORREÇÃO: Procurar pelo LOGIN, não pelo CPF
         Optional<Usuario> optUsuario = usuarios.stream()
                 .filter(u -> u.getLogin().equals(login)) // <-- MUDANÇA AQUI
                 .findFirst();

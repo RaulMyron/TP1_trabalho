@@ -165,8 +165,7 @@ public TelaCadastroVaga(Usuario usuario, GestaoService service) {
             // Converte o salário
             double salario = Double.parseDouble(salarioStr);
             
-            // Chama o Controller
-            // Passamos agora o "recrutadorSelecionado"
+            // Chama o Controller e passa o "recrutadorSelecionado"
             gestaoService.criarVaga(this.usuarioLogado, cargo, salario, recrutadorSelecionado);
             
             JOptionPane.showMessageDialog(this, "Vaga criada com sucesso!");

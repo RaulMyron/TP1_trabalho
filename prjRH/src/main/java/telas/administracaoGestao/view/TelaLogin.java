@@ -121,13 +121,11 @@ public class TelaLogin extends javax.swing.JFrame {
             char[] senha = jPasswordField1.getPassword();
 
             try {
-                // 1. TENTA FAZER O LOGIN
+                // Tenta fazer o login
                 Usuario usuarioLogado = gestaoService.login(login, senha);
 
-                // 2. MOSTRA MENSAGEM DE SUCESSO
+                // Mostra mensagem de sucesso
                 JOptionPane.showMessageDialog(this, "Login bem-sucedido! Bem-vindo, " + usuarioLogado.getNome());
-
-                // 3. REDIRECIONAMENTO POR PERFIL (AQUI ESTÁ A MUDANÇA)
                 
                 // Se for ADMIN ou GESTOR -> Vai para o Menu Geral (TelaPrincipal)
                 if (usuarioLogado.getPerfis().contains(Perfil.ADMINISTRADOR) || 
@@ -137,27 +135,26 @@ public class TelaLogin extends javax.swing.JFrame {
                     telaPrincipal.setVisible(true);
                     
                 } 
-                // Se for RECRUTADOR -> Vai para o seu Menu (O trecho que você pediu)
+                // Se for RECRUTADOR -> Vai para o seu Menu 
                 else if (usuarioLogado.getPerfis().contains(Perfil.RECRUTADOR)) {
-                    
-                    // 1. Instancia o seu Menu
+
                     telas.recrutamento.view.Main telaRecrutamento = new telas.recrutamento.view.Main();
 
-                    // 2. IMPORTANTE: Passa o CPF do usuário que acabou de logar
+                    // Passa o CPF do usuário que acabou de logar
                     telaRecrutamento.carregarRecrutador(usuarioLogado.getCpf()); 
 
-                    // 3. Abre a tela
+                    // Abre a tela
                     telaRecrutamento.setVisible(true);
                 }
                 else {
                     JOptionPane.showMessageDialog(this, "Perfil sem tela definida.");
-                    return; // Não fecha a tela de login se não tiver para onde ir
+                    return; 
                 }
 
                 this.dispose(); // Fecha a tela de login
 
             } catch (NegocioException e) {
-                // 4. CAPTURA O ERRO
+                // Captura o erro
                 JOptionPane.showMessageDialog(this, 
                         e.getMessage(), 
                         "Erro de Login", 

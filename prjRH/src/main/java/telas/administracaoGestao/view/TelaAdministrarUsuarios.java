@@ -7,7 +7,7 @@ import telas.administracaoGestao.controller.GestaoService;
 import telas.administracaoGestao.model.Usuario;
 import java.util.List;
 import javax.swing.JOptionPane;
-import javax.swing.table.DefaultTableModel; // Importante para a tabela
+import javax.swing.table.DefaultTableModel;
 import telas.administracaoGestao.model.Perfil;
 /**
  *
@@ -28,27 +28,20 @@ public class TelaAdministrarUsuarios extends javax.swing.JFrame {
         this.gestaoService = service;
         
         carregarTabela(); // Chama o método para preencher a tabela
-        // Ex: Adicionar os tipos de usuário em um ComboBox (Caixa de Seleção)
-        // 'cbxTipoUsuario' é o nome do seu JComboBox
-        jComboBox1.addItem("Administrador");
-        jComboBox1.addItem("Gestor");
-        jComboBox1.addItem("Recrutador");
-        jComboBox1.addItem("Financeiro");
-        jComboBox1.addItem("Candidatura");
-        jComboBox1.addItem("Prestação de Serviço");
+        
     }
     private void carregarTabela() {
         DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
         model.setRowCount(0); // Limpa a tabela
 
-        // 1. Pega os termos da busca
+        // Pega os termos da busca
         String nomeBusca = jTextField1.getText().toLowerCase(); 
         String perfilBusca = (String) jComboBox1.getSelectedItem(); 
 
-        // 2. Pega a lista COMPLETA de usuários
+        // Pega a lista COMPLETA de usuários
         List<Usuario> usuarios = gestaoService.listarTodosUsuarios();
 
-        // 3. Filtra a lista
+        // Filtra a lista
         List<Usuario> usuariosFiltrados = usuarios.stream()
             .filter(u -> {
                 // Filtro de Nome
@@ -60,7 +53,6 @@ public class TelaAdministrarUsuarios extends javax.swing.JFrame {
                     matchPerfil = true;
                 } else {
                     try {
-                        // --- INÍCIO DA CORREÇÃO ---
                         // Normaliza a string removendo acentos e convertendo para maiúsculas
                         String perfilEnumNome = perfilBusca.toUpperCase()
                                                           .replace("Á", "A")
@@ -68,8 +60,6 @@ public class TelaAdministrarUsuarios extends javax.swing.JFrame {
 
                         // Usa a string normalizada
                         Perfil p = Perfil.valueOf(perfilEnumNome);
-                        // --- FIM DA CORREÇÃO ---
-
                         matchPerfil = u.getPerfis().contains(p);
                     } catch (Exception e) {
                         matchPerfil = false; // Ignora se "Funcionário" não existir no Enum
@@ -78,9 +68,9 @@ public class TelaAdministrarUsuarios extends javax.swing.JFrame {
 
                 return matchNome && matchPerfil;
             })
-            .toList(); // Se der erro aqui, mude para .collect(Collectors.toList())
+            .toList(); 
 
-        // 4. Popula a tabela com os usuários FILTRADOS
+        // Popula a tabela com os usuários FILTRADOS
         for (Usuario u : usuariosFiltrados) {
             String status = u.isAtivo() ? "Ativo" : "Inativo";
             
@@ -297,19 +287,19 @@ public class TelaAdministrarUsuarios extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // 1. Cria a sua tela de cadastro
+        // Cria a tela de cadastro
        TelaCadastroUsuario telaCadastro = new TelaCadastroUsuario(this.usuarioLogado, this.gestaoService);
 
-        // 2. Mostra a tela de cadastro
+        // Mostra a tela de cadastro
        telaCadastro.setVisible(true);
 
-       // 3. Fecha esta tela para evitar múltiplas telas abertas
+       // Fecha a tela para evitar múltiplas telas abertas
        this.dispose();
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
-        // Volta para a Tela Principal, em vez de fazer Logout
-        new TelaPrincipal(this.usuarioLogado, this.gestaoService).setVisible(true);
+
+        new TelaPrincipal(this.usuarioLogado, this.gestaoService).setVisible(true);// Volta para a Tela Principal
         this.dispose();   
     }//GEN-LAST:event_jButton5ActionPerformed
 
@@ -332,7 +322,7 @@ int selectedRow = jTable1.getSelectedRow();
             return;
         }
 
-        // 1. Confirmação
+        // Confirmação
         int resposta = JOptionPane.showConfirmDialog(this, 
                 "Tem certeza que deseja excluir este usuário?", 
                 "Confirmação de Exclusão", 
@@ -342,12 +332,12 @@ int selectedRow = jTable1.getSelectedRow();
             return; // Usuário cancelou
         }
 
-        // 2. Exclusão
+        // Exclusão
         try {
             String cpf = (String) jTable1.getValueAt(selectedRow, 1);
             Usuario usuarioParaExcluir = gestaoService.buscarUsuarioPorCpf(cpf);
             
-            // Chama o método do service que criámos
+            // Chama o método do service
             gestaoService.excluirUsuario(this.usuarioLogado, usuarioParaExcluir);
             
             JOptionPane.showMessageDialog(this, "Usuário excluído com sucesso!");
@@ -366,7 +356,7 @@ int selectedRow = jTable1.getSelectedRow();
     }//GEN-LAST:event_jButton6ActionPerformed
 
     private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
-    // 1. Mostra uma confirmação (opcional, mas recomendado)
+        // Mostra uma confirmação
         int resposta = JOptionPane.showConfirmDialog(
             this, 
             "Deseja realmente sair e voltar para a tela de login?", 
@@ -374,12 +364,11 @@ int selectedRow = jTable1.getSelectedRow();
             JOptionPane.YES_NO_OPTION
         );
 
-        // 2. Se o usuário clicou "Sim"
+        // Se o usuário clicou "Sim"
         if (resposta == JOptionPane.YES_OPTION) {
-            // 3. Abre a TelaLogin
-            new TelaLogin().setVisible(true);
+            new TelaLogin().setVisible(true);//Abre a TelaLogin
 
-            // 4. Fecha esta tela (a TelaAdministrarUsuarios)
+            // Fecha a TelaAdministrarUsuarios
             this.dispose();
         }
     }//GEN-LAST:event_jButton7ActionPerformed
