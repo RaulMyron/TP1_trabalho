@@ -42,7 +42,7 @@ public class GerarFolhaPagamento extends javax.swing.JFrame {
     
     private void gerarFolha() {
         try {
-            
+                        
             int mes = cmbMes.getSelectedIndex() + 1; 
             int ano = Integer.parseInt((String) cmbAno.getSelectedItem());
             YearMonth mesReferencia = YearMonth.of(ano, mes);
@@ -60,6 +60,9 @@ public class GerarFolhaPagamento extends javax.swing.JFrame {
             
             
             folhaAtual = controller.gerarFolhaPagamento(mesReferencia);
+            
+             
+        exibirFolhaNaTabela(folhaAtual);
             
             
             exibirFolhaNaTabela(folhaAtual);

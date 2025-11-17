@@ -146,7 +146,6 @@ public class FinanceiroController {
             case "CLT":
                 return calcularSalarioCLT(func);
             case "ESTÁGIO":
-            case "ESTAGIO":
                 return calcularSalarioEstagio(func);
             case "PJ":
                 return calcularSalarioPJ(func);
@@ -195,7 +194,7 @@ public class FinanceiroController {
             double descontos = 0.0;
             double salarioLiquido = 0.0;
             
-            String regime = func.getRegimeContratacao().toUpperCase();
+            String regime = func.getRegimeContratacao().trim().toUpperCase();
             
             switch (regime) {
                 case "CLT":
@@ -207,7 +206,6 @@ public class FinanceiroController {
                     break;
                     
                 case "ESTÁGIO":
-                case "ESTAGIO":
                     beneficios = regraSalarialAtual.getValorAuxilioTransporteEstagio();
                     salarioLiquido = salarioBase + beneficios;
                     break;
@@ -225,7 +223,8 @@ public class FinanceiroController {
         return folha;
     }
     
-  
+    
+    
     public List<FolhaPagamento> getHistoricoFolhas() {
         return new ArrayList<>(historicoFolhas);
     }
@@ -236,5 +235,5 @@ public class FinanceiroController {
                 .filter(f -> f.getMesReferencia().equals(mesReferencia))
                 .findFirst()
                 .orElse(null);
-    }
+    }   
 }

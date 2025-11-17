@@ -184,7 +184,7 @@ public class CadastroFuncionario extends javax.swing.JFrame {
             }
         });
 
-        cmbRegime.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "CLT ", "Estágio", "PJ" }));
+        cmbRegime.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "CLT", "Estágio", "PJ" }));
         cmbRegime.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cmbRegimeActionPerformed(evt);
