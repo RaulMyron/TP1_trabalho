@@ -4,19 +4,51 @@
  */
 package telas.candidatura.View;
 
+import javax.swing.JOptionPane;
+import telas.administracaoGestao.controller.GestaoService;
+import telas.administracaoGestao.model.Usuario;
+import telas.administracaoGestao.model.Perfil;
+import telas.administracaoGestao.view.TelaPrincipal;
+
 /**
  *
  * @author lipit
  */
 public class TelaMenuCandidatura extends javax.swing.JFrame {
-    
+
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(TelaMenuCandidatura.class.getName());
+    private Usuario usuarioLogado;
+    private GestaoService gestaoService;
 
     /**
      * Creates new form TelaMenuCandidatura
      */
     public TelaMenuCandidatura() {
         initComponents();
+    }
+
+    public TelaMenuCandidatura(Usuario usuario, GestaoService service) {
+        initComponents();
+        this.usuarioLogado = usuario;
+        this.gestaoService = service;
+        validarPermissoes();
+    }
+
+    private void validarPermissoes() {
+        // Valida se o usuário tem permissão para acessar o módulo de Candidatura
+        // Apenas ADMINISTRADOR e RECRUTADOR devem ter acesso
+        boolean isAdmin = usuarioLogado.getPerfis().contains(Perfil.ADMINISTRADOR);
+        boolean isRecrutador = usuarioLogado.getPerfis().contains(Perfil.RECRUTADOR);
+
+        if (!isAdmin && !isRecrutador) {
+            JOptionPane.showMessageDialog(this,
+                "Você não tem permissão para acessar o Módulo de Candidatura.\n" +
+                "Acesso permitido apenas para Administradores e Recrutadores.",
+                "Acesso Negado",
+                JOptionPane.ERROR_MESSAGE);
+            this.dispose();
+            new TelaPrincipal(usuarioLogado, gestaoService).setVisible(true);
+        }
     }
 
     /**
@@ -111,26 +143,30 @@ public class TelaMenuCandidatura extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
-    // Abre a tela de cadastro
-    new telas.candidatura.View.TelaCadastroCandidato().setVisible(true);
+        // Abre a tela de cadastro
+        new telas.candidatura.View.TelaCadastroCandidato().setVisible(true);
+        
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
         // Abre a tela de candidatura a vaga
-    new telas.candidatura.View.TelaCandidaturaVaga().setVisible(true);
+        new telas.candidatura.View.TelaCandidaturaVaga().setVisible(true);
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         // TODO add your handling code here:
         // Abre a tela de status
-    new telas.candidatura.View.TelaStatusCandidatura().setVisible(true);
+        new telas.candidatura.View.TelaStatusCandidatura().setVisible(true);
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
         // TODO add your handling code here:
-        // Fecha apenas esta janela de menu
-    this.dispose();
+        // Volta para a Tela Principal
+        if (usuarioLogado != null && gestaoService != null) {
+            new TelaPrincipal(usuarioLogado, gestaoService).setVisible(true);
+        }
+        this.dispose();
     }//GEN-LAST:event_jButton4ActionPerformed
 
     /**

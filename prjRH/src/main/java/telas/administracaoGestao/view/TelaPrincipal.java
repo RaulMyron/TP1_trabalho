@@ -14,17 +14,17 @@ public class TelaPrincipal extends javax.swing.JFrame {
     private Usuario usuarioLogado;
     private GestaoService gestaoService;
     
-    private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(TelaPrincipal.class.getName());
-
     /**
      * Creates new form TelaPrincipal
      */
 public TelaPrincipal(Usuario usuario, GestaoService service) {
-    initComponents();
-    this.usuarioLogado = usuario;
-    this.gestaoService = service;
+        initComponents();
         
-    jLabel1.setText(usuarioLogado.getNome()); 
+        this.usuarioLogado = usuario;
+        this.gestaoService = service;
+        
+
+        jLabel1.setText(usuarioLogado.getNome()); 
         // Verifica se o usuário é Administrador
         boolean isAdmin = this.usuarioLogado.getPerfis().contains(Perfil.ADMINISTRADOR);
         
@@ -42,8 +42,35 @@ public TelaPrincipal(Usuario usuario, GestaoService service) {
             }
             
             
+
+        // Configurações Visuais
+        jLabel1.setText("Bem-vindo(a), " + usuarioLogado.getNome()); 
+        setLocationRelativeTo(null); // Centraliza a tela
+
+        // Define as Permissões (Flags para facilitar a leitura)
+        //boolean isAdministrador = this.usuarioLogado.getPerfis().contains(Perfil.ADMINISTRADOR);
+        boolean isGestor = this.usuarioLogado.getPerfis().contains(Perfil.GESTOR);
+        boolean isRecrutador = this.usuarioLogado.getPerfis().contains(Perfil.RECRUTADOR);
+
+
+        // Só o admin cria/edita usuários
+        if (!isAdmin) {
+            jButton1.setEnabled(false); 
+        }
+
+        if (!isAdmin && !isGestor) {
+            jButton2.setEnabled(false); 
+            jButton4.setEnabled(false); 
+            jButton5.setEnabled(false);
+            jButton8.setEnabled(false);
+        }
+
+        if (!isAdmin && !isRecrutador) {
+             jButton6.setEnabled(false); 
+             jButton7.setEnabled(false);
         }
     }
+}
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -122,14 +149,13 @@ public TelaPrincipal(Usuario usuario, GestaoService service) {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap(147, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jButton8)
-                    .addComponent(jButton7, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                        .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jButton6, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jButton8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jButton5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jButton6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jButton4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jButton7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(158, 158, 158))
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -167,8 +193,9 @@ public TelaPrincipal(Usuario usuario, GestaoService service) {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        TelaAdministrarUsuarios telaAdm = new TelaAdministrarUsuarios(usuarioLogado, gestaoService);
-        telaAdm.setVisible(true);                                                                                                
+        TelaAdministrarUsuarios telaAdm = new TelaAdministrarUsuarios(this.usuarioLogado, this.gestaoService);
+        telaAdm.setVisible(true);
+        this.dispose(); // Fecha a TelaPrincipal para evitar múltiplas telas abertas
     }//GEN-LAST:event_jButton1ActionPerformed
     
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
@@ -187,18 +214,27 @@ public TelaPrincipal(Usuario usuario, GestaoService service) {
 
     private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
         // TODO add your handling code here:
-        new telas.candidatura.View.TelaMenuCandidatura().setVisible(true);
+        new telas.candidatura.View.TelaMenuCandidatura(this.usuarioLogado, this.gestaoService).setVisible(true);
+        this.dispose(); // Fecha a TelaPrincipal para evitar múltiplas telas abertas
     }//GEN-LAST:event_jButton7ActionPerformed
 
     private void jButton8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton8ActionPerformed
-        new telas.prestacaoservico.view.MenuPrestacaoServico().setVisible(true);
+        new telas.prestacaoservico.view.MenuPrestacaoServico(this.usuarioLogado, this.gestaoService).setVisible(true);
+        this.dispose(); // Fecha a TelaPrincipal para evitar múltiplas telas abertas
     }//GEN-LAST:event_jButton8ActionPerformed
 
     private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
-        new telas.recrutamento.view.Main().setVisible(true);
+        telas.recrutamento.view.Main telaRecrutamento = new telas.recrutamento.view.Main();
+        telaRecrutamento.carregarRecrutador(usuarioLogado.getCpf()); // Passa o usuário logado
+        telaRecrutamento.setVisible(true);
+        this.dispose(); // Fecha a TelaPrincipal para evitar múltiplas telas abertas
     }//GEN-LAST:event_jButton6ActionPerformed
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
+        // Abre o Menu Financeiro passando o usuário logado
+        telas.financeiro.MenuFinanceiro menuFinanceiro = new telas.financeiro.MenuFinanceiro(this.usuarioLogado, this.gestaoService);
+        menuFinanceiro.setVisible(true);
+        this.dispose(); // Fecha a TelaPrincipal para evitar múltiplas telas abertas
     }//GEN-LAST:event_jButton5ActionPerformed
 
     /**
