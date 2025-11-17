@@ -11,6 +11,7 @@ import java.util.List;
 
 public class ListagemFuncionarios extends javax.swing.JFrame {
     
+    private javax.swing.JFrame menuPai;
     private FinanceiroController controller;
     private DefaultTableModel modeloTabela;
     

@@ -12,15 +12,20 @@ import java.time.format.DateTimeParseException;
 
 public class CadastroFuncionario extends javax.swing.JFrame {
     
+    private javax.swing.JFrame menuPai;
     private FinanceiroController controller;
     
     public CadastroFuncionario() {
         initComponents();
-        this.controller = ControllerManager.getFinanceiroController();
-        configurarTela();
+        setLocationRelativeTo(null);
+        setDefaultCloseOperation(DISPOSE_ON_CLOSE);
     }
     
-  
+    public CadastroFuncionario(javax.swing.JFrame menuPai) {
+        this(); 
+        this.menuPai = menuPai;
+    }
+        
     private void configurarTela() {
         setTitle("Cadastro de Funcionário");
         setLocationRelativeTo(null); 
@@ -364,8 +369,10 @@ public class CadastroFuncionario extends javax.swing.JFrame {
     }//GEN-LAST:event_btnSalvarActionPerformed
 
     private void btnVoltarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVoltarActionPerformed
-        // TODO add your handling code here:
         this.dispose();
+        if (menuPai != null) {
+            menuPai.setVisible(true);
+        }
     }//GEN-LAST:event_btnVoltarActionPerformed
 
     private void txtNomeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNomeActionPerformed
