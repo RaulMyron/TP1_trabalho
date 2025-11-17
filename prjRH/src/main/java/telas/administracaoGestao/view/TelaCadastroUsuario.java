@@ -63,10 +63,17 @@ public class TelaCadastroUsuario extends javax.swing.JFrame {
         // Configura o JComboBox (que você chamou de "Perfil")
         Perfil.removeAllItems(); 
         
+<<<<<<< HEAD
         Perfil.addItem("Gestor");
         Perfil.addItem("Administrador");
         Perfil.addItem("Recrutador");
         Perfil.addItem("Recrutador");
+=======
+        Perfil.addItem("Administrador");
+        Perfil.addItem("Gestor");
+        Perfil.addItem("Recrutador");
+        Perfil.addItem("Funcionario");
+>>>>>>> 2e686e0 (nati mudanças)
         
         jComboBox1.removeAllItems(); // Limpa o "Item 1", "Item 2", etc.
         jComboBox1.addItem("Ativo");
@@ -308,7 +315,10 @@ public class TelaCadastroUsuario extends javax.swing.JFrame {
     }//GEN-LAST:event_jPasswordField1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+<<<<<<< HEAD
         new TelaAdministrarUsuarios(this.usuarioLogado, this.gestaoService).setVisible(true);
+=======
+>>>>>>> 2e686e0 (nati mudanças)
         this.dispose(); // Fecha esta tela de cadastro
     }//GEN-LAST:event_jButton2ActionPerformed
 

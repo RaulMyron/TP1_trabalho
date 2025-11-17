@@ -21,7 +21,11 @@ public class TelaLogin extends javax.swing.JFrame {
      */
     public TelaLogin() {
         initComponents();
+<<<<<<< HEAD
         this.gestaoService = new GestaoService();
+=======
+        this.gestaoService = GestaoService.getInstance();
+>>>>>>> 2e686e0 (nati mudanças)
 
     }
 

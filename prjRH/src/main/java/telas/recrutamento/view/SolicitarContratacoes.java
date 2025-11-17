@@ -26,7 +26,7 @@ public class SolicitarContratacoes extends javax.swing.JFrame {
         initComponents();
         this.recrutadorLogado = recrutador;
         this.contratacaoController = new ContratacaoController();
-        this.gestaoService = new GestaoService();
+        this.gestaoService = GestaoService.getInstance();
         setLocationRelativeTo(null);
         setTitle("Solicitar Contratações");
         configurarEventos();

@@ -35,7 +35,11 @@ public class CandidatoController {
         this.candidaturas = this.candidaturaDAO.carregar();
         
         // Inicialize o Service dela
+<<<<<<< HEAD
         this.gestaoService = new GestaoService();
+=======
+        this.gestaoService =  GestaoService.getInstance();
+>>>>>>> 2e686e0 (nati mudanças)
 
     }
     

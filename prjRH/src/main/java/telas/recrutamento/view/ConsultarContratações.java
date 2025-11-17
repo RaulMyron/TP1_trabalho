@@ -26,7 +26,11 @@ public class ConsultarContratações extends javax.swing.JFrame {
         initComponents();
         this.recrutadorLogado = recrutador;
         this.contratacaoController = new ContratacaoController();
+<<<<<<< HEAD
         this.gestaoService = new GestaoService();
+=======
+        this.gestaoService = GestaoService.getInstance();
+>>>>>>> 2e686e0 (nati mudanças)
         setLocationRelativeTo(null);
         setTitle("Consultar Contratações");
         configurarEventos();

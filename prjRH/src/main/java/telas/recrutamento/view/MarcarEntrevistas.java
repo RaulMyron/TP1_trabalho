@@ -28,7 +28,11 @@ public class MarcarEntrevistas extends javax.swing.JFrame {
     
     public MarcarEntrevistas(Main menuPai, Recrutador recrutador) {
         initComponents();
+<<<<<<< HEAD
         this.gestaoService = new GestaoService();
+=======
+        this.gestaoService = GestaoService.getInstance();
+>>>>>>> 2e686e0 (nati mudanças)
         this.recrutadorLogado = recrutador;
         this.menuPai = menuPai;
         this.entrevistaController = new EntrevistaController();

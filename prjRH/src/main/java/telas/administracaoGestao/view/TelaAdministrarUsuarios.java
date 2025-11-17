@@ -32,6 +32,13 @@ public class TelaAdministrarUsuarios extends javax.swing.JFrame {
         // 'cbxTipoUsuario' é o nome do seu JComboBox
         jComboBox1.addItem("Administrador");
         jComboBox1.addItem("Gestor");
+<<<<<<< HEAD
+=======
+        jComboBox1.addItem("Recrutador");
+        jComboBox1.addItem("Financeiro");
+        jComboBox1.addItem("Candidatura");
+        jComboBox1.addItem("Prestação de Serviço");
+>>>>>>> 2e686e0 (nati mudanças)
     }
     private void carregarTabela() {
         DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
@@ -299,8 +306,12 @@ public class TelaAdministrarUsuarios extends javax.swing.JFrame {
         // 2. Mostra a tela de cadastro
        telaCadastro.setVisible(true);
 
+<<<<<<< HEAD
         // 3. Fecha esta tela (a TelaAdministrarUsuarios)
        this.dispose();
+=======
+    
+>>>>>>> 2e686e0 (nati mudanças)
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
