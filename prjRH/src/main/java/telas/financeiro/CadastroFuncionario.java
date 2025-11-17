@@ -17,19 +17,17 @@ public class CadastroFuncionario extends javax.swing.JFrame {
     
     public CadastroFuncionario() {
         initComponents();
-        setLocationRelativeTo(null);
-        setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+        this.controller = ControllerManager.getFinanceiroController();
+        configurarTela();
     }
-    
+
     public CadastroFuncionario(javax.swing.JFrame menuPai) {
-        this(); 
+        this();
         this.menuPai = menuPai;
     }
         
     private void configurarTela() {
         setTitle("Cadastro de Funcionário");
-        setLocationRelativeTo(null); 
-        setDefaultCloseOperation(DISPOSE_ON_CLOSE); 
     }
     
     
