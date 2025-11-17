@@ -28,8 +28,6 @@ public class GestaoContratos extends JFrame {
     
     private void initComponents() {
         setTitle("Gestão de Contratos de Serviço");
-        setSize(1100, 750);
-        setLocationRelativeTo(null);
         setLayout(new BorderLayout(10, 10));
         
         JPanel painelTitulo = new JPanel();
@@ -83,7 +81,7 @@ public class GestaoContratos extends JFrame {
         gbc.gridx = 1;
         String[] status = {"Ativo", "Encerrado", "Pendente de Renovação"};
         cmbStatus = new JComboBox<>(status);
-        cmbStatus.setEnabled(false); // Status é calculado automaticamente
+        cmbStatus.setEnabled(true);
         painelFormulario.add(cmbStatus, gbc);
         
         gbc.gridx = 0; gbc.gridy = 4;
@@ -153,6 +151,7 @@ public class GestaoContratos extends JFrame {
         });
         
         JScrollPane scrollPane = new JScrollPane(tabelaContratos);
+        scrollPane.setPreferredSize(new Dimension(1000, 180));
         scrollPane.setBorder(BorderFactory.createTitledBorder("Contratos Cadastrados"));
         
         JPanel painelCentral = new JPanel(new BorderLayout(5, 5));
@@ -167,11 +166,14 @@ public class GestaoContratos extends JFrame {
         JButton btnVoltar = new JButton("Voltar ao Menu");
         btnVoltar.addActionListener(e -> dispose());
         painelRodape.add(btnVoltar);
+        painelInferior.add(painelRodape, BorderLayout.SOUTH);
         
         add(painelTitulo, BorderLayout.NORTH);
         add(painelCentral, BorderLayout.CENTER);
         add(painelInferior, BorderLayout.SOUTH);
-        add(painelRodape, BorderLayout.PAGE_END);
+        pack();
+        setLocationRelativeTo(null);
+        setExtendedState(JFrame.MAXIMIZED_BOTH);
     }
     
     private void carregarPrestadores() {
@@ -291,7 +293,6 @@ public class GestaoContratos extends JFrame {
             contratoSelecionado = gerenciador.buscarContratoPorId(id);
             
             if (contratoSelecionado != null) {
-                // Seleciona o prestador no combo
                 for (int i = 0; i < cmbPrestador.getItemCount(); i++) {
                     if (cmbPrestador.getItemAt(i).getId() == contratoSelecionado.getPrestador().getId()) {
                         cmbPrestador.setSelectedIndex(i);
