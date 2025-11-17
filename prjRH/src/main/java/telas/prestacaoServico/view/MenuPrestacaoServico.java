@@ -66,26 +66,21 @@ public class MenuPrestacaoServico extends JFrame {
         
         btnCadastrarPrestador.addActionListener((ActionEvent e) -> {
             new CadastroPrestadores().setVisible(true);
-            this.dispose(); // Fecha esta tela para evitar múltiplas telas abertas
         });
 
         btnGestaoContratos.addActionListener((ActionEvent e) -> {
             new GestaoContratos().setVisible(true);
-            this.dispose(); // Fecha esta tela para evitar múltiplas telas abertas
         });
 
         btnRelatorios.addActionListener((ActionEvent e) -> {
             new RelatoriosPrestadores().setVisible(true);
-            this.dispose(); // Fecha esta tela para evitar múltiplas telas abertas
         });
 
         btnAlertas.addActionListener((ActionEvent e) -> {
             new AlertasVencimento().setVisible(true);
-            this.dispose(); // Fecha esta tela para evitar múltiplas telas abertas
         });
 
         btnSair.addActionListener((ActionEvent e) -> {
-            // Volta para a Tela Principal se usuário estiver logado
             if (usuarioLogado != null && gestaoService != null) {
                 new TelaPrincipal(usuarioLogado, gestaoService).setVisible(true);
             }
