@@ -145,21 +145,19 @@ public class TelaMenuCandidatura extends javax.swing.JFrame {
         // TODO add your handling code here:
         // Abre a tela de cadastro
         new telas.candidatura.View.TelaCadastroCandidato().setVisible(true);
-        this.dispose(); // Fecha esta tela para evitar múltiplas telas abertas
+        
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
         // Abre a tela de candidatura a vaga
         new telas.candidatura.View.TelaCandidaturaVaga().setVisible(true);
-        this.dispose(); // Fecha esta tela para evitar múltiplas telas abertas
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         // TODO add your handling code here:
         // Abre a tela de status
         new telas.candidatura.View.TelaStatusCandidatura().setVisible(true);
-        this.dispose(); // Fecha esta tela para evitar múltiplas telas abertas
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed

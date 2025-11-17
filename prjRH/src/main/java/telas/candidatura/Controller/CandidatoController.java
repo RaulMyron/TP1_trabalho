@@ -22,7 +22,7 @@ public class CandidatoController {
     private List<Candidato> candidatos;
     private List<Candidatura> candidaturas; 
     private List<Vaga> vagasDisponiveis; 
-    private final GestaoService gestaoService;
+    private  GestaoService gestaoService;
 
     // O construtor é executado quando o controller é criado.
     public CandidatoController() {
@@ -34,9 +34,9 @@ public class CandidatoController {
         // Inicializa as novas listas
         this.candidaturas = this.candidaturaDAO.carregar();
         
-        // Inicialize o Service dela
+        // Inicializa o Service 
         this.gestaoService =  GestaoService.getInstance();
-
+    
     }
     
 

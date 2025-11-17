@@ -23,7 +23,7 @@ public class GestaoService {
     private RepositorioBase<Usuario> repoUsuarios;
     private RepositorioBase<Vaga> repoVagas;
 
-    private GestaoService() {
+    public GestaoService() {
         this.repoUsuarios = new RepositorioBase<>();
         this.repoVagas = new RepositorioBase<>();
         
