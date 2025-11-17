@@ -303,7 +303,8 @@ public class TelaAdministrarUsuarios extends javax.swing.JFrame {
         // 2. Mostra a tela de cadastro
        telaCadastro.setVisible(true);
 
-    
+       // 3. Fecha esta tela para evitar múltiplas telas abertas
+       this.dispose();
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
