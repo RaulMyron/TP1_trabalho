@@ -19,8 +19,8 @@ public class TelaCadastroVaga extends javax.swing.JFrame {
     
 public TelaCadastroVaga(Usuario usuario, GestaoService service) {
     initComponents();
-    this.usuarioLogado = usuario; // O erro era aqui (variável 'usuario' não existia)
-    this.gestaoService = service; // O erro era aqui (variável 'service' não existia)
+    this.usuarioLogado = usuario; 
+    this.gestaoService = service; 
     
     jComboBox1.removeAllItems(); 
     
@@ -153,7 +153,7 @@ public TelaCadastroVaga(Usuario usuario, GestaoService service) {
         String cargo = jTextField4.getText();
         String salarioStr = jTextField5.getText();
         
-        // 1. Pega o recrutador selecionado no JComboBox (usando o nome certo)
+        // Pega o recrutador selecionado 
         Usuario recrutadorSelecionado = (Usuario) jComboBox1.getSelectedItem();
 
         try {
@@ -162,11 +162,11 @@ public TelaCadastroVaga(Usuario usuario, GestaoService service) {
                 throw new NegocioException("Cargo e Salário são obrigatórios.");
             }
             
-            // Converte o salário (é mais seguro fazer dentro do try)
+            // Converte o salário
             double salario = Double.parseDouble(salarioStr);
             
-            // 2. Chama o Controller (Correção da Linha 164)
-            // Agora estamos passando o "recrutadorSelecionado"
+            // Chama o Controller
+            // Passamos agora o "recrutadorSelecionado"
             gestaoService.criarVaga(this.usuarioLogado, cargo, salario, recrutadorSelecionado);
             
             JOptionPane.showMessageDialog(this, "Vaga criada com sucesso!");
@@ -179,7 +179,7 @@ public TelaCadastroVaga(Usuario usuario, GestaoService service) {
             JOptionPane.showMessageDialog(this, "Erro: O salário deve ser um número.", "Erro de Formato", JOptionPane.ERROR_MESSAGE);
         } catch (NegocioException e) {
             JOptionPane.showMessageDialog(this, e.getMessage(), "Erro de Negócio", JOptionPane.ERROR_MESSAGE);
-        } catch (IOException e) { // (Correção da Linha 176 - já estava correta, mas faz parte do bloco)
+        } catch (IOException e) { 
             JOptionPane.showMessageDialog(this, "Erro ao salvar no arquivo.", "Erro de Persistência", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_jButton1ActionPerformed
@@ -196,16 +196,11 @@ public TelaCadastroVaga(Usuario usuario, GestaoService service) {
         // Volta para a tela anterior
         TelaMenuGestor telaMenu = new TelaMenuGestor(this.usuarioLogado, this.gestaoService);
 
-        // 2. Mostra o menu
+        //Mostra o menu
         telaMenu.setVisible(true);
-
-        // 3. Fecha a tela atual (Cadastro de Vaga)
-        this.dispose();
+        this.dispose();// Fecha a tela atual
     }//GEN-LAST:event_jButton2ActionPerformed
 
-    /**
-     * @param args the command line arguments
-     */
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
