@@ -35,18 +35,48 @@ public class Main extends javax.swing.JFrame {
         jButton5.addActionListener(e -> abrirSolicitarContratacoes());
     }
 
-    
     public void carregarRecrutador(String cpf) {
-            if (this.recrutadorLogado == null) {
-                 this.recrutadorLogado = recrutadorController.buscar(cpf);
+            System.out.println("Tentando carregar recrutador com CPF: " + cpf);
+
+            // 1. Tenta buscar no banco de dados central (GestaoService)
+            telas.administracaoGestao.controller.GestaoService gestao = 
+                    telas.administracaoGestao.controller.GestaoService.getInstance();
+
+            // Usa o método novo que acabamos de criar
+            telas.administracaoGestao.model.Usuario usuarioEncontrado = gestao.buscarUsuario(cpf);
+
+            // 2. Verifica se achou
+            if (usuarioEncontrado != null) {
+                System.out.println("Usuário encontrado no GestaoService: " + usuarioEncontrado.getNome());
+
+                // Se o usuário for instância de Recrutador, faz o cast direto
+                if (usuarioEncontrado instanceof Recrutador) {
+                    this.recrutadorLogado = (Recrutador) usuarioEncontrado;
+                } else {
+                    // Se for um usuário genérico (criado pelo Admin como 'Recrutador' mas a classe é Usuario ou Gestor)
+                    // Criamos um objeto Recrutador temporário apenas para a tela funcionar
+                    this.recrutadorLogado = new Recrutador(
+                            usuarioEncontrado.getNome(), 
+                            usuarioEncontrado.getCpf(), 
+                            usuarioEncontrado.getEmail(), 
+                            usuarioEncontrado.getLogin(), 
+                            "****"
+                    );
+                }
+            } else {
+                System.out.println("Usuário NÃO encontrado no GestaoService.");
+                // Fallback: Tenta controller local (para testes isolados)
+                this.recrutadorLogado = recrutadorController.buscar(cpf);
             }
 
+            // 3. Atualiza a interface visual
             if (this.recrutadorLogado != null) {
-                jTextField1.setText(this.recrutadorLogado.getNome()); 
-                jTextField2.setText(this.recrutadorLogado.getCpf()); 
+                // Se certifica de que os componentes da tela não são nulos
+                if (jTextField1 != null) jTextField1.setText(this.recrutadorLogado.getNome());
+                if (jTextField2 != null) jTextField2.setText(this.recrutadorLogado.getCpf());
 
-                jTextField1.setEditable(false);
-                jTextField2.setEditable(false);
+                if (jTextField1 != null) jTextField1.setEditable(false);
+                if (jTextField2 != null) jTextField2.setEditable(false);
             }
         }
     

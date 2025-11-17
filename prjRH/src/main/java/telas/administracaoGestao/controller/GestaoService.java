@@ -242,5 +242,15 @@ public class GestaoService {
         repoUsuarios.salvar(usuarios, ARQUIVO_USUARIOS);
         System.out.println("Usuário editado: " + usuarioParaEditar.getNome());
     }
+
+    public Usuario buscarUsuario(String cpf) {
+            if (this.usuarios == null) return null;
+
+            return this.usuarios.stream()
+                .filter(u -> u.getCpf().equals(cpf))
+                .findFirst()
+                .orElse(null);
+        }
+    
 }
 
