@@ -7,6 +7,8 @@ import telas.administracaoGestao.controller.GestaoService;
 import telas.administracaoGestao.excecoes.NegocioException;
 import telas.administracaoGestao.model.Usuario;
 import javax.swing.JOptionPane;
+import telas.administracaoGestao.model.Perfil;
+
 /**
  *
  * @author Nati
@@ -114,36 +116,54 @@ public class TelaLogin extends javax.swing.JFrame {
        // TODO add your handling code here:
     }//GEN-LAST:event_jPasswordField1ActionPerformed
 
-    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        String login = jTextField1.getText();
-        char[] senha = jPasswordField1.getPassword();
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {                                         
+            String login = jTextField1.getText();
+            char[] senha = jPasswordField1.getPassword();
 
-        try {
-            // --- TENTA FAZER O LOGIN ---
-            // 1. CHAMA O CONTROLLER (Esta é a linha 117)
-            Usuario usuarioLogado = gestaoService.login(login, senha);
+            try {
+                // 1. TENTA FAZER O LOGIN
+                Usuario usuarioLogado = gestaoService.login(login, senha);
 
-            // --- SE DEU CERTO (código "Feliz") ---
-            // 2. MOSTRA MENSAGEM DE SUCESSO
-            JOptionPane.showMessageDialog(this, "Login bem-sucedido! Bem-vindo, " + usuarioLogado.getNome());
+                // 2. MOSTRA MENSAGEM DE SUCESSO
+                JOptionPane.showMessageDialog(this, "Login bem-sucedido! Bem-vindo, " + usuarioLogado.getNome());
 
-            // 3. ABRE A TELA PRINCIPAL
-            // (Eu descomentei e corrigi esta linha para você)
-            TelaPrincipal telaPrincipal = new TelaPrincipal(usuarioLogado, gestaoService);
-            telaPrincipal.setVisible(true);
+                // 3. REDIRECIONAMENTO POR PERFIL (AQUI ESTÁ A MUDANÇA)
+                
+                // Se for ADMIN ou GESTOR -> Vai para o Menu Geral (TelaPrincipal)
+                if (usuarioLogado.getPerfis().contains(Perfil.ADMINISTRADOR) || 
+                    usuarioLogado.getPerfis().contains(Perfil.GESTOR)) {
+                    
+                    TelaPrincipal telaPrincipal = new TelaPrincipal(usuarioLogado, gestaoService);
+                    telaPrincipal.setVisible(true);
+                    
+                } 
+                // Se for RECRUTADOR -> Vai para o seu Menu (O trecho que você pediu)
+                else if (usuarioLogado.getPerfis().contains(Perfil.RECRUTADOR)) {
+                    
+                    // 1. Instancia o seu Menu
+                    telas.recrutamento.view.Main telaRecrutamento = new telas.recrutamento.view.Main();
 
-            this.dispose(); // Fecha a tela de login
+                    // 2. IMPORTANTE: Passa o CPF do usuário que acabou de logar
+                    telaRecrutamento.carregarRecrutador(usuarioLogado.getCpf()); 
 
-        } catch (NegocioException e) {
-            // --- SE DEU ERRADO (código "Triste") ---
-            // 4. CAPTURA O ERRO E MOSTRA NUM POP-UP
-            JOptionPane.showMessageDialog(this, 
-                    e.getMessage(), // A mensagem (ex: "Senha incorreta.")
-                    "Erro de Login", // O título do pop-up
-                    JOptionPane.ERROR_MESSAGE);
-        }                
+                    // 3. Abre a tela
+                    telaRecrutamento.setVisible(true);
+                }
+                else {
+                    JOptionPane.showMessageDialog(this, "Perfil sem tela definida.");
+                    return; // Não fecha a tela de login se não tiver para onde ir
+                }
 
-    }//GEN-LAST:event_jButton3ActionPerformed
+                this.dispose(); // Fecha a tela de login
+
+            } catch (NegocioException e) {
+                // 4. CAPTURA O ERRO
+                JOptionPane.showMessageDialog(this, 
+                        e.getMessage(), 
+                        "Erro de Login", 
+                        JOptionPane.ERROR_MESSAGE);
+            }                
+        }
 
     private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
         // TODO add your handling code here:

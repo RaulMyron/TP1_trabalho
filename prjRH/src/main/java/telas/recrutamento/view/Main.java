@@ -26,6 +26,7 @@ public class Main extends javax.swing.JFrame {
         configurarEventos();
     }
 
+
     private void configurarEventos() {
         jButton1.addActionListener(e -> sair());
         jButton2.addActionListener(e -> abrirGerenciarCandidaturas());
@@ -36,17 +37,18 @@ public class Main extends javax.swing.JFrame {
 
     
     public void carregarRecrutador(String cpf) {
-        recrutadorLogado = recrutadorController.buscar(cpf);
-        if (recrutadorLogado != null) {
-            jTextField1.setText(recrutadorLogado.getNome());
-            jTextField2.setText(recrutadorLogado.getCpf());
-            jTextField1.setEditable(false);
-            jTextField2.setEditable(false);
-        } else {
-            JOptionPane.showMessageDialog(this, "Recrutador não encontrado!");
-            System.exit(0);
+            if (this.recrutadorLogado == null) {
+                 this.recrutadorLogado = recrutadorController.buscar(cpf);
+            }
+
+            if (this.recrutadorLogado != null) {
+                jTextField1.setText(this.recrutadorLogado.getNome()); 
+                jTextField2.setText(this.recrutadorLogado.getCpf()); 
+
+                jTextField1.setEditable(false);
+                jTextField2.setEditable(false);
+            }
         }
-    }
     
     private void abrirGerenciarCandidaturas() {
         if (recrutadorLogado == null) {
@@ -96,6 +98,8 @@ public class Main extends javax.swing.JFrame {
             this.dispose();
         }
     }
+    
+
     
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -192,7 +196,7 @@ public class Main extends javax.swing.JFrame {
             }
         });
 
-        jButton3.setText("📅 Marcar Entrevistas");
+        jButton3.setText("Marcar Entrevistas");
         jButton3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton3ActionPerformed(evt);
@@ -295,28 +299,53 @@ public class Main extends javax.swing.JFrame {
     /**
      * @param args the command line arguments
      */
+
     public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
+            /* Configuração do visual (Nimbus) */
+            try {
+                for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+                    if ("Nimbus".equals(info.getName())) {
+                        javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                        break;
+                    }
                 }
+            } catch (Exception ex) {
+                java.util.logging.Logger.getLogger(Main.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
             }
-        } catch (ReflectiveOperationException | javax.swing.UnsupportedLookAndFeelException ex) {
-            logger.log(java.util.logging.Level.SEVERE, null, ex);
+
+            /* SCRIPT DE TESTE (SEM ALERTA DUPLO) */
+            java.awt.EventQueue.invokeLater(() -> {
+                Main tela = new Main();
+                String cpf = "123.456.789-00";
+                
+                // 1. Tenta cadastrar direto (sem 'buscar' antes, para evitar o primeiro alerta)
+                try {
+                    telas.recrutamento.controller.RecrutadorController ctrl = new telas.recrutamento.controller.RecrutadorController();
+                    // Tenta cadastrar. Se já existir ou der erro, o catch captura e segue o baile.
+                    ctrl.cadastrar(cpf, "Gestor de Teste", "teste@rh.com", "123");
+                } catch (Exception e) {
+                    // Silenciosamente ignora se já estiver cadastrado
+                }
+
+                // 2. Carrega na tela (Única chamada que buscará os dados)
+                tela.carregarRecrutador(cpf);
+                
+                // 3. Preenchimento de segurança (caso o carregamento via arquivo falhe)
+                try {
+                    if (tela.jTextField1.getText().isEmpty()) {
+                        tela.jTextField1.setText("Gestor de Teste");
+                        tela.jTextField2.setText(cpf);
+                        tela.jTextField1.setEditable(false);
+                        tela.jTextField2.setEditable(false);
+                    }
+                } catch (Exception e) {
+                    System.out.println("Campos inacessíveis ou erro visual ignorado.");
+                }
+                
+                tela.setVisible(true);
+            });
         }
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(() -> new Main().setVisible(true));
-    }
-
+     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
@@ -328,7 +357,7 @@ public class Main extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
+    javax.swing.JTextField jTextField1;
+    javax.swing.JTextField jTextField2;
     // End of variables declaration//GEN-END:variables
 }

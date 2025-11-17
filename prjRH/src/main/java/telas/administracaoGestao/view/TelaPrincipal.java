@@ -20,31 +20,38 @@ public class TelaPrincipal extends javax.swing.JFrame {
      * Creates new form TelaPrincipal
      */
 public TelaPrincipal(Usuario usuario, GestaoService service) {
-    initComponents();
-    this.usuarioLogado = usuario;
-    this.gestaoService = service;
+        initComponents();
+        this.usuarioLogado = usuario;
+        this.gestaoService = service;
         
-    jLabel1.setText(usuarioLogado.getNome()); // 'lblNomeUsuario' é um Jlabel
-        // 1. Verifica se o usuário é Administrador
+        // 1. Configurações Visuais
+        // Define o texto de boas-vindas (ajuste jLabel1 se o nome da variável for diferente)
+        jLabel1.setText("Bem-vindo(a), " + usuarioLogado.getNome()); 
+        setLocationRelativeTo(null); // Centraliza a tela
+
+        // 2. Define as Permissões (Flags para facilitar a leitura)
         boolean isAdmin = this.usuarioLogado.getPerfis().contains(Perfil.ADMINISTRADOR);
-        
-        // 2. Se NÃO for Admin, aplicamos as restrições
+        boolean isGestor = this.usuarioLogado.getPerfis().contains(Perfil.GESTOR);
+        boolean isRecrutador = this.usuarioLogado.getPerfis().contains(Perfil.RECRUTADOR);
+
+        // 3. Lógica de Segurança (Bloqueio de Botões)
+
+        // --- Apenas ADMINISTRADOR ---
+        // jButton1: Administrar Usuários (Só o admin cria/edita usuários)
         if (!isAdmin) {
-            
-            // Lógica do Administrador (Botão Admin)
-            // (Este botão já estará desativado por esta lógica, mas mantemos por segurança)
-            if (!this.usuarioLogado.getPerfis().contains(Perfil.ADMINISTRADOR)) {
-                jButton1.setEnabled(false); 
-            }
-            
-            // Lógica do Gestor (Botão Gestor)
-            if (!this.usuarioLogado.getPerfis().contains(Perfil.GESTOR)) {
-                jButton4.setEnabled(false);
-            }
-            
-            // (Adicione aqui a lógica para os outros botões:
-            // jButton5 (Financeiro), jButton6 (Recrutamento), etc.)
-            
+            jButton1.setEnabled(false); 
+        }
+
+        if (!isAdmin && !isGestor) {
+            jButton2.setEnabled(false); 
+            jButton4.setEnabled(false); 
+            jButton5.setEnabled(false);
+            jButton8.setEnabled(false);
+        }
+
+        if (!isAdmin && !isRecrutador) {
+             jButton6.setEnabled(false); 
+             jButton7.setEnabled(false);
         }
     }
 
