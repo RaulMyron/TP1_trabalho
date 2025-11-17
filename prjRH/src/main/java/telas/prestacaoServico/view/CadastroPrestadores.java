@@ -145,6 +145,7 @@ public class CadastroPrestadores extends JFrame {
         });
         
         JScrollPane scrollPane = new JScrollPane(tabelaPrestadores);
+        scrollPane.setPreferredSize(new Dimension(1000, 180));
         scrollPane.setBorder(BorderFactory.createTitledBorder("Prestadores Cadastrados"));
         
         JPanel painelCentral = new JPanel(new BorderLayout(5, 5));
@@ -159,11 +160,14 @@ public class CadastroPrestadores extends JFrame {
         JButton btnVoltar = new JButton("Voltar ao Menu");
         btnVoltar.addActionListener(e -> dispose());
         painelRodape.add(btnVoltar);
+        painelInferior.add(painelRodape, BorderLayout.SOUTH);
         
         add(painelTitulo, BorderLayout.NORTH);
         add(painelCentral, BorderLayout.CENTER);
         add(painelInferior, BorderLayout.SOUTH);
-        add(painelRodape, BorderLayout.PAGE_END);
+        pack();
+        setLocationRelativeTo(null);
+        setExtendedState(JFrame.MAXIMIZED_BOTH);
     }
     
     private void atualizarLabelCpfCnpj() {
