@@ -3,7 +3,6 @@ package telas.financeiro;
 import javax.swing.JOptionPane;
 import telas.administracaoGestao.controller.GestaoService;
 import telas.administracaoGestao.model.Usuario;
-import telas.administracaoGestao.model.Perfil;
 import telas.administracaoGestao.view.TelaPrincipal;
 
 public class MenuFinanceiro extends javax.swing.JFrame {
@@ -16,7 +15,6 @@ public class MenuFinanceiro extends javax.swing.JFrame {
         this.usuarioLogado = usuario;
         this.gestaoService = service;
         configurarTela();
-        validarPermissoes();
     }
 
     private void configurarTela() {
@@ -25,56 +23,41 @@ public class MenuFinanceiro extends javax.swing.JFrame {
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
     }
 
-    private void validarPermissoes() {
-        // Valida se o usuário tem permissão para acessar o módulo Financeiro
-        // Apenas ADMINISTRADOR e GESTOR devem ter acesso
-        boolean isAdmin = usuarioLogado.getPerfis().contains(Perfil.ADMINISTRADOR);
-        boolean isGestor = usuarioLogado.getPerfis().contains(Perfil.GESTOR);
-
-        if (!isAdmin && !isGestor) {
-            JOptionPane.showMessageDialog(this,
-                "Você não tem permissão para acessar o Módulo Financeiro.\n" +
-                "Acesso permitido apenas para Administradores e Gestores.",
-                "Acesso Negado",
-                JOptionPane.ERROR_MESSAGE);
-            this.dispose();
-            new TelaPrincipal(usuarioLogado, gestaoService).setVisible(true);
-        }
-    }
+    
     
 
     private void abrirCadastroFuncionario() {
-        CadastroFuncionario tela = new CadastroFuncionario(this);
+        CadastroFuncionario tela = new CadastroFuncionario();
         tela.setVisible(true);
-        this.dispose();
+        
     }
 
 
     private void abrirListagemFuncionarios() {
-        ListagemFuncionarios tela = new ListagemFuncionarios(this);
+        ListagemFuncionarios tela = new ListagemFuncionarios();
         tela.setVisible(true);
-        this.dispose(); // Fecha esta tela para evitar múltiplas telas abertas
+        
     }
 
 
     private void abrirConfigurarRegras() {
-        ConfigurarRegrasSalariais tela = new ConfigurarRegrasSalariais(this);
+        ConfigurarRegrasSalariais tela = new ConfigurarRegrasSalariais();
         tela.setVisible(true);
-        this.dispose(); // Fecha esta tela para evitar múltiplas telas abertas
+        
     }
 
 
     private void abrirGerarFolha() {
-        GerarFolhaPagamento tela = new GerarFolhaPagamento(this);
+        GerarFolhaPagamento tela = new GerarFolhaPagamento();
         tela.setVisible(true);
-        this.dispose(); // Fecha esta tela para evitar múltiplas telas abertas
+        
     }
 
 
     private void abrirContracheques() {
-        VisualizarContracheques tela = new VisualizarContracheques(this);
+        VisualizarContracheques tela = new VisualizarContracheques();
         tela.setVisible(true);
-        this.dispose(); // Fecha esta tela para evitar múltiplas telas abertas
+        
     }
     
     
