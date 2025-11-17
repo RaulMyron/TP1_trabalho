@@ -7,16 +7,21 @@ import javax.swing.JOptionPane;
 
 
 public class ConfigurarRegrasSalariais extends javax.swing.JFrame {
-    
-    
+
+    private javax.swing.JFrame menuPai;
     private FinanceiroController controller;
     
    
     public ConfigurarRegrasSalariais() {
-        initComponents(); 
+        initComponents();
         this.controller = ControllerManager.getFinanceiroController();
         configurarTela();
-        carregarValoresAtuais(); 
+        carregarValoresAtuais();
+    }
+
+    public ConfigurarRegrasSalariais(javax.swing.JFrame menuPai) {
+        this();
+        this.menuPai = menuPai;
     }
     
     
@@ -293,6 +298,9 @@ public class ConfigurarRegrasSalariais extends javax.swing.JFrame {
     private void btnVoltarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVoltarActionPerformed
         // TODO add your handling code here:
         this.dispose();
+        if (menuPai != null) {
+            menuPai.setVisible(true);
+        }
     }//GEN-LAST:event_btnVoltarActionPerformed
 
     private void txtPercentualINSSActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtPercentualINSSActionPerformed

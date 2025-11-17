@@ -21,6 +21,11 @@ public class ListagemFuncionarios extends javax.swing.JFrame {
         configurarTela();
         carregarFuncionarios();
     }
+
+    public ListagemFuncionarios(javax.swing.JFrame menuPai) {
+        this();
+        this.menuPai = menuPai;
+    }
     
     private void configurarTela() {
         setTitle("Listagem de Funcionários");
@@ -208,6 +213,9 @@ public class ListagemFuncionarios extends javax.swing.JFrame {
     private void btnVoltarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVoltarActionPerformed
         // TODO add your handling code here:
         this.dispose();
+        if (menuPai != null) {
+            menuPai.setVisible(true);
+        }
     }//GEN-LAST:event_btnVoltarActionPerformed
 
     
