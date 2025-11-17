@@ -319,8 +319,6 @@ public class ConsultarContratações extends javax.swing.JFrame {
 
         jLabel6.setText("Data de Inicio");
 
-        jTextField2.setText("jTextField1");
-
         jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
         jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
