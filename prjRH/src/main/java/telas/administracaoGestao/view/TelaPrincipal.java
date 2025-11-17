@@ -24,15 +24,14 @@ public TelaPrincipal(Usuario usuario, GestaoService service) {
     this.usuarioLogado = usuario;
     this.gestaoService = service;
         
-    jLabel1.setText(usuarioLogado.getNome()); // 'lblNomeUsuario' é um Jlabel
-        // 1. Verifica se o usuário é Administrador
+    jLabel1.setText(usuarioLogado.getNome()); 
+        // Verifica se o usuário é Administrador
         boolean isAdmin = this.usuarioLogado.getPerfis().contains(Perfil.ADMINISTRADOR);
         
-        // 2. Se NÃO for Admin, aplicamos as restrições
+        // Se Não for Admin, aplicamos as restrições
         if (!isAdmin) {
-            
-            // Lógica do Administrador (Botão Admin)
-            // (Este botão já estará desativado por esta lógica, mas mantemos por segurança)
+
+            // O botão estará desativado por esta lógica
             if (!this.usuarioLogado.getPerfis().contains(Perfil.ADMINISTRADOR)) {
                 jButton1.setEnabled(false); 
             }
@@ -42,8 +41,6 @@ public TelaPrincipal(Usuario usuario, GestaoService service) {
                 jButton4.setEnabled(false);
             }
             
-            // (Adicione aqui a lógica para os outros botões:
-            // jButton5 (Financeiro), jButton6 (Recrutamento), etc.)
             
         }
     }
@@ -175,20 +172,17 @@ public TelaPrincipal(Usuario usuario, GestaoService service) {
     }//GEN-LAST:event_jButton1ActionPerformed
     
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-        // 1. Cria a nova tela "TelaMenuGestor"
+        // Cria a nova tela "TelaMenuGestor"
         TelaMenuGestor telaGestor = new TelaMenuGestor(this.usuarioLogado, this.gestaoService);
         
-        // 2. Mostra a nova tela
+        // Mostra a nova tela
         telaGestor.setVisible(true);
-        
-        // 3. Fecha a TelaPrincipal
-        this.dispose();   // TODO add your handling code here:
+        this.dispose();// Fecha a TelaPrincipal
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         new TelaLogin().setVisible(true);
-        // 2. Fecha a TelaPrincipal atual
-         this.dispose();        // TODO add your handling code here:
+         this.dispose();// Fecha a TelaPrincipal atual   
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed

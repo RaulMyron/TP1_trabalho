@@ -14,7 +14,7 @@ public class TelaMenuGestor extends javax.swing.JFrame {
     private Usuario usuarioLogado;
     private GestaoService gestaoService;
 
-    // 1. CONSTRUTOR QUE RECEBE OS DADOS
+    // Construtor que recebe os dados 
     public TelaMenuGestor(Usuario usuario, GestaoService service) {
         initComponents();
         this.usuarioLogado = usuario;
@@ -121,8 +121,7 @@ public class TelaMenuGestor extends javax.swing.JFrame {
         // Mostra a TelaPrincipal
         telaPrincipal.setVisible(true);
 
-        //Fecha esta tela (o Menu do Gestor)
-        this.dispose();
+        this.dispose();//Fecha a tela do Menu do Gestor
     }//GEN-LAST:event_jButton1ActionPerformed
 
     /**

@@ -3,8 +3,6 @@ package telas.administracaoGestao.model;
 import java.util.List;
 import telas.administracaoGestao.model.Perfil;
 import java.io.Serializable;
-// Importe suas classes de exceção personalizadas aqui
-// import telas.administracaoGestao.model.exceptions.ValidationException;
 
 public class Administrador extends Usuario implements Serializable { 
     
@@ -28,7 +26,7 @@ public class Administrador extends Usuario implements Serializable {
      * @param senha A senha do novo usuário
      * @param perfilParaCriar O Perfil que este novo usuário terá (ex: Perfil.GESTOR)
      * @return O objeto Usuario que foi criado (seja ele um Gestor, Recrutador, etc.).
-     * @throws Exception (Idealmente uma exceção personalizada, ex: ValidationException)
+     * @throws Exception usado para exceção personalizada, ex: ValidationException)
      */
     public Usuario cadastrarUsuario(List<Usuario> todosOsUsuarios, String nome, String cpf, 
                                     String email, String login, String senha, 
@@ -51,7 +49,7 @@ public class Administrador extends Usuario implements Serializable {
                                   "contendo letras e números.");
         }
 
-        // --- 3. VALIDAÇÃO DA REGRA DE NEGÓCIO: DADOS ÚNICOS ---
+        // Dados só podem  ser únicos 
         for (Usuario u : todosOsUsuarios) {
             if (u.getCpf().equals(cpf)) {
                 throw new Exception("Erro: O CPF '" + cpf + "' já está cadastrado.");
@@ -63,8 +61,7 @@ public class Administrador extends Usuario implements Serializable {
                 throw new Exception("Erro: O Login '" + login + "' já está cadastrado.");
             }
         }
-        
-        // --- 4. CRIAÇÃO (O PONTO DA CORREÇÃO) ---
+
         Usuario novoUsuario; // Declara a variável do tipo "pai" (Usuario)
 
         switch (perfilParaCriar) {
@@ -74,12 +71,11 @@ public class Administrador extends Usuario implements Serializable {
             case GESTOR:
                 novoUsuario = new Gestor(nome, cpf, email, login, senha);
                 break;
-            // Adicione outros casos (como FUNCIONARIO) se eles puderem ser criados assim
             default:
                 throw new Exception("Erro: Perfil '" + perfilParaCriar + "' não é válido para criação.");
         }
         
-        // --- 5. PERSISTÊNCIA E RETORNO ---
+        // Persistencia e retorno
         todosOsUsuarios.add(novoUsuario);
         
         System.out.println("Administrador cadastrou com sucesso: " + novoUsuario.getNome() + 
@@ -90,7 +86,6 @@ public class Administrador extends Usuario implements Serializable {
     public Usuario editarUsuario(Usuario usuarioParaEditar, List<Usuario> todosOsUsuarios, 
                                  String novoNome, String novoEmail, String novoLogin) throws Exception {
 
-        // --- 1. VALIDAÇÃO DE CAMPOS NULOS OU VAZIOS ---
         if (novoNome == null || novoNome.trim().isEmpty() || 
             novoEmail == null || novoEmail.trim().isEmpty() ||
             novoLogin == null || novoLogin.trim().isEmpty()) {
@@ -98,11 +93,10 @@ public class Administrador extends Usuario implements Serializable {
             throw new Exception("Erro: Nenhum campo pode ficar vazio.");
         }
 
-        // --- 2. VALIDAÇÃO DE DADOS ÚNICOS (Email e Login) ---
-        // "Validar dados de usuários (por exemplo: CPF, email)."
+        // Validar dados de usuários (por exemplo: CPF, email).
         for (Usuario u : todosOsUsuarios) {
             
-            // Verifica se o email novo JÁ EXISTE em outro usuário
+            // Verifica se o email novo já existe em outro usuário
             if (u.getEmail().equalsIgnoreCase(novoEmail)) {
                 // Se o email pertence a OUTRO usuário, é um erro.
                 // Se pertence ao usuário que estamos editando (u.equals(usuarioParaEditar)), 
@@ -120,29 +114,25 @@ public class Administrador extends Usuario implements Serializable {
             }
         }
         
-        // --- 3. ATUALIZAÇÃO DOS DADOS ---
         // Se todas as validações passaram, atualiza o objeto
         // Usa os setters herdados da classe Pessoa e Usuario
         usuarioParaEditar.setNome(novoNome);
         usuarioParaEditar.setEmail(novoEmail);
-        usuarioParaEditar.setLogin(novoLogin); // (Assumindo que você criou setLogin() em Usuario)
+        usuarioParaEditar.setLogin(novoLogin); 
         
         System.out.println("Administrador editou com sucesso: " + usuarioParaEditar.getNome());
 
-        // --- 4. RETORNO ---
         return usuarioParaEditar;
     }
     public void excluirUsuario(Usuario usuarioParaRemover, List<Usuario> todosOsUsuarios, 
                                Administrador adminLogado) throws Exception {
 
-        // --- 1. VALIDAÇÃO: NÃO PODE EXCLUIR A SI MESMO ---
         // Usamos o CPF (ou ID) para garantir que são o mesmo objeto.
         if (usuarioParaRemover.getCpf().equals(adminLogado.getCpf())) {
             throw new Exception("Erro: Você não pode excluir a sua própria conta de administrador.");
         }
 
-        // --- 2. VALIDAÇÃO: NÃO PODE EXCLUIR O ÚLTIMO ADMINISTRADOR ---
-        // Primeiro, verificamos se o usuário a ser removido é um administrador.
+        // Verificamos se o usuário a ser removido é um administrador.
         if (usuarioParaRemover.getPerfis().contains(Perfil.ADMINISTRADOR)) {
             // Se sim, contamos quantos administradores existem no total.
             int contagemAdmins = 0;
@@ -152,32 +142,29 @@ public class Administrador extends Usuario implements Serializable {
                 }
             }
 
-            // Se só houver 1 admin (e estamos tentando excluí-lo), barramos a ação.
+            // Se só houver 1 admin e estamos tentando excluí-lo, barramos a ação.
             if (contagemAdmins <= 1) {
                 throw new Exception("Erro: Não é possível excluir o último administrador do sistema.");
             }
         }
 
-        // --- 3. EXCLUSÃO ---
         // Se todas as validações passaram, remove o usuário da "base de dados".
         boolean removeu = todosOsUsuarios.remove(usuarioParaRemover);
 
         if (removeu) {
             System.out.println("Administrador excluiu com sucesso: " + usuarioParaRemover.getNome());
         } else {
-            // Isso pode acontecer se o usuário não foi encontrado na lista por algum motivo.
+            // Erro lançado se o usuário não foi encontrado na lista por algum motivo.
             System.out.println("Erro: Não foi possível encontrar o usuário para exclusão.");
         }
     }
     public void definirPerfil(Usuario usuario, Perfil perfilParaAdicionar) throws Exception {
 
-        // --- 1. VALIDAÇÃO: JÁ POSSUI O PERFIL? ---
         if (usuario.getPerfis().contains(perfilParaAdicionar)) {
             throw new Exception("Erro: O usuário '" + usuario.getNome() + 
                                   "' já possui o perfil " + perfilParaAdicionar);
         }
 
-        // --- 2. ADIÇÃO ---
         // Chama o método "addPerfil" que deve existir na classe Usuario 
         usuario.addPerfil(perfilParaAdicionar);
         
@@ -195,13 +182,12 @@ public class Administrador extends Usuario implements Serializable {
     public void removerPerfil(Usuario usuario, Perfil perfilParaRemover, 
                               List<Usuario> todosOsUsuarios) throws Exception {
 
-        // --- 1. VALIDAÇÃO: POSSUI O PERFIL? ---
+        // Validação de perfil
         if (!usuario.getPerfis().contains(perfilParaRemover)) {
             throw new Exception("Erro: O usuário '" + usuario.getNome() + 
                                   "' não possui o perfil " + perfilParaRemover + " para ser removido.");
         }
 
-        // --- 2. VALIDAÇÃO DE SEGURANÇA: ÚLTIMO ADMIN ---
         // Verifica se estamos tentando remover o perfil de ADMINISTRADOR
         if (perfilParaRemover == Perfil.ADMINISTRADOR) {
             
@@ -220,7 +206,6 @@ public class Administrador extends Usuario implements Serializable {
             }
         }
 
-        // --- 3. REMOÇÃO ---
         // Chama o método "removePerfil" que deve existir na classe Usuario 
         usuario.removePerfil(perfilParaRemover);
         
@@ -228,4 +213,4 @@ public class Administrador extends Usuario implements Serializable {
                            " removido com sucesso de " + usuario.getNome());
     }
 
-} // Fim da classe Administrador
+} 

@@ -32,9 +32,9 @@ public class TelaRelatoriosGestao extends javax.swing.JFrame {
     
     private void carregarRelatorio() {
         DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
-        model.setRowCount(0); // Limpa a tabela
+        model.setRowCount(0); 
 
-        // Relatório 1: Usuários Ativos
+        // Usuários Ativos
         int totalUsuarios = gestaoService.listarTodosUsuarios().size();
         
         model.addRow(new Object[]{
@@ -43,7 +43,7 @@ public class TelaRelatoriosGestao extends javax.swing.JFrame {
             totalUsuarios
         });
 
-        // Relatório 2: Vagas
+        // Vagas
         int totalVagas = gestaoService.listarTodasVagas().size();
         
         model.addRow(new Object[]{
@@ -172,7 +172,7 @@ public class TelaRelatoriosGestao extends javax.swing.JFrame {
             new TelaMenuGestor(this.usuarioLogado, this.gestaoService).setVisible(true);
 
         } else {
-            // Fallback (plano B): Se não for nenhum dos dois, volta para a Tela Principal
+            // Se não for nenhum dos dois, volta para a Tela Principal
             new TelaPrincipal(this.usuarioLogado, this.gestaoService).setVisible(true);
         }
 

@@ -31,7 +31,7 @@ public abstract class Pessoa implements Serializable {
     }
     @Override
     public String toString() {
-        // Isso faz o JComboBox mostrar o nome do usuário
+        // ComboBox mostrar o nome do usuário
         return this.nome; 
     }
 }

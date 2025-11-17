@@ -16,7 +16,7 @@ public class Vaga implements Serializable {
     public Vaga(String cargo, double salario) {
         this.cargo = cargo;
         this.salario = salario;
-        this.status = "aberta"; // Ótimo valor padrão!
+        this.status = "aberta"; 
     }
     
     // GETTERS E SETTERS 

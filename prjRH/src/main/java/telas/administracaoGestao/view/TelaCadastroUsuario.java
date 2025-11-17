@@ -29,29 +29,29 @@ public class TelaCadastroUsuario extends javax.swing.JFrame {
         configurarTela(); // Chama um método para "limpar" a tela
     }
     public TelaCadastroUsuario(Usuario usuarioLogado, GestaoService service, Usuario usuarioParaEditar) {
-        // 1. Chama o construtor principal (o que você já tem)
+        // Chama o construtor principal
         this(usuarioLogado, service); 
         
-        // 2. Armazena o usuário que estamos editando
+        // Armazena o usuário que estamos editando
         this.usuarioEditando = usuarioParaEditar;
         
-        // 3. Preenche os campos da tela com os dados do usuário
+        // Preenche os campos da tela com os dados do usuário
         jTextField1.setText(usuarioEditando.getNome());
         jTextField2.setText(usuarioEditando.getCpf());
         jTextField3.setText(usuarioEditando.getEmail());
         jTextField4.setText(usuarioEditando.getLogin());
         
-        // 4. Trava campos que não podem ser editados
+        // Trava campos que não podem ser editados
         jTextField2.setEditable(false); // Não pode editar CPF
-        jPasswordField1.setEnabled(false); // Não vamos editar senha nesta tela
-        Perfil.setEnabled(false); // Não vamos editar perfil nesta tela
+        jPasswordField1.setEnabled(false);
+        Perfil.setEnabled(false); 
         
-        // 5. Muda o título e o botão
-        jButton1.setText("Editar Usuário"); // 'jTextField11' é o seu título
-        jButton1.setText("Atualizar"); // 'jButton1' é o seu botão "Salvar"
+        // Muda o título e o botão
+        jButton1.setText("Editar Usuário"); 
+        jButton1.setText("Atualizar"); 
     }
     private void configurarTela() {
-       // SÓ LIMPA OS CAMPOS SE NÃO ESTIVERMOS EDITANDO
+       // Só limpas os campos se não estiver editando 
         if (this.usuarioEditando == null) {
             jTextField1.setText(""); // Nome
             jTextField2.setText(""); // CPF
@@ -59,8 +59,7 @@ public class TelaCadastroUsuario extends javax.swing.JFrame {
             jTextField4.setText(""); // Login
             jPasswordField1.setText(""); // Senha
         }
-        
-        // Configura o JComboBox (que você chamou de "Perfil")
+         
         Perfil.removeAllItems(); 
         
         Perfil.addItem("Administrador");
@@ -68,7 +67,7 @@ public class TelaCadastroUsuario extends javax.swing.JFrame {
         Perfil.addItem("Recrutador");
         Perfil.addItem("Funcionario");
         
-        jComboBox1.removeAllItems(); // Limpa o "Item 1", "Item 2", etc.
+        jComboBox1.removeAllItems(); 
         jComboBox1.addItem("Ativo");
         jComboBox1.addItem("Inativo");
     }
@@ -246,7 +245,7 @@ public class TelaCadastroUsuario extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         try {
-            // 1. Pega os dados dos campos da tela
+            // Pega os dados dos campos da tela
             String nome = jTextField1.getText();
             String cpf = jTextField2.getText();
             String email = jTextField3.getText();
@@ -254,30 +253,28 @@ public class TelaCadastroUsuario extends javax.swing.JFrame {
             String senha = new String(jPasswordField1.getPassword());
             String perfilSelecionado = (String) Perfil.getSelectedItem();
 
-            // 2. VERIFICA SE ESTAMOS EM MODO DE EDIÇÃO OU CADASTRO
+            // Verifica se estamos em modo de edição ou cadastro
             if (this.usuarioEditando == null) {
-                // --- MODO CADASTRO ---
                 
                 // Validação de cadastro
                 if (nome.isEmpty() || cpf.isEmpty() || email.isEmpty() || login.isEmpty() || senha.isEmpty() || perfilSelecionado == null) {
                     throw new NegocioException("Todos os campos são obrigatórios.");
                 }
                 
-                // Chama o GestaoService para CADASTRAR
+                // Chama o GestaoService para cadastrar
                 gestaoService.cadastrarUsuario(
                     this.usuarioLogado, nome, cpf, email, login, senha, perfilSelecionado
                 );
                 JOptionPane.showMessageDialog(this, "Usuário cadastrado com sucesso!");
 
             } else {
-                // --- MODO EDIÇÃO ---
 
                 // Validação de edição
                 if (nome.isEmpty() || email.isEmpty() || login.isEmpty()) {
                     throw new NegocioException("Nome, Email e Login são obrigatórios.");
                 }
                 
-                // Chama o GestaoService para EDITAR
+                // Chama o GestaoService para editar
                 gestaoService.editarUsuario(
                     this.usuarioLogado,
                     this.usuarioEditando, // O usuário original
@@ -288,7 +285,7 @@ public class TelaCadastroUsuario extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(this, "Usuário atualizado com sucesso!");
             }
 
-            // 5. Volta para a tela de listagem
+            // Volta para a tela de listagem
             new TelaAdministrarUsuarios(this.usuarioLogado, this.gestaoService).setVisible(true);
             this.dispose(); // Fecha esta tela de cadastro
 
