@@ -207,9 +207,17 @@ public TelaPrincipal(Usuario usuario, GestaoService service) {
         new telas.prestacaoservico.view.MenuPrestacaoServico().setVisible(true);
     }//GEN-LAST:event_jButton8ActionPerformed
 
-    private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
-        new telas.recrutamento.view.Main().setVisible(true);
-    }//GEN-LAST:event_jButton6ActionPerformed
+    private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {                                         
+            telas.recrutamento.view.Main telaRecrutamento = new telas.recrutamento.view.Main();
+            
+            if (this.usuarioLogado != null) {
+                telaRecrutamento.carregarRecrutador(this.usuarioLogado.getCpf());
+            }
+            
+            telaRecrutamento.setVisible(true);
+            
+            this.dispose(); 
+        }
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
     }//GEN-LAST:event_jButton5ActionPerformed
