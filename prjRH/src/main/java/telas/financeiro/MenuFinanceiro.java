@@ -206,14 +206,6 @@ public class MenuFinanceiro extends javax.swing.JFrame {
 
     private void btnSairActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSairActionPerformed
         // TODO add your handling code here:
-<<<<<<< HEAD
-        this.dispose();
-    }//GEN-LAST:event_btnSairActionPerformed
-
-   
-    
-
-=======
         sair();
     }//GEN-LAST:event_btnSairActionPerformed
 
@@ -233,7 +225,6 @@ public class MenuFinanceiro extends javax.swing.JFrame {
         }
     });
 }
->>>>>>> 2e686e0 (nati mudanças)
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCadastrar;
     private javax.swing.JButton btnConfigurar;

@@ -1,16 +1,11 @@
 package telas.administracaoGestao.model;
 
 import java.io.Serializable;
-<<<<<<< HEAD
-
-public class Vaga implements Serializable {
-=======
 import java.util.ArrayList;
 
 public class Vaga implements Serializable { 
     
     private static final long serialVersionUID = 1L;
->>>>>>> 2e686e0 (nati mudanças)
     private String cargo;
     private double salario;
     private String status;

@@ -28,11 +28,7 @@ public class GerenciarCandidaturas extends javax.swing.JFrame {
         initComponents();
         this.recrutadorLogado = recrutador;
         this.menuPai = menuPai; 
-<<<<<<< HEAD
-        this.gestaoService = new GestaoService();
-=======
         this.gestaoService = GestaoService.getInstance();
->>>>>>> 2e686e0 (nati mudanças)
         this.candidatoDAO = new CandidatoDAO();
         setLocationRelativeTo(null);
         setTitle("Gerenciar Candidaturas");
