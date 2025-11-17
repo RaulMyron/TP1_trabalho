@@ -30,7 +30,7 @@ public class SolicitarContratacoes extends javax.swing.JFrame {
     
     public SolicitarContratacoes(Main menuPai, Recrutador recrutador) {
         initComponents();
-        this.menuPai = menuPai;  // ✅ Guarde a referência
+        this.menuPai = menuPai;
         this.recrutadorLogado = recrutador;
         this.contratacaoController = new ContratacaoController();
         this.gestaoService = GestaoService.getInstance();
@@ -226,12 +226,11 @@ public class SolicitarContratacoes extends javax.swing.JFrame {
                 return;
             }
             
-            // ✅ Pegar CPF do candidato da tabela (coluna 1)
             String cpfCandidato = jTable1.getValueAt(row, 1).toString();
             
-            // ✅ Usar CPF como ID da candidatura (temporário até ter ID real)
+
             contratacaoController.solicitar(
-                cpfCandidato,  // ✅ Usa CPF como identificador
+                cpfCandidato,
                 recrutadorLogado.getCpf(),
                 regime,
                 salario,
@@ -253,7 +252,7 @@ public class SolicitarContratacoes extends javax.swing.JFrame {
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this, 
                 "Erro ao enviar solicitação: " + e.getMessage());
-            e.printStackTrace();  // ✅ Mostra erro completo no console para debug
+            e.printStackTrace();
         }
     }
 
