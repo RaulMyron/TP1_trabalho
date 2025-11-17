@@ -10,6 +10,9 @@ import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import telas.candidatura.Model.CandidatoDAO;
 import telas.candidatura.Model.Candidato;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.text.SimpleDateFormat;
 import java.util.List;
 import telas.recrutamento.view.Main;
 import telas.administracaoGestao.controller.GestaoService;
@@ -132,10 +135,51 @@ public class GerenciarCandidaturas extends javax.swing.JFrame {
         DefaultTableModel model = (DefaultTableModel) jTable2.getModel();
         model.setRowCount(0);
         
-        if (vagaSelecionada != null) {
-            // Quando tiver integração com Candidatura do Aluno 2
+        String vagaSelecionada = (String) jComboBox1.getSelectedItem();
+        
+        if (vagaSelecionada == null || vagaSelecionada.equals("Selecione uma vaga")) {
+            return;
+        }
+        
+        try {
+            telas.candidatura.Controller.CandidatoController candidatoController = 
+                new telas.candidatura.Controller.CandidatoController();
+            
+            List<telas.candidatura.Model.Candidatura> candidaturas = 
+                candidatoController.getListaCandidaturas();
+            
+            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+            int count = 0;
+            
+            for (telas.candidatura.Model.Candidatura cand : candidaturas) {
+                if (cand.getVaga() != null && cand.getCandidato() != null) {
+                    if (cand.getVaga().getCargo().equals(vagaSelecionada)) {
+                        
+                        String dataCandidatura = cand.getDataCandidatura() != null ? 
+                            sdf.format(cand.getDataCandidatura()) : "-";
+                        
+                        model.addRow(new Object[]{
+                            cand.getCandidato().getNome(),
+                            cand.getCandidato().getCpf(),
+                            dataCandidatura,
+                            cand.getStatus()
+                        });
+                        count++;
+                    }
+                }
+            }
+            
+            if (count == 0) {
+                JOptionPane.showMessageDialog(this, 
+                    "Nenhuma candidatura encontrada para esta vaga!");
+            }
+            
+        } catch (Exception e) {
             JOptionPane.showMessageDialog(this, 
-                "Carregamento de candidaturas será implementado com integração do módulo de Candidatos");
+                "Erro ao carregar candidaturas: " + e.getMessage(), 
+                "Erro", 
+                JOptionPane.ERROR_MESSAGE);
+            e.printStackTrace();
         }
     }
     

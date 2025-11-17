@@ -3,7 +3,13 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 package telas.recrutamento.view;
+import telas.recrutamento.controller.EntrevistaController;
+import telas.recrutamento.model.Entrevista;
+import java.text.SimpleDateFormat;
 import telas.recrutamento.controller.ContratacaoController;
+import telas.recrutamento.controller.EntrevistaController;
+import telas.recrutamento.model.Contratacao;
+import telas.recrutamento.model.Entrevista;
 import telas.recrutamento.model.Recrutador;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
@@ -22,8 +28,9 @@ public class SolicitarContratacoes extends javax.swing.JFrame {
     private Recrutador recrutadorLogado;
     private GestaoService gestaoService;
     
-    public SolicitarContratacoes(Recrutador recrutador) {
+    public SolicitarContratacoes(Main menuPai, Recrutador recrutador) {
         initComponents();
+        this.menuPai = menuPai;  // ✅ Guarde a referência
         this.recrutadorLogado = recrutador;
         this.contratacaoController = new ContratacaoController();
         this.gestaoService = GestaoService.getInstance();
@@ -33,6 +40,7 @@ public class SolicitarContratacoes extends javax.swing.JFrame {
         carregarVagas();
         carregarCandidatosAprovados();
     }
+
 
     private void configurarEventos() {
         jButton1.addActionListener(e -> aplicarFiltros());
@@ -61,33 +69,82 @@ public class SolicitarContratacoes extends javax.swing.JFrame {
         DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
         model.setRowCount(0);
         
-        // Aqui você vai buscar candidaturas com status "Aprovado"
-        // E que tenham entrevista realizada
-        // Quando tiver integração com Candidatura
-        
-        // Dados de exemplo
-        model.addRow(new Object[]{
-            "João Silva", 
-            "123.456.789-00", 
-            "Desenvolvedor Java", 
-            "15/11/2024", 
-            "8.5", 
-            "Aprovado",
-            "Não"
-        });
-        
-        model.addRow(new Object[]{
-            "Maria Santos", 
-            "987.654.321-00", 
-            "Analista RH", 
-            "18/11/2024", 
-            "9.0", 
-            "Aprovado",
-            "Não"
-        });
-        
-        JOptionPane.showMessageDialog(this, 
-            model.getRowCount() + " candidatos aprovados encontrados!");
+        try {
+            telas.candidatura.Controller.CandidatoController candidatoController = 
+                new telas.candidatura.Controller.CandidatoController();
+            
+            List<telas.candidatura.Model.Candidatura> candidaturas = 
+                candidatoController.getListaCandidaturas();
+            
+            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+            int count = 0;
+            
+            for (telas.candidatura.Model.Candidatura cand : candidaturas) {
+                if ("Aprovado".equals(cand.getStatus()) && 
+                    cand.getCandidato() != null && 
+                    cand.getVaga() != null) {
+                    
+                    String nomeCandidato = cand.getCandidato().getNome();
+                    String cpfCandidato = cand.getCandidato().getCpf();
+                    String nomeVaga = cand.getVaga().getCargo();
+                    
+                    EntrevistaController entrevistaCtrl = new EntrevistaController();
+                    List<Entrevista> entrevistas = entrevistaCtrl.listarTodas();
+                    
+                    String dataEntrevista = "-";
+                    String notaEntrevista = "-";
+                    boolean temEntrevista = false;
+                    
+                    for (Entrevista e : entrevistas) {
+                        if (e.getCandidaturaId().equals(cpfCandidato) && e.isRealizada()) {
+                            temEntrevista = true;
+                            dataEntrevista = e.getDataHora() != null ? 
+                                sdf.format(e.getDataHora()) : "-";
+                            notaEntrevista = String.format("%.1f", e.getNota());
+                            break;
+                        }
+                    }
+                    
+                    if (temEntrevista) {
+                        // Verificar se já tem solicitação
+                        boolean jaPossuiSolicitacao = false;
+                        List<Contratacao> contratacoes = contratacaoController.listarTodas();
+                        for (Contratacao c : contratacoes) {
+                            if (c.getCandidaturaId().equals(cpfCandidato)) {
+                                jaPossuiSolicitacao = true;
+                                break;
+                            }
+                        }
+                        
+                        model.addRow(new Object[]{
+                            nomeCandidato,
+                            cpfCandidato,
+                            nomeVaga,
+                            dataEntrevista,
+                            notaEntrevista,
+                            cand.getStatus(),
+                            jaPossuiSolicitacao ? "Sim" : "Não"
+                        });
+                        count++;
+                    }
+                }
+            }
+            
+            if (count == 0) {
+                JOptionPane.showMessageDialog(this, 
+                    "Nenhum candidato aprovado com entrevista realizada foi encontrado!");
+            } else {
+                JOptionPane.showMessageDialog(this, 
+                    count + " candidatos aprovados encontrados!");
+            }
+            
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, 
+                "Erro ao carregar candidatos: " + e.getMessage(), 
+                "Erro", 
+                JOptionPane.ERROR_MESSAGE);
+            e.printStackTrace();
+        }
     }
     
     private void aplicarFiltros() {
@@ -131,7 +188,7 @@ public class SolicitarContratacoes extends javax.swing.JFrame {
         JOptionPane.showMessageDialog(this, curriculo, 
             "Currículo - " + nome, JOptionPane.INFORMATION_MESSAGE);
     }
-    
+
     private void enviarSolicitacao() {
         int row = jTable1.getSelectedRow();
         if (row < 0) {
@@ -169,12 +226,12 @@ public class SolicitarContratacoes extends javax.swing.JFrame {
                 return;
             }
             
-            // Pegar CPF do candidato da tabela
+            // ✅ Pegar CPF do candidato da tabela (coluna 1)
             String cpfCandidato = jTable1.getValueAt(row, 1).toString();
-            String candidaturaId = cpfCandidato; // Temporário
             
+            // ✅ Usar CPF como ID da candidatura (temporário até ter ID real)
             contratacaoController.solicitar(
-                candidaturaId,
+                cpfCandidato,  // ✅ Usa CPF como identificador
                 recrutadorLogado.getCpf(),
                 regime,
                 salario,
@@ -196,9 +253,10 @@ public class SolicitarContratacoes extends javax.swing.JFrame {
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this, 
                 "Erro ao enviar solicitação: " + e.getMessage());
+            e.printStackTrace();  // ✅ Mostra erro completo no console para debug
         }
     }
-    
+
     private void limparCampos() {
         jComboBox1.setSelectedIndex(0);
         jComboBox2.setSelectedIndex(0);
@@ -209,11 +267,11 @@ public class SolicitarContratacoes extends javax.swing.JFrame {
     }
     
     private void voltarMenu() {
-        Main menu = new Main();
-        menu.carregarRecrutador(recrutadorLogado.getCpf());
-        menu.setVisible(true);
+        if (menuPai != null) {
+            menuPai.setVisible(true);
+        }
         this.dispose();
-    }
+    }   
     
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -424,7 +482,7 @@ public class SolicitarContratacoes extends javax.swing.JFrame {
      * @param args the command line arguments
      */
     public static void main(String args[]) {
-
+        
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
                 if ("Nimbus".equals(info.getName())) {
@@ -438,7 +496,8 @@ public class SolicitarContratacoes extends javax.swing.JFrame {
 
         java.awt.EventQueue.invokeLater(() -> {
             Recrutador recrutadorTeste = new Recrutador("João Teste", "12345678900", "teste@empresa.com", "12345678900", "senha123");
-            new SolicitarContratacoes(recrutadorTeste).setVisible(true);
+            // Passa null como menuPai para teste standalone
+            new SolicitarContratacoes(null, recrutadorTeste).setVisible(true);
         });
         
     }

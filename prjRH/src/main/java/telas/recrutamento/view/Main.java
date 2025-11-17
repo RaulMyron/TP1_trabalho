@@ -105,7 +105,7 @@ public class Main extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Nenhum recrutador logado!");
             return;
         }
-        ConsultarContratações tela = new ConsultarContratações(recrutadorLogado);
+        ConsultarContratações tela = new ConsultarContratações(this, recrutadorLogado);  // Passa 'this'
         tela.setVisible(true);
         this.dispose();
     }
@@ -115,7 +115,7 @@ public class Main extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Nenhum recrutador logado!");
             return;
         }
-        SolicitarContratacoes tela = new SolicitarContratacoes(recrutadorLogado);
+        SolicitarContratacoes tela = new SolicitarContratacoes(this, recrutadorLogado);  // Passa 'this'
         tela.setVisible(true);
         this.dispose();
     }
@@ -220,11 +220,6 @@ public class Main extends javax.swing.JFrame {
         });
 
         jButton2.setText("Gerenciar Candidaturas");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
-            }
-        });
 
         jButton3.setText("Marcar Entrevistas");
         jButton3.addActionListener(new java.awt.event.ActionListener() {
@@ -234,11 +229,6 @@ public class Main extends javax.swing.JFrame {
         });
 
         jButton4.setText("Consultar Contratações");
-        jButton4.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton4ActionPerformed(evt);
-            }
-        });
 
         jButton5.setText("Solicitar Contratações");
 
@@ -304,21 +294,10 @@ public class Main extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jPanel3ComponentRemoved
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        new GerenciarCandidaturas(this, this.recrutadorLogado).setVisible(true);
-        this.dispose(); // Troca setVisible(false) por dispose() para liberar recursos
-    }//GEN-LAST:event_jButton2ActionPerformed
-
     private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
         new TelaLogin().setVisible(true);
         this.dispose();
     }//GEN-LAST:event_jButton6ActionPerformed
-
-    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-        ConsultarContratações telaConsultar = new ConsultarContratações(this.recrutadorLogado);
-        telaConsultar.setVisible(true);
-        this.dispose(); // Troca setVisible(false) por dispose() para liberar recursos
-    }//GEN-LAST:event_jButton4ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         MarcarEntrevistas telaMarcar = new MarcarEntrevistas(this, this.recrutadorLogado);
@@ -387,7 +366,7 @@ public class Main extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
-    javax.swing.JTextField jTextField1;
-    javax.swing.JTextField jTextField2;
+    private javax.swing.JTextField jTextField1;
+    private javax.swing.JTextField jTextField2;
     // End of variables declaration//GEN-END:variables
 }

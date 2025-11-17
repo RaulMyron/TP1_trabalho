@@ -15,7 +15,9 @@ import telas.recrutamento.view.Main;
 import telas.administracaoGestao.controller.GestaoService;
 import telas.administracaoGestao.model.Vaga;
 import telas.recrutamento.model.Recrutador;
-
+import telas.candidatura.Controller.CandidatoController;
+import telas.candidatura.Model.Candidatura;
+import java.text.SimpleDateFormat;
 public class MarcarEntrevistas extends javax.swing.JFrame {
     
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(MarcarEntrevistas.class.getName());
@@ -38,6 +40,10 @@ public class MarcarEntrevistas extends javax.swing.JFrame {
         carregarVagasRecrutador();
         carregarEntrevistas();
         habilitarCamposEntrevista(false);
+        if (jComboBox1.getItemCount() > 1) {
+            jComboBox1.setSelectedIndex(1); // Seleciona a primeira vaga real
+            carregarCandidatosVaga(); // Carrega os candidatos
+        }
     }
 
     private void configurarEventos() {
@@ -93,8 +99,69 @@ public class MarcarEntrevistas extends javax.swing.JFrame {
             return;
         }
         
-        model.addRow(new Object[]{"João Silva", "123.456.789-00", vagaSelecionada, "10/10/2024", "Não"});
-        model.addRow(new Object[]{"Maria Santos", "987.654.321-00", vagaSelecionada, "12/10/2024", "Não"});
+        try {
+            // ✅ Integração com módulo de Candidatura
+            telas.candidatura.Controller.CandidatoController candidatoController = 
+                new telas.candidatura.Controller.CandidatoController();
+            
+            List<telas.candidatura.Model.Candidatura> candidaturas = 
+                candidatoController.getListaCandidaturas();
+            
+            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+            int count = 0;
+            
+            // Filtrar candidaturas pela vaga selecionada
+            for (telas.candidatura.Model.Candidatura cand : candidaturas) {
+                if (cand.getVaga() != null && cand.getCandidato() != null) {
+                    
+                    String status = cand.getStatus();
+                    boolean statusValido = status.equals("Em Análise") || 
+                                        status.equals("Aprovado") ||
+                                        status.equals("Pendente");
+                    
+                    if (cand.getVaga().getCargo().equals(vagaSelecionada) && statusValido) {
+                        
+                        String nomeCandidato = cand.getCandidato().getNome();
+                        String cpfCandidato = cand.getCandidato().getCpf();
+                        String dataCandidatura = cand.getDataCandidatura() != null ? 
+                            sdf.format(cand.getDataCandidatura()) : "-";
+                        
+                        boolean temEntrevista = false;
+                        List<Entrevista> entrevistas = entrevistaController.listarTodas();
+                        
+                        for (Entrevista e : entrevistas) {
+                            // Compara com CPF do candidato
+                            if (e.getCandidaturaId().equals(cpfCandidato)) {
+                                temEntrevista = true;
+                                break;
+                            }
+                        }
+                        
+                        model.addRow(new Object[]{
+                            nomeCandidato,
+                            cpfCandidato,
+                            vagaSelecionada,
+                            dataCandidatura,
+                            temEntrevista ? "Sim" : "Não"
+                        });
+                        count++;
+                    }
+                }
+            }
+            
+            if (count == 0) {
+                JOptionPane.showMessageDialog(this, 
+                    "Nenhum candidato encontrado para esta vaga!\n" +
+                    "Verifique se há candidatos com status 'Pendente', 'Em Análise' ou 'Aprovado'.");
+            }
+            
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, 
+                "Erro ao carregar candidatos: " + e.getMessage(), 
+                "Erro", 
+                JOptionPane.ERROR_MESSAGE);
+            e.printStackTrace();
+        }
     }
     
     private void selecionarCandidato() {

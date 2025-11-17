@@ -191,9 +191,6 @@
           <Properties>
             <Property name="text" type="java.lang.String" value="Gerenciar Candidaturas"/>
           </Properties>
-          <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton2ActionPerformed"/>
-          </Events>
         </Component>
         <Component class="javax.swing.JButton" name="jButton3">
           <Properties>
@@ -207,9 +204,6 @@
           <Properties>
             <Property name="text" type="java.lang.String" value="Consultar Contrata&#xe7;&#xf5;es"/>
           </Properties>
-          <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton4ActionPerformed"/>
-          </Events>
         </Component>
         <Component class="javax.swing.JButton" name="jButton5">
           <Properties>

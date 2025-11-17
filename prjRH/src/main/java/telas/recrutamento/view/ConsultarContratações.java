@@ -22,8 +22,9 @@ public class ConsultarContratações extends javax.swing.JFrame {
     private Contratacao contratacaoSelecionada;
     private GestaoService gestaoService;
     
-    public ConsultarContratações(Recrutador recrutador) {
+    public ConsultarContratações(Main menuPai, Recrutador recrutador) {
         initComponents();
+        this.menuPai = menuPai;
         this.recrutadorLogado = recrutador;
         this.contratacaoController = new ContratacaoController();
         this.gestaoService = GestaoService.getInstance();
@@ -238,10 +239,12 @@ public class ConsultarContratações extends javax.swing.JFrame {
     }
     
     private void voltarMenu() {
-        Main menu = new Main();
-        menu.carregarRecrutador(recrutadorLogado.getCpf());
-        menu.setVisible(true);
-        this.dispose();
+        if (menuPai != null) {
+            menuPai.setVisible(true);
+            this.dispose();
+        } else {
+            System.exit(0);
+        }
     }
 
     @SuppressWarnings("unchecked")
@@ -472,7 +475,7 @@ public class ConsultarContratações extends javax.swing.JFrame {
 
         java.awt.EventQueue.invokeLater(() -> {
             Recrutador recrutadorTeste = new Recrutador("João Teste", "12345678900", "teste@empresa.com", "12345678900", "senha123");
-            new ConsultarContratações(recrutadorTeste).setVisible(true);
+            new ConsultarContratações(null, recrutadorTeste).setVisible(true);
         });
         
     }
