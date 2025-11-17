@@ -30,8 +30,13 @@ public class GestaoService {
         try {
             this.usuarios = repoUsuarios.carregar(ARQUIVO_USUARIOS);
             this.vagas = repoVagas.carregar(ARQUIVO_VAGAS);
+            if (this.usuarios.isEmpty() && this.vagas.isEmpty()) {
+                System.out.println("Primeira execução detectada. Inicializando dados...");
+            } else {
+                System.out.println("Dados carregados com sucesso: " + this.usuarios.size() + " usuários, " + this.vagas.size() + " vagas.");
+            }
         } catch (Exception e) {
-            System.err.println("Erro ao carregar dados. Iniciando com listas vazias.");
+            System.err.println("Erro ao carregar dados: " + e.getMessage());
             this.usuarios = new ArrayList<>();
             this.vagas = new ArrayList<>();
         }
@@ -40,6 +45,12 @@ public class GestaoService {
             System.out.println("Nenhum usuário encontrado. Criando admin padrão.");
             Usuario adminPadrao = new Administrador("Admin", "00000000000", "admin@rh.com", "admin", "admin123");
             this.usuarios.add(adminPadrao);
+            try {
+                repoUsuarios.salvar(this.usuarios, ARQUIVO_USUARIOS);
+                System.out.println("Admin padrão salvo com sucesso.");
+            } catch (IOException e) {
+                System.err.println("Erro ao salvar admin padrão: " + e.getMessage());
+            }
         }
        
     }
