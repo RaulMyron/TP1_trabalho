@@ -18,21 +18,30 @@ public class CandidatoController {
     private final List<Candidato> candidatos = candidatoDAO.carregar();
     private final List<Candidatura> candidaturas = candidaturaDAO.carregar();
         
-    public void adicionarCandidato(String nome, String cpf, String email, 
-                                   String formacao, String experiencia, 
-                                   double pretensaoSalarial, String disponibilidade) 
-                                   throws RHException {
+    public void adicionarCandidato(String nome, String cpf, String email, String formacao, String experiencia, double pretensaoSalarial, String disponibilidade) throws RHException {
         
-        // Valida se CPF já existe
+        
+        // Primeiro limpamos o CPF para garantir que estamos verificando apenas números
+        String cpfLimpo = cpf.replaceAll("[^0-9]", "");
+        
+        if (!isCPFValido(cpfLimpo)) {
+            throw new RHException("O CPF informado é inválido. Verifique os dígitos.");
+        }
+        // -----------------------------
+
+        // Regra de negócio: Verifica se já existe um candidato com este CPF
         for (Candidato c : this.candidatos) {
-            if (c.getCpf().equals(cpf)) {
+            // Compara com o CPF limpo para evitar erros de formatação
+            String cpfExistenteLimpo = c.getCpf().replaceAll("[^0-9]", "");
+            
+            if (cpfExistenteLimpo.equals(cpfLimpo)) {
                 throw new RHException("Erro: Já existe um candidato cadastrado com o CPF " + cpf);
             }
         }
         
-        // Cria e adiciona o novo candidato
-        Candidato novoCandidato = new Candidato(nome, cpf, email, formacao, 
-                                                experiencia, pretensaoSalarial, disponibilidade);
+       
+        Candidato novoCandidato = new Candidato(nome, cpf, email, formacao, experiencia, pretensaoSalarial, disponibilidade);
+        
         this.candidatos.add(novoCandidato);
         this.candidatoDAO.salvar(this.candidatos);
     }
@@ -142,26 +151,114 @@ public void alterarStatusCandidatura(Candidatura candidatura, String novoStatus)
 }
 
     /**
-     * Cria e salva uma nova candidatura.
-     * @param candidato O candidato que está se aplicando.
-     * @param vaga A vaga para a qual ele está se aplicando.
-     * @throws RHException se a candidatura já existir.
+     * Cria uma nova candidatura vinculando um candidato a uma vaga.
+     * Garante que não existam candidaturas duplicadas para o mesmo par (Candidato, Vaga).
      */
     public void criarCandidatura(Candidato candidato, Vaga vaga) throws RHException {
-        // Regra de negócio: Verifica se este candidato já se aplicou para esta vaga.
+        
+        // 1. Validação de Segurança: Verifica se os objetos não são nulos
+        if (candidato == null || vaga == null) {
+            throw new RHException("Candidato e Vaga são obrigatórios para criar uma candidatura.");
+        }
+
+        // 2. Regra de Negócio: Candidatura Única por Vaga
+        // Percorre todas as candidaturas já existentes
         for (Candidatura c : this.candidaturas) {
-            if (c.getCandidato().equals(candidato) && c.getVaga().equals(vaga)) {
-                throw new RHException("Este candidato já se candidatou para esta vaga.");
+            
+            // Verifica se é o mesmo candidato (pelo CPF)
+            boolean mesmoCandidato = c.getCandidato().getCpf().equals(candidato.getCpf());
+            
+            // Verifica se é a mesma vaga (pelo Nome do Cargo)
+            boolean mesmaVaga = c.getVaga().getCargo().equals(vaga.getCargo());
+
+            // Se for o MESMO candidato na MESMA vaga -> BLOQUEIA
+            if (mesmoCandidato && mesmaVaga) {
+                throw new RHException("Este candidato já possui uma candidatura ativa para a vaga de " + vaga.getCargo());
             }
         }
         
-        // Se a validação passar, cria a nova candidatura.
+        // 3. Se passou pelo loop, significa que é uma combinação nova.
+        // Pode criar a candidatura!
         Candidatura novaCandidatura = new Candidatura(candidato, vaga);
         this.candidaturas.add(novaCandidatura);
+        
+        // 4. Salva no arquivo
         this.candidaturaDAO.salvar(this.candidaturas);
         
-        System.out.println("Candidatura criada com sucesso!");
+        System.out.println("Candidatura realizada com sucesso: " + candidato.getNome() + " -> " + vaga.getCargo());
     }
-    
-    
+/**
+     * Método auxiliar para validar CPF
+     * Verifica tamanho, dígitos repetidos e dígitos verificadores.
+     */
+    private boolean isCPFValido(String cpf) {
+        // 1. Remove caracteres não numéricos (pontos e traços)
+        cpf = cpf.replaceAll("[^0-9]", "");
+
+        // 2. Verifica se tem 11 dígitos ou se são todos iguais (ex: 000.000.000-00)
+        if (cpf.length() != 11 || cpf.matches("(\\d)\\1{10}")) {
+            return false;
+        }
+
+        // 3. Cálculo dos dígitos verificadores (Lógica padrão da Receita Federal)
+        try {
+            // Calculando o primeiro dígito verificador
+            int soma = 0;
+            int peso = 10;
+            for (int i = 0; i < 9; i++) {
+                soma += (cpf.charAt(i) - '0') * peso--;
+            }
+
+            int r = 11 - (soma % 11);
+            char dig10 = (r == 10 || r == 11) ? '0' : (char) (r + '0');
+
+            // Calculando o segundo dígito verificador
+            soma = 0;
+            peso = 11;
+            for (int i = 0; i < 10; i++) {
+                soma += (cpf.charAt(i) - '0') * peso--;
+            }
+
+            r = 11 - (soma % 11);
+            char dig11 = (r == 10 || r == 11) ? '0' : (char) (r + '0');
+
+            // Verifica se os dígitos calculados batem com os informados
+            return (dig10 == cpf.charAt(9)) && (dig11 == cpf.charAt(10));
+
+        } catch (Exception e) {
+            return false;
+        }
+    }   
+/**
+     * Exclui um candidato e TODAS as suas candidaturas associadas (Exclusão em Cascata).
+     * @param cpf O CPF do candidato a ser excluído.
+     * @throws RHException Se o candidato não for encontrado.
+     */
+    public void excluirCandidato(String cpf) throws RHException {
+        
+        // 1. Busca o candidato para garantir que ele existe
+        Candidato candidatoAlvo = buscarPorCpf(cpf);
+        
+        if (candidatoAlvo == null) {
+            throw new RHException("Não foi possível excluir. Candidato não encontrado com o CPF: " + cpf);
+        }
+        
+        // 2. EXCLUSÃO EM CASCATA (O passo mais importante)
+        // Remove da lista de candidaturas TODAS as que pertencem a este candidato.
+        // Usamos o método removeIf (Java 8+) que é seguro e rápido.
+        boolean candidaturasRemovidas = this.candidaturas.removeIf(c -> c.getCandidato().getCpf().equals(cpf));
+        
+        if (candidaturasRemovidas) {
+            System.out.println("Candidaturas associadas foram removidas.");
+        }
+        
+        // 3. Remove o candidato da lista de candidatos
+        this.candidatos.remove(candidatoAlvo);
+        
+        // 4. Salva AMBAS as listas nos arquivos para persistir a mudança
+        this.candidaturaDAO.salvar(this.candidaturas); // Salva a lista de candidaturas limpa
+        this.candidatoDAO.salvar(this.candidatos);     // Salva a lista de candidatos sem ele
+        
+        System.out.println("Candidato " + candidatoAlvo.getNome() + " excluído com sucesso.");
+    }    
 }
