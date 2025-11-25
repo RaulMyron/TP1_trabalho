@@ -107,62 +107,62 @@ public class SolicitarContratacoes extends javax.swing.JFrame {
             int count = 0;
             
             for (telas.candidatura.Model.Candidatura cand : candidaturas) {
-                if ("Aprovado".equals(cand.getStatus()) && 
-                    cand.getCandidato() != null && 
+                if ("Aprovado".equals(cand.getStatus()) &&
+                    cand.getCandidato() != null &&
                     cand.getVaga() != null) {
-                    
+
                     String nomeCandidato = cand.getCandidato().getNome();
                     String cpfCandidato = cand.getCandidato().getCpf();
                     String nomeVaga = cand.getVaga().getCargo();
-                    
+
                     EntrevistaController entrevistaCtrl = new EntrevistaController();
                     List<Entrevista> entrevistas = entrevistaCtrl.listarTodas();
-                    
+
                     String dataEntrevista = "-";
                     String notaEntrevista = "-";
-                    boolean temEntrevista = false;
-                    
+
+                    // Buscar informações da entrevista (se existir)
                     for (Entrevista e : entrevistas) {
-                        if (e.getCandidaturaId().equals(cpfCandidato) && e.isRealizada()) {
-                            temEntrevista = true;
-                            dataEntrevista = e.getDataHora() != null ? 
+                        if (e.getCandidaturaId().equals(cpfCandidato)) {
+                            dataEntrevista = e.getDataHora() != null ?
                                 sdf.format(e.getDataHora()) : "-";
-                            notaEntrevista = String.format("%.1f", e.getNota());
+                            // Só mostra nota se entrevista foi realizada
+                            if (e.isRealizada()) {
+                                notaEntrevista = String.format("%.1f", e.getNota());
+                            }
                             break;
                         }
                     }
-                    
-                    if (temEntrevista) {
-                        // Verificar se já tem solicitação
-                        boolean jaPossuiSolicitacao = false;
-                        List<Contratacao> contratacoes = contratacaoController.listarTodas();
-                        for (Contratacao c : contratacoes) {
-                            if (c.getCandidaturaId().equals(cpfCandidato)) {
-                                jaPossuiSolicitacao = true;
-                                break;
-                            }
+
+                    // Verificar se já tem solicitação
+                    boolean jaPossuiSolicitacao = false;
+                    List<Contratacao> contratacoes = contratacaoController.listarTodas();
+                    for (Contratacao c : contratacoes) {
+                        if (c.getCandidaturaId().equals(cpfCandidato)) {
+                            jaPossuiSolicitacao = true;
+                            break;
                         }
-                        
-                        model.addRow(new Object[]{
-                            nomeCandidato,
-                            cpfCandidato,
-                            nomeVaga,
-                            dataEntrevista,
-                            notaEntrevista,
-                            cand.getStatus(),
-                            jaPossuiSolicitacao ? "Sim" : "Não"
-                        });
-                        count++;
                     }
+
+                    model.addRow(new Object[]{
+                        nomeCandidato,
+                        cpfCandidato,
+                        nomeVaga,
+                        dataEntrevista,
+                        notaEntrevista,
+                        cand.getStatus(),
+                        jaPossuiSolicitacao ? "Sim" : "Não"
+                    });
+                    count++;
                 }
             }
             
             if (count == 0) {
-                JOptionPane.showMessageDialog(this, 
-                    "Nenhum candidato aprovado com entrevista realizada foi encontrado!");
+                JOptionPane.showMessageDialog(this,
+                    "Nenhum candidato aprovado foi encontrado!");
             } else {
-                JOptionPane.showMessageDialog(this, 
-                    count + " candidatos aprovados encontrados!");
+                JOptionPane.showMessageDialog(this,
+                    count + " candidato(s) aprovado(s) encontrado(s)!");
             }
             
         } catch (Exception e) {
