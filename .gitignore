@@ -19,6 +19,9 @@ target/
 # Arquivos compilados
 *.class
 
+# Arquivos temporários do compilador javac
+javac*.args
+
 # === IDE: NETBEANS ===
 # (Baseado nos seus logs de build)
 /nbproject/private/
