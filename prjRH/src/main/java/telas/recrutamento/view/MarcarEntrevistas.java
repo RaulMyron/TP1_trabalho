@@ -324,8 +324,14 @@ public class MarcarEntrevistas extends javax.swing.JFrame {
     }
     
     private void voltarMenu() {
-        this.menuPai.setVisible(true);
+        // Fecha esta janela primeiro
         this.dispose();
+
+        // Depois mostra o menu pai, se existir
+        if (this.menuPai != null) {
+            this.menuPai.setVisible(true);
+            this.menuPai.toFront();
+        }
     }
     
     @SuppressWarnings("unchecked")

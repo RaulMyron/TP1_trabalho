@@ -30,11 +30,15 @@ public class GerenciarCandidaturas extends javax.swing.JFrame {
     public GerenciarCandidaturas(Main menuPai, Recrutador recrutador) {
         initComponents();
         this.recrutadorLogado = recrutador;
-        this.menuPai = menuPai; 
+        this.menuPai = menuPai;
         this.gestaoService = GestaoService.getInstance();
         this.candidatoDAO = new CandidatoDAO();
         setLocationRelativeTo(null);
         setTitle("Gerenciar Candidaturas");
+
+        // Desabilita o ComboBox inicialmente
+        jComboBox1.setEnabled(false);
+
         configurarEventos();
         carregarTabelaVagas();
         carregarTabelaCandidatos();
@@ -122,42 +126,63 @@ public class GerenciarCandidaturas extends javax.swing.JFrame {
                 .filter(v -> v.getCargo().equals(cargo))
                 .findFirst()
                 .orElse(null);
-            
+
             if (vagaSelecionada != null) {
+                // Habilita o ComboBox após selecionar a vaga
+                jComboBox1.setEnabled(true);
+
                 jComboBox1.removeAllItems();
-                jComboBox1.addItem("Selecione uma vaga");
                 jComboBox1.addItem(vagaSelecionada.getCargo());
+                jComboBox1.setSelectedIndex(0);
+
+                // Carrega automaticamente os candidatos dessa vaga
+                carregarCandidatosVaga();
             }
+        } else {
+            // Se desselecionou, desabilita o ComboBox
+            jComboBox1.setEnabled(false);
+            jComboBox1.removeAllItems();
+            DefaultTableModel model = (DefaultTableModel) jTable2.getModel();
+            model.setRowCount(0);
         }
     }
     
     private void carregarCandidatosVaga() {
-        DefaultTableModel model = (DefaultTableModel) jTable2.getModel();
-        model.setRowCount(0);
-        
-        String vagaSelecionada = (String) jComboBox1.getSelectedItem();
-        
-        if (vagaSelecionada == null || vagaSelecionada.equals("Selecione uma vaga")) {
+        // Verifica se o ComboBox está habilitado
+        if (!jComboBox1.isEnabled()) {
+            JOptionPane.showMessageDialog(this,
+                "Selecione a vaga acima primeiro!",
+                "Aviso",
+                JOptionPane.WARNING_MESSAGE);
             return;
         }
-        
+
+        DefaultTableModel model = (DefaultTableModel) jTable2.getModel();
+        model.setRowCount(0);
+
+        String vagaSel = (String) jComboBox1.getSelectedItem();
+
+        if (vagaSel == null) {
+            return;
+        }
+
         try {
-            telas.candidatura.Controller.CandidatoController candidatoController = 
+            telas.candidatura.Controller.CandidatoController candidatoController =
                 new telas.candidatura.Controller.CandidatoController();
-            
-            List<telas.candidatura.Model.Candidatura> candidaturas = 
+
+            List<telas.candidatura.Model.Candidatura> candidaturas =
                 candidatoController.getListaCandidaturas();
-            
+
             SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
             int count = 0;
-            
+
             for (telas.candidatura.Model.Candidatura cand : candidaturas) {
                 if (cand.getVaga() != null && cand.getCandidato() != null) {
-                    if (cand.getVaga().getCargo().equals(vagaSelecionada)) {
-                        
-                        String dataCandidatura = cand.getDataCandidatura() != null ? 
+                    if (cand.getVaga().getCargo().equals(vagaSel)) {
+
+                        String dataCandidatura = cand.getDataCandidatura() != null ?
                             sdf.format(cand.getDataCandidatura()) : "-";
-                        
+
                         model.addRow(new Object[]{
                             cand.getCandidato().getNome(),
                             cand.getCandidato().getCpf(),
@@ -168,16 +193,16 @@ public class GerenciarCandidaturas extends javax.swing.JFrame {
                     }
                 }
             }
-            
+
             if (count == 0) {
-                JOptionPane.showMessageDialog(this, 
+                JOptionPane.showMessageDialog(this,
                     "Nenhuma candidatura encontrada para esta vaga!");
             }
-            
+
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(this, 
-                "Erro ao carregar candidaturas: " + e.getMessage(), 
-                "Erro", 
+            JOptionPane.showMessageDialog(this,
+                "Erro ao carregar candidaturas: " + e.getMessage(),
+                "Erro",
                 JOptionPane.ERROR_MESSAGE);
             e.printStackTrace();
         }
@@ -240,8 +265,14 @@ public class GerenciarCandidaturas extends javax.swing.JFrame {
     }
     
     private void voltarMenu() {
-        this.menuPai.setVisible(true);
-        this.dispose(); //
+        // Fecha esta janela primeiro
+        this.dispose();
+
+        // Depois mostra o menu pai, se existir
+        if (this.menuPai != null) {
+            this.menuPai.setVisible(true);
+            this.menuPai.toFront();
+        }
     }
 
     @SuppressWarnings("unchecked")

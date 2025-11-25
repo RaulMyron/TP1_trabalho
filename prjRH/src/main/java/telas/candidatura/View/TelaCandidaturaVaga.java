@@ -189,27 +189,33 @@ public class TelaCandidaturaVaga extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        // TODO add your handling code here:
         try {
-            // 1. Busca o candidato pelo CPF digitado na tela
-            String cpf = jTextField1.getText();
-            Candidato candidato = Controller.buscarPorCpf(cpf);
-
-            // Valida se o candidato foi encontrado
-            if (candidato == null) {
-                throw new RHException("Nenhum candidato encontrado com o CPF informado.");
+            // 1. Verifica se foi feita a busca do candidato
+            if (this.candidatoEncontrado == null) {
+                throw new RHException("Por favor, busque o candidato pelo CPF primeiro!");
             }
 
             // 2. Pega a vaga selecionada na ComboBox
             Vaga vagaSelecionada = (Vaga) jComboBox2.getSelectedItem();
 
+            if (vagaSelecionada == null) {
+                throw new RHException("Por favor, selecione uma vaga!");
+            }
+
             // 3. Chama o controller para criar a candidatura
-            Controller.criarCandidatura(candidato, vagaSelecionada);
+            Controller.criarCandidatura(this.candidatoEncontrado, vagaSelecionada);
 
             // 4. Feedback de sucesso
-            JOptionPane.showMessageDialog(this, "Candidatura realizada com sucesso!", "Sucesso", JOptionPane.INFORMATION_MESSAGE);
-            
-            TelaCandidaturaVaga.this.dispose();
+            JOptionPane.showMessageDialog(this,
+                "Candidatura confirmada!\n\nCandidato: " + this.candidatoEncontrado.getNome() +
+                "\nVaga: " + vagaSelecionada.getCargo(),
+                "Candidatura Confirmada",
+                JOptionPane.INFORMATION_MESSAGE);
+
+            // 5. Limpa os campos para permitir nova candidatura
+            jTextField1.setText("");
+            this.candidatoEncontrado = null;
+            jComboBox2.setSelectedIndex(0);
 
         } catch (RHException e) {
             JOptionPane.showMessageDialog(this, e.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);

@@ -266,10 +266,13 @@ public class SolicitarContratacoes extends javax.swing.JFrame {
     }
     
     private void voltarMenu() {
+        // Fecha esta janela primeiro
+        this.dispose();
+
         if (menuPai != null) {
             menuPai.setVisible(true);
+            menuPai.toFront();
         }
-        this.dispose();
     }   
     
     @SuppressWarnings("unchecked")

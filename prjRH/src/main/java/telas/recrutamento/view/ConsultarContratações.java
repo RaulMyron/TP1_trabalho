@@ -239,9 +239,12 @@ public class ConsultarContratações extends javax.swing.JFrame {
     }
     
     private void voltarMenu() {
+        // Fecha esta janela primeiro
+        this.dispose();
+
         if (menuPai != null) {
             menuPai.setVisible(true);
-            this.dispose();
+            menuPai.toFront();
         } else {
             System.exit(0);
         }
