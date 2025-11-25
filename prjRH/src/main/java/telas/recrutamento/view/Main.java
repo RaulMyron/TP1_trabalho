@@ -23,6 +23,10 @@ public class Main extends javax.swing.JFrame {
         initComponents();
         recrutadorController = new RecrutadorController();
         setLocationRelativeTo(null);
+
+        // Ocultar botão Voltar
+        jButton6.setVisible(false);
+
         configurarEventos();
     }
 
@@ -305,9 +309,8 @@ public class Main extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton6ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        MarcarEntrevistas telaMarcar = new MarcarEntrevistas(this, this.recrutadorLogado);
-        telaMarcar.setVisible(true);
-        this.dispose(); // Troca setVisible(false) por dispose() para liberar recursos
+        // Removido: duplicava a chamada do configurarEventos(), causando abertura dupla
+        // A lógica agora está apenas em abrirMarcarEntrevistas()
     }//GEN-LAST:event_jButton3ActionPerformed
 
     /**
