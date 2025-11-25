@@ -16,9 +16,12 @@ public class Gestor extends Usuario implements Serializable {
     private void readObject(java.io.ObjectInputStream in)
             throws java.io.IOException, ClassNotFoundException {
         in.defaultReadObject();
+        System.out.println("DEBUG Gestor.readObject() - Antes: " + (getPerfis() != null ? getPerfis() : "null"));
         // Adiciona o perfil se não estiver presente
         if (!getPerfis().contains(Perfil.GESTOR)) {
             addPerfil(Perfil.GESTOR);
+            System.out.println("DEBUG Gestor.readObject() - Perfil GESTOR adicionado!");
         }
+        System.out.println("DEBUG Gestor.readObject() - Depois: " + getPerfis());
     }
 }
