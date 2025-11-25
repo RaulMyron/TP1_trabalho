@@ -162,8 +162,9 @@ public class Recrutador extends Usuario {
         return departamento;
     }
 
-    public void setDepartamento(String departamento) throws RecrutamentoException {
-        ValidadorRecrutamento.validarDepartamento(departamento);
+    public void setDepartamento(String departamento) {
+        // Validação removida do setter para manter compatibilidade
+        // A validação é feita no construtor
         this.departamento = departamento;
     }
 
