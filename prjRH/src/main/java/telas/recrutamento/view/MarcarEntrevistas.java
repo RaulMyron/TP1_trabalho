@@ -36,6 +36,15 @@ public class MarcarEntrevistas extends javax.swing.JFrame {
         this.entrevistaController = new EntrevistaController();
         setLocationRelativeTo(null);
         setTitle("Marcar Entrevistas");
+
+        // Configurar spinner para notas com máximo 10
+        javax.swing.SpinnerNumberModel spinnerModel = new javax.swing.SpinnerNumberModel(0.0, 0.0, 10.0, 0.5);
+        jSpinner1.setModel(spinnerModel);
+
+        // Ocultar jComboBox2 e seu label (não é útil)
+        jComboBox2.setVisible(false);
+        jLabel2.setVisible(false);
+
         configurarEventos();
         carregarVagasRecrutador();
         carregarEntrevistas();
@@ -67,17 +76,14 @@ public class MarcarEntrevistas extends javax.swing.JFrame {
     
     private void carregarVagasRecrutador() {
         jComboBox1.removeAllItems();
-        jComboBox2.removeAllItems();
-        
-        List<Vaga> vagas = gestaoService.listarTodasVagas();        
-        
+
+        List<Vaga> vagas = gestaoService.listarTodasVagas();
+
         jComboBox1.addItem("Selecione uma vaga");
-        jComboBox2.addItem("Selecione uma vaga");
-        
+
         for (Vaga v : vagas) {
             String item = v.getCargo();
             jComboBox1.addItem(item);
-            jComboBox2.addItem(item);
         }
         
         // Popular combo de avaliadores (aqui você pode buscar de um DAO depois)
