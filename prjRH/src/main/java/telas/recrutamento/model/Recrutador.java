@@ -16,7 +16,7 @@ import java.util.Date;
  */
 public class Recrutador extends Usuario {
 
-    private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 664657771188656315L;
 
     private String departamento;
     private List<Vaga> vagasGerenciadas;
@@ -196,5 +196,25 @@ public class Recrutador extends Usuario {
             getNome(),
             departamento != null ? departamento : "Sem departamento",
             getQuantidadeVagasAbertas());
+    }
+
+    /**
+     * Método para garantir compatibilidade com dados antigos.
+     * Inicializa campos que podem ser nulos ao deserializar.
+     */
+    private void readObject(java.io.ObjectInputStream in)
+            throws java.io.IOException, ClassNotFoundException {
+        in.defaultReadObject();
+
+        // Inicializa campos novos se forem nulos (dados antigos)
+        if (vagasGerenciadas == null) {
+            vagasGerenciadas = new ArrayList<>();
+        }
+        if (especialidades == null) {
+            especialidades = new ArrayList<>();
+        }
+        if (dataContratacao == null) {
+            dataContratacao = new Date();
+        }
     }
 }
