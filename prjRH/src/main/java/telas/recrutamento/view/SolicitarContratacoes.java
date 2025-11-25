@@ -28,6 +28,9 @@ public class SolicitarContratacoes extends javax.swing.JFrame {
     private Recrutador recrutadorLogado;
     private GestaoService gestaoService;
     
+    private javax.swing.JTextField searchField;
+    private javax.swing.JButton searchButton;
+
     public SolicitarContratacoes(Main menuPai, Recrutador recrutador) {
         initComponents();
         this.menuPai = menuPai;
@@ -36,6 +39,30 @@ public class SolicitarContratacoes extends javax.swing.JFrame {
         this.gestaoService = GestaoService.getInstance();
         setLocationRelativeTo(null);
         setTitle("Solicitar Contratações");
+
+        // Ocultar filtros inúteis
+        jLabel1.setVisible(false);
+        jCheckBox1.setVisible(false);
+        jCheckBox2.setVisible(false);
+        jCheckBox3.setVisible(false);
+        jButton1.setVisible(false);
+
+        // Adicionar barra de busca no lugar dos filtros
+        jLabel1.setText("Buscar:");
+        jLabel1.setVisible(true);
+
+        // Criar campo de busca
+        searchField = new javax.swing.JTextField(30);
+        searchField.setToolTipText("Digite nome ou CPF para buscar");
+        searchField.setBounds(jLabel1.getX() + 60, jLabel1.getY(), 300, 25);
+        jPanel1.add(searchField);
+
+        // Criar botão de busca
+        searchButton = new javax.swing.JButton("Buscar");
+        searchButton.setBounds(searchField.getX() + searchField.getWidth() + 10, searchField.getY(), 100, 25);
+        searchButton.addActionListener(e -> buscarCandidato());
+        jPanel1.add(searchButton);
+
         configurarEventos();
         carregarVagas();
         carregarCandidatosAprovados();
@@ -43,7 +70,7 @@ public class SolicitarContratacoes extends javax.swing.JFrame {
 
 
     private void configurarEventos() {
-        jButton1.addActionListener(e -> aplicarFiltros());
+        // jButton1 (Aplicar Filtros) - removido, agora é a busca
         jButton2.addActionListener(e -> verCurriculo());
         jButton3.addActionListener(e -> enviarSolicitacao());
         jButton4.addActionListener(e -> voltarMenu());
@@ -147,46 +174,57 @@ public class SolicitarContratacoes extends javax.swing.JFrame {
         }
     }
     
-    private void aplicarFiltros() {
-        boolean filtrarPorVaga = jCheckBox1.isSelected();
-        boolean apenasComEntrevista = jCheckBox2.isSelected();
-        boolean apenasAprovados = jCheckBox3.isSelected();
-        
-        DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
-        
-        if (!apenasAprovados && !apenasComEntrevista && !filtrarPorVaga) {
+    private void buscarCandidato() {
+        String busca = searchField.getText().trim().toLowerCase();
+
+        if (busca.isEmpty()) {
             carregarCandidatosAprovados();
             return;
         }
-        
-        // Aplicar filtros na tabela
+
+        DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+        DefaultTableModel modelOriginal = (DefaultTableModel) jTable1.getModel();
+
+        // Salvar dados originais temporariamente
+        int totalRows = modelOriginal.getRowCount();
+        Object[][] dadosOriginais = new Object[totalRows][modelOriginal.getColumnCount()];
+
+        for (int i = 0; i < totalRows; i++) {
+            for (int j = 0; j < modelOriginal.getColumnCount(); j++) {
+                dadosOriginais[i][j] = modelOriginal.getValueAt(i, j);
+            }
+        }
+
+        // Limpar tabela
         model.setRowCount(0);
-        
-        // Lógica de filtro aqui
-        JOptionPane.showMessageDialog(this, "Filtros aplicados!");
+
+        // Filtrar e adicionar apenas linhas que correspondem à busca
+        int encontrados = 0;
+        for (int i = 0; i < totalRows; i++) {
+            String nome = dadosOriginais[i][0] != null ? dadosOriginais[i][0].toString().toLowerCase() : "";
+            String cpf = dadosOriginais[i][1] != null ? dadosOriginais[i][1].toString().toLowerCase() : "";
+
+            if (nome.contains(busca) || cpf.contains(busca)) {
+                model.addRow(dadosOriginais[i]);
+                encontrados++;
+            }
+        }
+
+        if (encontrados == 0) {
+            JOptionPane.showMessageDialog(this,
+                "Nenhum candidato encontrado com: " + searchField.getText());
+            // Restaurar todos os dados
+            for (Object[] linha : dadosOriginais) {
+                model.addRow(linha);
+            }
+        }
     }
     
     private void verCurriculo() {
-        int row = jTable1.getSelectedRow();
-        if (row < 0) {
-            JOptionPane.showMessageDialog(this, "Selecione um candidato!");
-            return;
-        }
-        
-        String nome = jTable1.getValueAt(row, 0).toString();
-        String cpf = jTable1.getValueAt(row, 1).toString();
-        
-        // Abrir janela com currículo detalhado
-        String curriculo = "=== CURRÍCULO ===\n\n" +
-                          "Nome: " + nome + "\n" +
-                          "CPF: " + cpf + "\n" +
-                          "Formação: Ciência da Computação - UFMG\n" +
-                          "Experiência: 3 anos\n" +
-                          "Habilidades: Java, Spring, MySQL\n" +
-                          "Idiomas: Inglês (Fluente)";
-        
-        JOptionPane.showMessageDialog(this, curriculo, 
-            "Currículo - " + nome, JOptionPane.INFORMATION_MESSAGE);
+        JOptionPane.showMessageDialog(this,
+            "Função em implementação.\nTente novamente mais tarde.",
+            "Em Desenvolvimento",
+            JOptionPane.INFORMATION_MESSAGE);
     }
 
     private void enviarSolicitacao() {
