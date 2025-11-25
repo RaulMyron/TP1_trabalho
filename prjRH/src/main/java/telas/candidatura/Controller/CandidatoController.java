@@ -164,10 +164,14 @@ public void alterarStatusCandidatura(Candidatura candidatura, String novoStatus)
         // 2. Regra de Negócio: Candidatura Única por Vaga
         // Percorre todas as candidaturas já existentes
         for (Candidatura c : this.candidaturas) {
-            
+            // Pula candidaturas com dados inválidos/corrompidos
+            if (c.getCandidato() == null || c.getVaga() == null) {
+                continue;
+            }
+
             // Verifica se é o mesmo candidato (pelo CPF)
             boolean mesmoCandidato = c.getCandidato().getCpf().equals(candidato.getCpf());
-            
+
             // Verifica se é a mesma vaga (pelo Nome do Cargo)
             boolean mesmaVaga = c.getVaga().getCargo().equals(vaga.getCargo());
 
