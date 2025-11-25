@@ -36,13 +36,14 @@ public class ContratacaoController {
                 
                 if (usuario != null) {
                     System.out.println("DEBUG: Usuário encontrado: " + usuario.getNome());
-                    
+
                     // Cria Recrutador a partir do Usuario
+                    // Parâmetros corretos: cpf, nome, email, login, senha
                     recrutador = new Recrutador(
-                        usuario.getNome(),
                         usuario.getCpf(),
+                        usuario.getNome(),
                         usuario.getEmail(),
-                        cpfRecrutador,  // matricula
+                        usuario.getLogin(),
                         "senha_temp"    // senha temporária
                     );
                     System.out.println("DEBUG: Recrutador criado a partir do Usuario!");

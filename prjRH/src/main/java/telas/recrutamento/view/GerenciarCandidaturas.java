@@ -531,9 +531,14 @@ public class GerenciarCandidaturas extends javax.swing.JFrame {
         }
         
         java.awt.EventQueue.invokeLater(() -> {
-            // Recrutador de teste - só para preview do NetBeans
-            Recrutador recrutadorTeste = new Recrutador("Teste", "12345678900", "teste@email.com", "12345678900", "senha123");
-            new GerenciarCandidaturas(null, recrutadorTeste).setVisible(true);
+            try {
+                // Recrutador de teste - só para preview do NetBeans
+                // Parâmetros corretos: cpf, nome, email, login, senha
+                Recrutador recrutadorTeste = new Recrutador("12345678900", "Teste", "teste@email.com", "teste", "senha123");
+                new GerenciarCandidaturas(null, recrutadorTeste).setVisible(true);
+            } catch (Exception e) {
+                logger.log(java.util.logging.Level.SEVERE, "Erro ao criar recrutador de teste", e);
+            }
         });
     
     }

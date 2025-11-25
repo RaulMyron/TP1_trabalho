@@ -700,8 +700,13 @@ public class MarcarEntrevistas extends javax.swing.JFrame {
         }
 
         java.awt.EventQueue.invokeLater(() -> {
-            Recrutador recrutadorTeste = new Recrutador("João Teste", "12345678900", "teste@empresa.com", "12345678900", "senha123");
-            new MarcarEntrevistas(null, recrutadorTeste).setVisible(true);
+            try {
+                // Parâmetros corretos: cpf, nome, email, login, senha
+                Recrutador recrutadorTeste = new Recrutador("12345678900", "João Teste", "teste@empresa.com", "joao", "senha123");
+                new MarcarEntrevistas(null, recrutadorTeste).setVisible(true);
+            } catch (Exception e) {
+                logger.log(java.util.logging.Level.SEVERE, "Erro ao criar recrutador de teste", e);
+            }
         });
         
     }
