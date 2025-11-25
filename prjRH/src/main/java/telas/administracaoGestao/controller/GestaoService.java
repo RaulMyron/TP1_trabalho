@@ -80,41 +80,45 @@ public class GestaoService {
     
     // Método para a TELA DE GESTÃO DE USUÁRIOS (ADMIN)
     public void cadastrarUsuario(Usuario ator, String nome, String cpf, String email, String login, String senha, String tipo) throws NegocioException, IOException {
-        
+
         if (!ator.getPerfis().contains(Perfil.ADMINISTRADOR)) {
             throw new NegocioException("Acesso negado: Somente administradores podem criar usuários.");
         }
-        
+
         if (usuarios.stream().anyMatch(u -> u.getCpf().equals(cpf))) {
             throw new NegocioException("CPF já cadastrado.");
         }
-        
+
         if (senha.length() < 8 || !senha.matches(".*[a-zA-Z].*") || !senha.matches(".*[0-9].*")) {
             throw new NegocioException("Erro: A senha deve ter no mínimo 8 caracteres, contendo letras e números.");
         }
-        
+
         Usuario novoUsuario;
-        switch (tipo) {
-            case "Administrador":
-                novoUsuario = new Administrador(nome, cpf, email, login, senha);
-                break;
-                
-            case "Gestor":
-                novoUsuario = new Gestor(nome, cpf, email, login, senha);
-                break;
-            
-            case "Recrutador":
-                novoUsuario = new Recrutador(cpf, nome, email, login, senha); 
-                break;
-            
-            default:
-                // Se selecionar "Candidatura" ou "Financeiro"  dará um erro
-                throw new NegocioException("O perfil '" + tipo + "' não é um tipo de usuário que pode ser criado por aqui.");
+        try {
+            switch (tipo) {
+                case "Administrador":
+                    novoUsuario = new Administrador(nome, cpf, email, login, senha);
+                    break;
+
+                case "Gestor":
+                    novoUsuario = new Gestor(nome, cpf, email, login, senha);
+                    break;
+
+                case "Recrutador":
+                    novoUsuario = new Recrutador(cpf, nome, email, login, senha);
+                    break;
+
+                default:
+                    // Se selecionar "Candidatura" ou "Financeiro"  dará um erro
+                    throw new NegocioException("O perfil '" + tipo + "' não é um tipo de usuário que pode ser criado por aqui.");
+            }
+        } catch (telas.recrutamento.exception.RecrutamentoException e) {
+            throw new NegocioException("Erro ao criar recrutador: " + e.getMessage());
         }
-        
+
         usuarios.add(novoUsuario);
-        repoUsuarios.salvar(usuarios, ARQUIVO_USUARIOS); 
-        
+        repoUsuarios.salvar(usuarios, ARQUIVO_USUARIOS);
+
     }
     
     // Método para a TELA DE GESTÃO DE VAGAS (GESTOR)

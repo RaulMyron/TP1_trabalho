@@ -55,18 +55,23 @@ public class Main extends javax.swing.JFrame {
                 } else {
                     // Se for um usuário genérico (criado pelo Admin como 'Recrutador' mas a classe é Usuario ou Gestor)
                     // Criamos um objeto Recrutador temporário apenas para a tela funcionar
-                    this.recrutadorLogado = new Recrutador(
-                            usuarioEncontrado.getNome(), 
-                            usuarioEncontrado.getCpf(), 
-                            usuarioEncontrado.getEmail(), 
-                            usuarioEncontrado.getLogin(), 
-                            "****"
-                    );
+                    try {
+                        this.recrutadorLogado = new Recrutador(
+                                usuarioEncontrado.getCpf(),
+                                usuarioEncontrado.getNome(),
+                                usuarioEncontrado.getEmail(),
+                                usuarioEncontrado.getLogin(),
+                                "****"
+                        );
+                    } catch (Exception e) {
+                        System.out.println("Erro ao criar recrutador temporário: " + e.getMessage());
+                        this.recrutadorLogado = null;
+                    }
                 }
             } else {
                 System.out.println("Usuário NÃO encontrado no GestaoService.");
                 // Fallback: Tenta controller local (para testes isolados)
-                this.recrutadorLogado = recrutadorController.buscar(cpf);
+                this.recrutadorLogado = recrutadorController.buscarPorCpf(cpf);
             }
 
             // 3. Atualiza a interface visual
@@ -326,19 +331,20 @@ public class Main extends javax.swing.JFrame {
             java.awt.EventQueue.invokeLater(() -> {
                 Main tela = new Main();
                 String cpf = "123.456.789-00";
-                
+
                 // 1. Tenta cadastrar direto (sem 'buscar' antes, para evitar o primeiro alerta)
                 try {
                     telas.recrutamento.controller.RecrutadorController ctrl = new telas.recrutamento.controller.RecrutadorController();
                     // Tenta cadastrar. Se já existir ou der erro, o catch captura e segue o baile.
-                    ctrl.cadastrar(cpf, "Gestor de Teste", "teste@rh.com", "123");
+                    // Agora com os parâmetros corretos: cpf, nome, email, login, senha, departamento
+                    ctrl.cadastrar(cpf, "Gestor de Teste", "teste@rh.com", "gestor", "senha123", "RH");
                 } catch (Exception e) {
                     // Silenciosamente ignora se já estiver cadastrado
                 }
 
                 // 2. Carrega na tela (Única chamada que buscará os dados)
                 tela.carregarRecrutador(cpf);
-                
+
                 // 3. Preenchimento de segurança (caso o carregamento via arquivo falhe)
                 try {
                     if (tela.jTextField1.getText().isEmpty()) {
@@ -350,7 +356,7 @@ public class Main extends javax.swing.JFrame {
                 } catch (Exception e) {
                     System.out.println("Campos inacessíveis ou erro visual ignorado.");
                 }
-                
+
                 tela.setVisible(true);
             });
         }
