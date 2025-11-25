@@ -123,7 +123,11 @@ public class GestaoService {
     
     // Método para a TELA DE GESTÃO DE VAGAS (GESTOR)
     public void criarVaga(Usuario ator, String cargo, double salario, Usuario recrutador) throws NegocioException, IOException {
-        
+
+        System.out.println("DEBUG criarVaga - Usuario: " + ator.getNome());
+        System.out.println("DEBUG criarVaga - Perfis: " + (ator.getPerfis() != null ? ator.getPerfis() : "null"));
+        System.out.println("DEBUG criarVaga - Classe: " + ator.getClass().getName());
+
         if (!ator.getPerfis().contains(Perfil.GESTOR)) {
             throw new NegocioException("Acesso negado: Somente gestores podem criar vagas.");
         }
