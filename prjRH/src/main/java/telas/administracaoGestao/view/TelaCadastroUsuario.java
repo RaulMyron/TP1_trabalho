@@ -140,6 +140,11 @@ public class TelaCadastroUsuario extends javax.swing.JFrame {
         });
 
         jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        jComboBox1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jComboBox1ActionPerformed(evt);
+            }
+        });
 
         jLabel1.setText("Status:");
 
@@ -274,6 +279,7 @@ public class TelaCadastroUsuario extends javax.swing.JFrame {
                     throw new NegocioException("Nome, Email e Login são obrigatórios.");
                 }
                 
+                boolean novoAtivo = "Ativo".equals(jComboBox1.getSelectedItem().toString());
                 // Chama o GestaoService para editar
                 gestaoService.editarUsuario(
                     this.usuarioLogado,
@@ -315,6 +321,10 @@ public class TelaCadastroUsuario extends javax.swing.JFrame {
     private void PerfilActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PerfilActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_PerfilActionPerformed
+
+    private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jComboBox1ActionPerformed
 
     public static void main(String args[]) {
         try {

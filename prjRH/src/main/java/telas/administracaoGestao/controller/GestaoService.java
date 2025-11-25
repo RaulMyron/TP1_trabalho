@@ -89,6 +89,10 @@ public class GestaoService {
             throw new NegocioException("CPF já cadastrado.");
         }
         
+        if (senha.length() < 8 || !senha.matches(".*[a-zA-Z].*") || !senha.matches(".*[0-9].*")) {
+            throw new NegocioException("Erro: A senha deve ter no mínimo 8 caracteres, contendo letras e números.");
+        }
+        
         Usuario novoUsuario;
         switch (tipo) {
             case "Administrador":
