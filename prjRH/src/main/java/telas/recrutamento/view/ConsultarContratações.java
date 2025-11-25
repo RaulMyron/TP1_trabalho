@@ -31,7 +31,6 @@ public class ConsultarContratações extends javax.swing.JFrame {
         this.menuPai = menuPai;
         this.recrutadorLogado = recrutador;
         
-        // Inicializa controllers
         this.contratacaoController = new ContratacaoController();
         this.candidatoController = new CandidatoController();
         this.gestaoService = GestaoService.getInstance();
@@ -49,7 +48,6 @@ public class ConsultarContratações extends javax.swing.JFrame {
     }
 
     private void configurarComponentesIniciais() {
-        // 1. Popula Vagas
         jComboBox4.removeAllItems();
         jComboBox4.addItem("Todas");
         if (this.gestaoService != null) {
@@ -58,7 +56,6 @@ public class ConsultarContratações extends javax.swing.JFrame {
             }
         }
         
-        // 2. Popula Status
         jComboBox3.removeAllItems();
         jComboBox3.addItem("Todas");
         jComboBox3.addItem("Pendente");
@@ -66,7 +63,6 @@ public class ConsultarContratações extends javax.swing.JFrame {
         jComboBox3.addItem("Negada");
         jComboBox3.addItem("Efetivada");
         
-        // Oculta campos visuais desnecessários
         jLabel10.setVisible(false); 
         jTextField3.setVisible(false);
     }
@@ -82,42 +78,34 @@ public class ConsultarContratações extends javax.swing.JFrame {
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
         
         List<Contratacao> listaContratacoes = contratacaoController.listarTodas(); 
-        // Traz as candidaturas para descobrir qual vaga pertence a quem
         List<Candidatura> listaCandidaturas = candidatoController.getListaCandidaturas();
 
         if (listaContratacoes == null) return;
 
         for (Contratacao c : listaContratacoes) {
             
-            // --- DESCOBRINDO A VAGA E O NOME REAL ---
             String nomeVaga = "Vaga não identificada";
-            String nomeCandidato = c.getCandidaturaId(); // Começa com o ID/CPF salvo
+            String nomeCandidato = c.getCandidaturaId(); 
 
             if (listaCandidaturas != null) {
                 for (Candidatura cand : listaCandidaturas) {
                     String idSalvo = c.getCandidaturaId();
-                    // Verifica se bate com CPF ou Nome
                     if (cand.getCandidato() != null && (
                         cand.getCandidato().getCpf().equals(idSalvo) || 
                         cand.getCandidato().getNome().equalsIgnoreCase(idSalvo)
                     )) {
-                        // ACHOU! Atualiza os dados para exibição
                         if (cand.getVaga() != null) {
                             nomeVaga = cand.getVaga().getCargo();
                         }
                         nomeCandidato = cand.getCandidato().getNome();
-                        break; // Para de procurar
+                        break;
                     }
                 }
             }
             
-            // --- APLICANDO OS FILTROS ---
-            
-            // 1. Filtro de Status
             boolean passaStatus = statusFiltro.equals("Todas") || 
                                   (c.getStatusSolicitacao() != null && c.getStatusSolicitacao().equalsIgnoreCase(statusFiltro));
             
-            // 2. Filtro de Vaga (Agora compara com o nomeVaga correto)
             boolean passaVaga = vagaFiltro.equals("Todas") || nomeVaga.equalsIgnoreCase(vagaFiltro);
 
             if (passaStatus && passaVaga) {
@@ -126,12 +114,11 @@ public class ConsultarContratações extends javax.swing.JFrame {
                 String dataResposta = c.getDataAutorizacao() != null ? sdf.format(c.getDataAutorizacao()) : "-";
                 String gestor = c.getGestorAutorizador() != null ? c.getGestorAutorizador() : "-";
                 
-                // ADICIONA NA TABELA (CORRIGIDO: Usa nomeVaga)
                 model.addRow(new Object[]{
                     c.getId(),
                     nomeCandidato,
-                    c.getCandidaturaId(), // Mostra o CPF/ID original também
-                    nomeVaga,             // <--- AQUI ESTAVA O ERRO, AGORA USA A VARIÁVEL
+                    c.getCandidaturaId(),
+                    nomeVaga,            
                     c.getRegimeContratacao(),
                     "R$ " + c.getSalarioProposto(),
                     dataSolicitacao,
@@ -164,7 +151,7 @@ public class ConsultarContratações extends javax.swing.JFrame {
         }
         
         int id = Integer.parseInt(jTable1.getValueAt(row, 0).toString());
-        String statusAtual = jTable1.getValueAt(row, 7).toString(); // Coluna 7 é o Status
+        String statusAtual = jTable1.getValueAt(row, 7).toString();
         
         if (!statusAtual.equalsIgnoreCase("Autorizada")) {
             JOptionPane.showMessageDialog(this, "Apenas contratações AUTORIZADAS podem ser efetivadas.");
@@ -253,7 +240,6 @@ public class ConsultarContratações extends javax.swing.JFrame {
             }
         });
 
-        // Definição das colunas da tabela
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {},
             new String [] {
