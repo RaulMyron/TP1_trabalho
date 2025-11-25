@@ -209,8 +209,20 @@ public class Administrador extends Usuario implements Serializable {
         // Chama o método "removePerfil" que deve existir na classe Usuario 
         usuario.removePerfil(perfilParaRemover);
         
-        System.out.println("Perfil " + perfilParaRemover + 
+        System.out.println("Perfil " + perfilParaRemover +
                            " removido com sucesso de " + usuario.getNome());
+    }
+
+    /**
+     * Garante que o perfil ADMINISTRADOR seja adicionado após deserialização.
+     */
+    private void readObject(java.io.ObjectInputStream in)
+            throws java.io.IOException, ClassNotFoundException {
+        in.defaultReadObject();
+        // Adiciona o perfil se não estiver presente
+        if (!getPerfis().contains(Perfil.ADMINISTRADOR)) {
+            addPerfil(Perfil.ADMINISTRADOR);
+        }
     }
 
 } 
