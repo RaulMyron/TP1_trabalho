@@ -25,7 +25,11 @@ public abstract class Usuario extends Pessoa implements Serializable {
         this.login = login;
     }
     public List<Perfil> getPerfis() {
-        return perfil; 
+        // Garante que nunca retorna null
+        if (perfil == null) {
+            perfil = new ArrayList<>();
+        }
+        return perfil;
     }
     public void setSenha(String senha){
         this.senha = senha;
@@ -37,6 +41,10 @@ public abstract class Usuario extends Pessoa implements Serializable {
         this.ativo = ativo;
     }
     public void addPerfil(Perfil p) {
+        // Garante que a lista existe antes de adicionar
+        if (this.perfil == null) {
+            this.perfil = new ArrayList<>();
+        }
         if (!this.perfil.contains(p)) {
             this.perfil.add(p);
         }
